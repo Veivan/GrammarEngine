@@ -8,72 +8,77 @@ wchar_t LexiconStorage::CollocationDelimiter = L'\x1F';
 wchar_t LexiconStorage::WORD_SET_DELIMITER = L'\x1F';
 
 
-// Слова из списка words объединяем в одну строку таким образом, чтобы их можно было сохранить в БД, и
-// потом снова разбить на слова.
-void LexiconStorage::MergeCollocationWords( const lem::MCollect<lem::UCString> &words, lem::UFString &collocation )
+// РЎР»РѕРІР° РёР· СЃРїРёСЃРєР° words РѕР±СЉРµРґРёРЅСЏРµРј РІ РѕРґРЅСѓ СЃС‚СЂРѕРєСѓ С‚Р°РєРёРј РѕР±СЂР°Р·РѕРј, С‡С‚РѕР±С‹ РёС… РјРѕР¶РЅРѕ Р±С‹Р»Рѕ СЃРѕС…СЂР°РЅРёС‚СЊ РІ Р‘Р”, Рё
+// РїРѕС‚РѕРј СЃРЅРѕРІР° СЂР°Р·Р±РёС‚СЊ РЅР° СЃР»РѕРІР°.
+void LexiconStorage::MergeCollocationWords(const lem::MCollect<lem::UCString> &words, lem::UFString &collocation)
 {
- LEM_CHECKIT_Z( !words.empty() );
+    LEM_CHECKIT_Z(!words.empty());
 
- collocation.clear();
- collocation.Add_Dirty( words.front().c_str() );
+    collocation.clear();
+    collocation += words.front().c_str();
 
- for( lem::Container::size_type i=1; i<words.size(); ++i )
-  {
-   collocation.Add_Dirty( CollocationDelimiter );
-   collocation.Add_Dirty( words[i].c_str() );
-  }
+    for (lem::Container::size_type i = 1; i < words.size(); ++i)
+    {
+        collocation += CollocationDelimiter;
+        collocation += words[i].c_str();
+    }
 
- collocation.calc_hash();
+    LEM_CHECKIT_Z(!collocation.empty());
 
- LEM_CHECKIT_Z( !collocation.empty() );
-
- return;
+    return;
 }
 
 
-void LexiconStorage::SplitCollocationWords( const lem::UFString &collocation, lem::MCollect<lem::UCString> &words )
+void LexiconStorage::SplitCollocationWords(const lem::UFString &collocation, lem::MCollect<lem::UCString> &words)
 {
- LEM_CHECKIT_Z( !collocation.empty() );
+    LEM_CHECKIT_Z(!collocation.empty());
 
- words.clear();
- lem::Collect<lem::UFString> w;
- const wchar_t delimiter[2] = { CollocationDelimiter, 0 };
- lem::parse( collocation, w, delimiter, false );
- for( lem::Container::size_type i=0; i<w.size(); ++i )
-  words.push_back( lem::UCString( w[i].c_str() ) );
+    words.clear();
+    lem::Collect<lem::UFString> w;
+    const wchar_t delimiter[2] = { CollocationDelimiter, 0 };
+    lem::parse(collocation, w, delimiter, false);
+    for (auto& wi : w)
+        words.push_back(lem::UCString(wi.c_str()));
 
- LEM_CHECKIT_Z( !words.empty() );
+    LEM_CHECKIT_Z(!words.empty());
 
- return;
+    return;
 }
 
-
+/*
 namespace
 {
- static bool cpa_sorter( const Solarix::GramCoordPair &a, const Solarix::GramCoordPair &b )
- { return a.GetCoord().GetIndex() > b.GetCoord().GetIndex(); }
+    static bool cpa_sorter(const Solarix::GramCoordPair &a, const Solarix::GramCoordPair &b)
+    {
+        return a.GetCoord().GetIndex() > b.GetCoord().GetIndex();
+    }
+}
+*/
+
+void LexiconStorage::SortCoords(CP_Array & sorted_coords) const
+{
+    // std::sort( sorted_coords.begin(), sorted_coords.end(), cpa_sorter );
+    std::sort(sorted_coords.begin(),
+        sorted_coords.end(),
+        [](const Solarix::GramCoordPair &a, const Solarix::GramCoordPair &b)
+    {return a.GetCoord().GetIndex() > b.GetCoord().GetIndex(); }
+    );
 }
 
-void LexiconStorage::SortCoords( CP_Array & sorted_coords ) const
+
+void LexiconStorage::SerializeCoords(const Solarix::CP_Array & sorted_coords, lem::FString & str_coords)
 {
- std::sort( sorted_coords.begin(), sorted_coords.end(), cpa_sorter );
-}
+    for (auto& coord : sorted_coords)
+    {
+        str_coords += ' ';
+        str_coords += lem::to_str(coord.GetCoord().GetIndex()).c_str();
+        str_coords += ':';
+        str_coords += lem::to_str(coord.GetState()).c_str();
+    }
 
+    str_coords += ' ';
 
-void LexiconStorage::SerializeCoords( const Solarix::CP_Array & sorted_coords, lem::FString & str_coords )
-{
- for( lem::Container::size_type i=0; i<sorted_coords.size(); ++i )
-  {
-   str_coords.Add_Dirty( ' ' );
-   str_coords.Add_Dirty( lem::to_str( sorted_coords[i].GetCoord().GetIndex() ).c_str() );
-   str_coords.Add_Dirty( ':' );
-   str_coords.Add_Dirty( lem::to_str( sorted_coords[i].GetState() ).c_str() );
-  }
-
- str_coords.Add_Dirty( ' ' );
- str_coords.calc_hash();
-
- return;
+    return;
 }
 
 

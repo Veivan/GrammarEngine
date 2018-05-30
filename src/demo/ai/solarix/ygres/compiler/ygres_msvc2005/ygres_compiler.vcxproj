@@ -45,7 +45,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140_xp</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -134,7 +134,7 @@
       <Optimization>Disabled</Optimization>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>$(BOOST_PATH);$(LEM_PATH)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;SOL_LOADTXT;SOLARIX_PRO;SOL_LOADBIN;SOL_SAVETXT;SOL_COMPILER;SOL_SAVEBIN;BOOST_ALL_NO_LIB;SOL_NO_NGRAMS;BOOST_THREAD_BUILD_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;SOL_LOADTXT;SOLARIX_PRO;SOL_LOADBIN;SOL_SAVETXT;SOL_COMPILER;SOL_SAVEBIN;SOL_NO_NGRAMS;BOOST_THREAD_BUILD_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -157,7 +157,7 @@
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)compiler.exe</OutputFile>
-      <AdditionalLibraryDirectories>$(LEM_PATH)\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>e:\boost.1.66\stage\lib;$(LEM_PATH)\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)ygres_compiler.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
@@ -222,8 +222,8 @@
       <OmitFramePointers>false</OmitFramePointers>
       <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(BOOST_PATH);$(LEM_PATH)\INCLUDE;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;BOOST_ALL_NO_LIB;LEM_UNICODE_CONSOLE;SOL_LOADBIN;SOL_SAVEBIN;SOL_COMPILER;SOL_LOADTXT;SOL_SAVETXT;SOLARIX_PRO;SOL_NO_NGRAMS;BOOST_THREAD_BUILD_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(BOOST_PATH);$(ProjectDir)..\..\..\..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;LEM_UNICODE_CONSOLE;SOL_LOADBIN;SOL_SAVEBIN;SOL_COMPILER;SOL_LOADTXT;SOL_SAVETXT;SOLARIX_PRO;SOL_NO_NGRAMS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <StructMemberAlignment>Default</StructMemberAlignment>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -243,7 +243,7 @@
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)\compiler.exe</OutputFile>
-      <AdditionalLibraryDirectories>$(LEM_PATH)\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\..\..\..\lib64;e:\boost.1.66\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -271,7 +271,6 @@
     <ClCompile Include="..\..\..\..\..\..\io\io_tty.cpp" />
     <ClCompile Include="..\..\..\..\..\..\io\lem_logfile.cpp" />
     <ClCompile Include="..\..\..\..\..\..\io\oformatter.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\tools\unicode\transliterator.cpp" />
     <ClCompile Include="..\..\..\..\..\..\io\iridium\ir_error.cpp" />
     <ClCompile Include="..\..\..\..\..\..\Io\Iridium\Ir_macro.cpp" />
     <ClCompile Include="..\..\..\..\..\..\Io\Iridium\Ir_macro_group.cpp" />
@@ -293,7 +292,6 @@
     <ClCompile Include="..\..\..\..\..\..\io\cfg_parser\cfg_ini_parser.cpp" />
     <ClCompile Include="..\..\..\..\..\..\io\char_reader\chr_base_reader.cpp" />
     <ClCompile Include="..\..\..\..\..\..\io\char_reader\chr_char_reader.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\io\char_reader\chr_translit_reader.cpp" />
     <ClCompile Include="..\..\..\..\..\..\io\char_reader\chr_utf16_reader.cpp" />
     <ClCompile Include="..\..\..\..\..\..\io\char_reader\chr_utf8_reader.cpp" />
     <ClCompile Include="..\..\..\..\..\..\io\xml\xp_iterator.cpp" />
@@ -627,32 +625,10 @@
     <ClCompile Include="..\..\..\..\..\..\Ai\Ygres\ygres.cpp" />
     <ClCompile Include="..\..\..\..\..\..\ai\ngrams\ngrams.cpp" />
     <ClCompile Include="..\..\..\..\..\..\ai\ngrams\NGramsDBMS.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\cpp_regex_traits.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\cregex.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\c_regex_traits.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\fileiter.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\icu.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\instances.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\posix_api.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\regex.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\regex_debug.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\regex_raw_buffer.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\regex_traits_defaults.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\static_mutex.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\usinstances.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\w32_regex_traits.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\wc_regex_traits.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\wide_posix_api.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\winstances.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\system\src\error_code.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\thread\src\win32\thread.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\thread\src\win32\tss_dll.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\thread\src\win32\tss_pe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\..\include\lem\solarix\sg_autom.h" />
     <ClInclude Include="..\..\..\..\..\..\include\lem\solarix\TagSets.h" />
-    <ClInclude Include="E:\boost.1.60\libs\regex\src\internals.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\yc.rc" />

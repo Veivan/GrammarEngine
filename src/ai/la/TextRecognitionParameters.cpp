@@ -4,52 +4,52 @@ using namespace Solarix;
 
 TextRecognitionParameters::TextRecognitionParameters()
 {
- RecognizeWordforms=true;
- UseSparsePatterns=false;
- Pretokenized=false;
- CompleteAnalysisOnly=false;
- AllowPrimaryFuzzyWordRecog=false;
- AllowFuzzyRecogMixin=false;
- min_score_bound=-2;
- max_filter_len=5;
- LookAheadTokens=1;
- ApplyCollocFilters=true;
- UseTokenReconstruction=false;
- AllowDynform=false;
- MaxSkipToken=3;
- SkipInnerTokens=false;
- SkipOuterToken=false;
- UseTopDownThenSparse=false;
- ReorderTree=false;
- ApplyModel=false;
+    RecognizeWordforms = true;
+    UseSparsePatterns = false;
+    Pretokenized = false;
+    CompleteAnalysisOnly = false;
+    AllowPrimaryFuzzyWordRecog = false;
+    AllowFuzzyRecogMixin = false;
+    min_score_bound = -2;
+    //max_filter_len=5;
+    LookAheadTokens = 1;
+    //ApplyCollocFilters=true;
+    UseTokenReconstruction = false;
+    AllowDynform = false;
+    MaxSkipToken = 3;
+    SkipInnerTokens = false;
+    SkipOuterToken = false;
+    UseTopDownThenSparse = false;
+    ReorderTree = false;
+    ApplyModel = false;
 }
 
 
-// èíèöèàëèçàöèÿ ïàðàìåòðà MaxSkipToken â çàâèñèìîñòè îò äðóãèõ óñòàíîâëåííûõ ïàðàìåòðîâ.
+// Ð¸Ð½Ð¸Ñ†Ð¸Ð°Ð»Ð¸Ð·Ð°Ñ†Ð¸Ñ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð° MaxSkipToken Ð² Ð·Ð°Ð²Ð¸ÑÐ¸Ð¼Ð¾ÑÑ‚Ð¸ Ð¾Ñ‚ Ð´Ñ€ÑƒÐ³Ð¸Ñ… ÑƒÑÑ‚Ð°Ð½Ð¾Ð²Ð»ÐµÐ½Ð½Ñ‹Ñ… Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð¾Ð².
 void TextRecognitionParameters::ConfigureSkipToken()
 {
- if( !CompleteAnalysisOnly )
-  {
-   if( timeout.max_alt>0 && timeout.max_alt<lem::int_max )
+    if (!CompleteAnalysisOnly)
     {
-     // òàê êàê âêëþ÷åí ðåæèì îãðàíè÷åíèÿ ïðîñòðàíñòâà ïåðåáîðà, òî ìîæåì
-     // óâåëè÷èòü ÷èñëî ïðîïóñêàåìûõ òîêåíîâ áåç óùåðáà äëÿ ïðîèçâîäèòåëüíîñòè.
-     MaxSkipToken = 7;
+        if (timeout.max_alt > 0 && timeout.max_alt < lem::int_max)
+        {
+            // Ñ‚Ð°Ðº ÐºÐ°Ðº Ð²ÐºÐ»ÑŽÑ‡ÐµÐ½ Ñ€ÐµÐ¶Ð¸Ð¼ Ð¾Ð³Ñ€Ð°Ð½Ð¸Ñ‡ÐµÐ½Ð¸Ñ Ð¿Ñ€Ð¾ÑÑ‚Ñ€Ð°Ð½ÑÑ‚Ð²Ð° Ð¿ÐµÑ€ÐµÐ±Ð¾Ñ€Ð°, Ñ‚Ð¾ Ð¼Ð¾Ð¶ÐµÐ¼
+            // ÑƒÐ²ÐµÐ»Ð¸Ñ‡Ð¸Ñ‚ÑŒ Ñ‡Ð¸ÑÐ»Ð¾ Ð¿Ñ€Ð¾Ð¿ÑƒÑÐºÐ°ÐµÐ¼Ñ‹Ñ… Ñ‚Ð¾ÐºÐµÐ½Ð¾Ð² Ð±ÐµÐ· ÑƒÑ‰ÐµÑ€Ð±Ð° Ð´Ð»Ñ Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð´Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ð¾ÑÑ‚Ð¸.
+            MaxSkipToken = 7;
+        }
+        else
+        {
+            MaxSkipToken = 2;
+        }
+
+        SkipOuterToken = true;
+        SkipInnerTokens = false;
     }
-   else
+    else
     {
-     MaxSkipToken = 2;
+        MaxSkipToken = 0;
+        SkipOuterToken = false;
+        SkipInnerTokens = false;
     }
 
-   SkipOuterToken = true;
-   SkipInnerTokens = false;
-  }
- else
-  {
-   MaxSkipToken = 0;
-   SkipOuterToken = false;
-   SkipInnerTokens = false;
-  }
-
- return;
+    return;
 }

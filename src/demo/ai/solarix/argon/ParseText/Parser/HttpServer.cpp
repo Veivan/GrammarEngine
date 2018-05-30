@@ -1,7 +1,7 @@
 #if defined HTTP_PARSER_SERVICE
 #include <lem/logfile.h>
 #include <lem/conversions.h>
-#include "ParserEngine.h"
+#include "ParserEngineBase.h"
 #include "HttpServer.h"
 
 using namespace lem;
@@ -26,7 +26,7 @@ bool ParserHttpServer::GenerateHtml( const char *url, const char * query, lem::U
 
  if( Url.eq_beg( "/query.html" ) || Url==L"/" || Url.eq_beg( "/index.htm" ) )
   {
-   // По умолчанию - страница для ввода поискового запроса
+   // РџРѕ СѓРјРѕР»С‡Р°РЅРёСЋ - СЃС‚СЂР°РЅРёС†Р° РґР»СЏ РІРІРѕРґР° РїРѕРёСЃРєРѕРІРѕРіРѕ Р·Р°РїСЂРѕСЃР°
    BeginHtml(out);
    ShowQueryPage(Url,out);
    EndHtml(out);

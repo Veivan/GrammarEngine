@@ -18,12 +18,12 @@ using namespace Solarix;
 class SyntaxShell
 {
 public:
-    typedef enum { MorphologyMode, SyntaxMode, TokenizerMode, SegmenterMode, LemmatizerMode, SpeakerMode } RunMode;
+    enum class RunMode { MorphologyMode, SyntaxMode, TokenizerMode, SegmenterMode, LemmatizerMode, SpeakerMode };
 
     void SetMode(RunMode new_mode);
 
 private:
-    RunMode run_mode; // текущий режим функционирования - какой блок анализа работает.
+    RunMode run_mode; // С‚РµРєСѓС‰РёР№ СЂРµР¶РёРј С„СѓРЅРєС†РёРѕРЅРёСЂРѕРІР°РЅРёСЏ - РєР°РєРѕР№ Р±Р»РѕРє Р°РЅР°Р»РёР·Р° СЂР°Р±РѕС‚Р°РµС‚.
 
     bool lazy_lexicon;
     lem::Ptr<Dictionary> sol_id;
@@ -39,44 +39,44 @@ private:
     lem::zbool CompleteAnalysisOnly;
     lem::zbool UseReconstructor;
     lem::zbool traceon;
-    lem::UCString scenario; // сценарий трансформации (перевод и пр.)
-    lem::zbool ApplyModel; // использовать языковую статистическую модель для снятия неоднозначности
+    lem::UCString scenario; // СЃС†РµРЅР°СЂРёР№ С‚СЂР°РЅСЃС„РѕСЂРјР°С†РёРё (РїРµСЂРµРІРѕРґ Рё РїСЂ.)
+    lem::zbool ApplyModel; // РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ СЏР·С‹РєРѕРІСѓСЋ СЃС‚Р°С‚РёСЃС‚РёС‡РµСЃРєСѓСЋ РјРѕРґРµР»СЊ РґР»СЏ СЃРЅСЏС‚РёСЏ РЅРµРѕРґРЅРѕР·РЅР°С‡РЅРѕСЃС‚Рё
     int MaxSkipToken;
 
-    lem::zbool UseTopDownThenSparse; // работа по схеме: сначала попробовать полный нисходящий анализ, если неудача и осталось время - то примерный нисходящий.
-    lem::zbool EnableFilters;
+    lem::zbool UseTopDownThenSparse; // СЂР°Р±РѕС‚Р° РїРѕ СЃС…РµРјРµ: СЃРЅР°С‡Р°Р»Р° РїРѕРїСЂРѕР±РѕРІР°С‚СЊ РїРѕР»РЅС‹Р№ РЅРёСЃС…РѕРґСЏС‰РёР№ Р°РЅР°Р»РёР·, РµСЃР»Рё РЅРµСѓРґР°С‡Р° Рё РѕСЃС‚Р°Р»РѕСЃСЊ РІСЂРµРјСЏ - С‚Рѕ РїСЂРёРјРµСЂРЅС‹Р№ РЅРёСЃС…РѕРґСЏС‰РёР№.
 
-    int MaxTimeout; // можно интерактивно задать лимит времени на анализ предложения.
+    int MaxTimeout; // РјРѕР¶РЅРѕ РёРЅС‚РµСЂР°РєС‚РёРІРЅРѕ Р·Р°РґР°С‚СЊ Р»РёРјРёС‚ РІСЂРµРјРµРЅРё РЅР° Р°РЅР°Р»РёР· РїСЂРµРґР»РѕР¶РµРЅРёСЏ.
     int MaxAlt;
     bool FindFacts;
 
+    lem::Path dict_dir;
     lem::ElapsedTime elapsed;
 
-    lem::Collect< std::pair<UCString /*tag*/, UCString /*value*/> > tags; // тэги для фильтрации переводов
-    lem::Ptr<Solarix::SG_TagFilter> tags_ptr; // скомпилированные тэги
+    lem::Collect< std::pair<UCString /*tag*/, UCString /*value*/> > tags; // С‚СЌРіРё РґР»СЏ С„РёР»СЊС‚СЂР°С†РёРё РїРµСЂРµРІРѕРґРѕРІ
+    lem::Ptr<Solarix::SG_TagFilter> tags_ptr; // СЃРєРѕРјРїРёР»РёСЂРѕРІР°РЅРЅС‹Рµ С‚СЌРіРё
 
-    lem::Ptr<Solarix::SG_TagFilter> transl0_tag; // специальный фильтр для отбора только переводов с transl_order=0
-    lem::Ptr<Solarix::SG_TagFilter> transl1_tag; // специальный фильтр для отбора только основных переводов
+    lem::Ptr<Solarix::SG_TagFilter> transl0_tag; // СЃРїРµС†РёР°Р»СЊРЅС‹Р№ С„РёР»СЊС‚СЂ РґР»СЏ РѕС‚Р±РѕСЂР° С‚РѕР»СЊРєРѕ РїРµСЂРµРІРѕРґРѕРІ СЃ transl_order=0
+    lem::Ptr<Solarix::SG_TagFilter> transl1_tag; // СЃРїРµС†РёР°Р»СЊРЅС‹Р№ С„РёР»СЊС‚СЂ РґР»СЏ РѕС‚Р±РѕСЂР° С‚РѕР»СЊРєРѕ РѕСЃРЅРѕРІРЅС‹С… РїРµСЂРµРІРѕРґРѕРІ
 
-    lem::Collect< std::pair<UCString /*param*/, UCString /*value*/> > params; // глобальные параметры для управления алгоритмом перевода
+    lem::Collect< std::pair<UCString /*param*/, UCString /*value*/> > params; // РіР»РѕР±Р°Р»СЊРЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹ РґР»СЏ СѓРїСЂР°РІР»РµРЅРёСЏ Р°Р»РіРѕСЂРёС‚РјРѕРј РїРµСЂРµРІРѕРґР°
 
-    lem::zbool guess_language; // язык нужно подбирать для каждой вводимой фразы
-    int default_language; // язык синтаксического анализа (для многоязычных словарей)
-    lem::zbool needs_shortest_var; // печатать на консоли только самые короткие варианты разбора
+    lem::zbool guess_language; // СЏР·С‹Рє РЅСѓР¶РЅРѕ РїРѕРґР±РёСЂР°С‚СЊ РґР»СЏ РєР°Р¶РґРѕР№ РІРІРѕРґРёРјРѕР№ С„СЂР°Р·С‹
+    int default_language; // СЏР·С‹Рє СЃРёРЅС‚Р°РєСЃРёС‡РµСЃРєРѕРіРѕ Р°РЅР°Р»РёР·Р° (РґР»СЏ РјРЅРѕРіРѕСЏР·С‹С‡РЅС‹С… СЃР»РѕРІР°СЂРµР№)
+    lem::zbool needs_shortest_var; // РїРµС‡Р°С‚Р°С‚СЊ РЅР° РєРѕРЅСЃРѕР»Рё С‚РѕР»СЊРєРѕ СЃР°РјС‹Рµ РєРѕСЂРѕС‚РєРёРµ РІР°СЂРёР°РЅС‚С‹ СЂР°Р·Р±РѕСЂР°
 
     lem::zbool debug;
 
     const lem::UFString enter_cmd(const char *Prompt) const;
     bool TryCommand(const lem::UFString &str);
-    void ShowHelp(void) const;
-    void Exiting(void);
+    void ShowHelp() const;
+    void Exiting();
     void Tokenize(const UFString & s);
     void Lemmatize(const UFString & str);
     void Speak(const UFString & str);
     void Segmentize(const UFString & s);
 
 
-    void ShowDictionaryInfo(void);
+    void ShowDictionaryInfo();
 
     bool PerformSyntacticAnalysis(const UFString &sent);
     UFString VarToStr(const Solarix::Variator &var) const;
@@ -85,19 +85,16 @@ private:
     void PrintLexerPerformance(Solarix::BasicLexer & lexer, const LexerTextPos * token);
 
 public:
-    lem::Path dict_dir;
-
-public:
-    SyntaxShell(void);
-    ~SyntaxShell(void);
+    SyntaxShell();
+    ~SyntaxShell();
 
     void SetDebug(bool f);
     void SetPhrase(const lem::UFString &x);
 
     void LazyLexicon(bool _lazy_lexicon);
-    void LoadDictionary();
+    void LoadDictionary(const lem::Path & dict_path);
 
-    void main_loop(void);
+    void main_loop();
     void SetLanguage(const UCString &lang_name);
     void SetThesaurusTags(const lem::Collect< std::pair<UCString /*tag*/, UCString /*value*/> > & Tags);
     void SetEnvParams(const lem::Collect< std::pair<UCString /*param*/, UCString /*value*/> > & Params);

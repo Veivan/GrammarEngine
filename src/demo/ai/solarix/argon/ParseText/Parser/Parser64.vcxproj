@@ -43,7 +43,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v140_xp</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -119,8 +119,8 @@ copy $(TargetPath) "e:\MVoice\lem\exe\"
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(BOOST_PATH);$(LEM_PATH)\include;$(LEM_PATH)\demo\ai\solarix\CRFSuite\crfsuite-0.12\include;$(LEM_PATH)\demo\ai\solarix\MaxEnt\win32\MaxentTaggerLib\;$(LEM_PATH)\demo\ai\solarix\DeSR\libdesr\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_CONSOLE;BOOST_ALL_NO_LIB;LEM_UNICODE_EX;DLL_EXPORTS;SOL_CAA;SOL_LOADBIN;SOL_SAVEBIN;SOL_SAVEBIN_PA;SOLARIX_PRO;SOLARIX_PREMIUM;SOLARIX_GRAMMAR_ENGINE;GM_THESAURUS;GM_STEMMER;SOL_GM_ENGLISH;SOL_SQLITE_NGRAMS;BOOST_THREAD_BUILD_LIB;SOL_CRF_MODEL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(BOOST_PATH);$(ProjectDir)..\..\..\..\..\..\include;$(ProjectDir)..\..\..\..\..\..\demo\ai\solarix\CRFSuite\crfsuite-0.12\include;$(ProjectDir)..\..\..\..\..\..\demo\ai\solarix\MaxEnt\win32\MaxentTaggerLib\;$(ProjectDir)..\..\..\..\..\..\demo\ai\solarix\DeSR\libdesr\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_CONSOLE;LEM_UNICODE_EX;DLL_EXPORTS;SOL_CAA;SOL_LOADBIN;SOL_SAVEBIN;SOL_SAVEBIN_PA;SOLARIX_PRO;SOLARIX_PREMIUM;SOLARIX_GRAMMAR_ENGINE;GM_THESAURUS;GM_STEMMER;SOL_GM_ENGLISH;SOL_SQLITE_NGRAMS;SOL_CRF_MODEL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -134,7 +134,7 @@ copy $(TargetPath) "e:\MVoice\lem\exe\"
     <Link>
       <AdditionalDependencies>libcrf.lib;cqdb.lib;libLBFGS.lib;libdesrd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)Parser.exe</OutputFile>
-      <AdditionalLibraryDirectories>$(LEM_PATH)\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>e:\boost.1.66\stage\lib;$(ProjectDir)..\..\..\..\..\..\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)Parser.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
@@ -190,8 +190,8 @@ copy e:\mvoice\lem\lib\libdesr.dll $(OutDir)
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>$(BOOST_PATH);$(LEM_PATH)\include;$(LEM_PATH)\demo\ai\solarix\CRFSuite\crfsuite-0.12\include;$(LEM_PATH)\demo\ai\solarix\MaxEnt\win32\MaxentTaggerLib\;$(LEM_PATH)\demo\ai\solarix\DeSR\libdesr\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_CONSOLE;BOOST_ALL_NO_LIB;LEM_UNICODE_EX;DLL_EXPORTS;SOL_CAA;SOL_LOADBIN;SOL_SAVEBIN;SOL_SAVEBIN_PA;SOLARIX_PRO;SOLARIX_PREMIUM;SOLARIX_GRAMMAR_ENGINE;GM_THESAURUS;GM_STEMMER;SOL_GM_ENGLISH;SOL_SQLITE_NGRAMS;BOOST_THREAD_BUILD_LIB;SOL_CRF_MODEL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(BOOST_PATH);$(ProjectDir)..\..\..\..\..\..\include;$(ProjectDir)..\..\..\..\..\..\demo\ai\solarix\CRFSuite\crfsuite-0.12\include;$(ProjectDir)..\..\..\..\..\..\demo\ai\solarix\MaxEnt\win32\MaxentTaggerLib\;$(ProjectDir)..\..\..\..\..\..\demo\ai\solarix\DeSR\libdesr\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_CONSOLE;LEM_UNICODE_EX;DLL_EXPORTS;SOL_CAA;SOL_LOADBIN;SOL_SAVEBIN;SOL_SAVEBIN_PA;SOLARIX_PRO;SOLARIX_PREMIUM;SOLARIX_GRAMMAR_ENGINE;GM_THESAURUS;GM_STEMMER;SOL_GM_ENGLISH;SOL_SQLITE_NGRAMS;BOOST_THREAD_BUILD_LIB;SOL_CRF_MODEL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -206,14 +206,14 @@ copy e:\mvoice\lem\lib\libdesr.dll $(OutDir)
     <Link>
       <AdditionalDependencies>libcrf.lib;cqdb.lib;libLBFGS.lib;libdesr.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)Parser.exe</OutputFile>
-      <AdditionalLibraryDirectories>..\..\..\..\..\..\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>e:\boost.1.66\stage\lib;..\..\..\..\..\..\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(TargetPath) $(LEM_PATH)\exe64
+      <Command>copy $(TargetPath) $(ProjectDir)\..\..\..\..\..\..\exe64
 copy e:\mvoice\lem\lib64\sqlite.dll $(OutDir)
 copy e:\mvoice\lem\lib64\libdesr.dll $(OutDir)
 </Command>
@@ -632,39 +632,28 @@ copy e:\mvoice\lem\lib64\libdesr.dll $(OutDir)
     <ClCompile Include="..\..\..\..\..\..\tools\unicode\utf_converters.cpp" />
     <ClCompile Include="..\..\..\..\..\..\tools\unicode\WideString2Ucs4.cpp" />
     <ClCompile Include="..\..\..\..\..\..\tools\win32_registry.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\cpp_regex_traits.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\cregex.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\c_regex_traits.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\fileiter.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\icu.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\instances.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\posix_api.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\regex.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\regex_debug.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\regex_raw_buffer.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\regex_traits_defaults.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\static_mutex.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\usinstances.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\w32_regex_traits.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\wc_regex_traits.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\wide_posix_api.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\regex\src\winstances.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\system\src\error_code.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\thread\src\win32\thread.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\thread\src\win32\tss_dll.cpp" />
-    <ClCompile Include="E:\boost.1.60\libs\thread\src\win32\tss_pe.cpp" />
-    <ClCompile Include="HttpServer.cpp" />
+    <ClCompile Include="ChunkerModel.cpp" />
+    <ClCompile Include="ConsoleParser.cpp" />
     <ClCompile Include="Lemmatizer2.cpp" />
     <ClCompile Include="ParserMain.cpp" />
     <ClCompile Include="ParserEngineBase.cpp" />
+    <ClCompile Include="Parser_API.cpp" />
+    <ClCompile Include="ParsingResults_API.cpp" />
+    <ClCompile Include="ParsingResults_XMLStream.cpp" />
     <ClCompile Include="SentenceEOL.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\..\include\lem\httpd.h" />
     <ClInclude Include="..\..\..\..\..\..\include\lem\solarix\solarix_grammar_engine.h" />
     <ClInclude Include="..\..\..\..\..\..\include\lem\solarix\_sg_api.h" />
+    <ClInclude Include="ChunkerModel.h" />
+    <ClInclude Include="ConsoleParser.h" />
     <ClInclude Include="HttpServer.h" />
     <ClInclude Include="ParserEngineBase.h" />
+    <ClInclude Include="Parser_API.h" />
+    <ClInclude Include="ParsingResultFormatter.h" />
+    <ClInclude Include="ParsingResults_API.h" />
+    <ClInclude Include="ParsingResults_XMLStream.h" />
     <ClInclude Include="SentenceEOL.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -3,7 +3,7 @@
 //
 // (c) by Koziev Elijah www.wordysoft.com all rights reserved 
 //
-// Manual: http://www.solarix.ru/for_developers/grammar-engine-api.shtml
+// Help: http://www.solarix.ru/for_developers/api/grammar-engine-api.shtml
 //
 // You must not eliminate, delete or supress these copyright strings
 // from the file!
@@ -14,85 +14,86 @@
 // programs under Win32 to perform operations with words and sentences (analysis
 // and synthesys).
 //
-// API для доступа к грамматическому движку в виде обычной DLL Win32. Функции
-// используются для выполнения операций со словами и предложениями.
+// API РґР»СЏ РґРѕСЃС‚СѓРїР° Рє РіСЂР°РјРјР°С‚РёС‡РµСЃРєРѕРјСѓ РґРІРёР¶РєСѓ РІ РІРёРґРµ РѕР±С‹С‡РЅРѕР№ DLL Win32. Р¤СѓРЅРєС†РёРё
+// РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ РґР»СЏ РІС‹РїРѕР»РЅРµРЅРёСЏ РѕРїРµСЂР°С†РёР№ СЃРѕ СЃР»РѕРІР°РјРё Рё РїСЂРµРґР»РѕР¶РµРЅРёСЏРјРё.
 //
-// Описание API: http://www.solarix.ru/for_developers/api/grammar-engine-api.shtml
+// РћРїРёСЃР°РЅРёРµ API: http://www.solarix.ru/for_developers/api/grammar-engine-api.shtml
 //
 //
-// 24.05.2007 - добавлена sol_TranslateToBases.
+// 24.05.2007 - РґРѕР±Р°РІР»РµРЅР° sol_TranslateToBases.
 //
-// 19.06.2007 - добавлено использование загружаемого внешнего стеммера
-//              в sol_Stemmer.
+// 19.06.2007 - РґРѕР±Р°РІР»РµРЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ Р·Р°РіСЂСѓР¶Р°РµРјРѕРіРѕ РІРЅРµС€РЅРµРіРѕ СЃС‚РµРјРјРµСЂР°
+//              РІ sol_Stemmer.
 //
-// 17.09.2007 - исправлена ошибка в sol_GetAdjectiveForm с некорректной
-//              перекодировкой результата.
+// 17.09.2007 - РёСЃРїСЂР°РІР»РµРЅР° РѕС€РёР±РєР° РІ sol_GetAdjectiveForm СЃ РЅРµРєРѕСЂСЂРµРєС‚РЅРѕР№
+//              РїРµСЂРµРєРѕРґРёСЂРѕРІРєРѕР№ СЂРµР·СѓР»СЊС‚Р°С‚Р°.
 //
-// 30.09.2007 - добавлена sol_SeekThesaurus для работы с тезаурусом.
-// 01.10.2007 - добавлена sol_ProjectMisspelledWord для нечеткой проекции.
-// 06.12.2007 - добавлен API генератора фраз, включается макросом GM_PHRASE_GENERATOR
-// 30.06.2008 - добавлен API OCR
-// 11.07.2008 - поправлен учет флага Allow_Dynforms в sol_SyntaxAnalysis, в эту
-//              же процедуру добавлен аргумент Allow_Unknown
-// 17.07.2008 - перевод API call convention на stdcall
-// 17.07.2008 - изменена сигнатура sol_GeneratePhrase2, она возвращает число
-//              символов, записанных в буфер.
-// 25.07.2008 - добавлены sol_FindClass, sol_FindEnum, sol_FindEnumState, sol_EnumInClass
-// 27.07.2008 - добавлена sol_SeekNGrams
-// 29.07.2008 - в процедуре sol_SeekThesaurus убран оверхед для типичных случаев
-//              за счет предварительного формирования списков допустимых связок
-//              и сохранения их в объекте движка 
-// 29.07.2008 - переработ алгоритм работы sol_SeekThesaurus для глаголов, теперь
-//              он автоматически делает поиск также для инфинитива.
-// 01.08.2008 - исправлен тип возвращаемого значения в sol_LoadDictionary...,
-//              все возвращаемые bool'ы переделаны на int'ы
-// 02.08.2008 - код sol_SeekThesaurus перенесен в LexiconAutomat, чтобы
-//              был унифицированный способ получать связанные статьи и в
-//              поисковой системе.
-// 20.11.2008 - добавлена sol_MatchNGrams
-// 02.12.2008 - добавлена sol_Syllabs - разбивка слова на слоги
-// 14.02.2009 - добавлены API токенизатора и SentenceBroker'а
-// 25.02.2009 - добавлена sol_PreloadNGramsCaches
-// 11.03.2009 - добавлены sol_FindLanguage и sol_HasLanguage
-// 08.04.2009 - из API удалена sol_PreloadCaches
-// 20.07.2009 - переработка API доступа к базе N-грамм: убрана sol_SeekNGrams,
-//              добавлены sol_Seek2Grams, sol_Seek3Grams, sol_Seek4Grams,
+// 30.09.2007 - РґРѕР±Р°РІР»РµРЅР° sol_SeekThesaurus РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ С‚РµР·Р°СѓСЂСѓСЃРѕРј.
+// 01.10.2007 - РґРѕР±Р°РІР»РµРЅР° sol_ProjectMisspelledWord РґР»СЏ РЅРµС‡РµС‚РєРѕР№ РїСЂРѕРµРєС†РёРё.
+// 06.12.2007 - РґРѕР±Р°РІР»РµРЅ API РіРµРЅРµСЂР°С‚РѕСЂР° С„СЂР°Р·, РІРєР»СЋС‡Р°РµС‚СЃСЏ РјР°РєСЂРѕСЃРѕРј GM_PHRASE_GENERATOR
+// 30.06.2008 - РґРѕР±Р°РІР»РµРЅ API OCR
+// 11.07.2008 - РїРѕРїСЂР°РІР»РµРЅ СѓС‡РµС‚ С„Р»Р°РіР° Allow_Dynforms РІ sol_SyntaxAnalysis, РІ СЌС‚Сѓ
+//              Р¶Рµ РїСЂРѕС†РµРґСѓСЂСѓ РґРѕР±Р°РІР»РµРЅ Р°СЂРіСѓРјРµРЅС‚ Allow_Unknown
+// 17.07.2008 - РїРµСЂРµРІРѕРґ API call convention РЅР° stdcall
+// 17.07.2008 - РёР·РјРµРЅРµРЅР° СЃРёРіРЅР°С‚СѓСЂР° sol_GeneratePhrase2, РѕРЅР° РІРѕР·РІСЂР°С‰Р°РµС‚ С‡РёСЃР»Рѕ
+//              СЃРёРјРІРѕР»РѕРІ, Р·Р°РїРёСЃР°РЅРЅС‹С… РІ Р±СѓС„РµСЂ.
+// 25.07.2008 - РґРѕР±Р°РІР»РµРЅС‹ sol_FindClass, sol_FindEnum, sol_FindEnumState, sol_EnumInClass
+// 27.07.2008 - РґРѕР±Р°РІР»РµРЅР° sol_SeekNGrams
+// 29.07.2008 - РІ РїСЂРѕС†РµРґСѓСЂРµ sol_SeekThesaurus СѓР±СЂР°РЅ РѕРІРµСЂС…РµРґ РґР»СЏ С‚РёРїРёС‡РЅС‹С… СЃР»СѓС‡Р°РµРІ
+//              Р·Р° СЃС‡РµС‚ РїСЂРµРґРІР°СЂРёС‚РµР»СЊРЅРѕРіРѕ С„РѕСЂРјРёСЂРѕРІР°РЅРёСЏ СЃРїРёСЃРєРѕРІ РґРѕРїСѓСЃС‚РёРјС‹С… СЃРІСЏР·РѕРє
+//              Рё СЃРѕС…СЂР°РЅРµРЅРёСЏ РёС… РІ РѕР±СЉРµРєС‚Рµ РґРІРёР¶РєР° 
+// 29.07.2008 - РїРµСЂРµСЂР°Р±РѕС‚ Р°Р»РіРѕСЂРёС‚Рј СЂР°Р±РѕС‚С‹ sol_SeekThesaurus РґР»СЏ РіР»Р°РіРѕР»РѕРІ, С‚РµРїРµСЂСЊ
+//              РѕРЅ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё РґРµР»Р°РµС‚ РїРѕРёСЃРє С‚Р°РєР¶Рµ РґР»СЏ РёРЅС„РёРЅРёС‚РёРІР°.
+// 01.08.2008 - РёСЃРїСЂР°РІР»РµРЅ С‚РёРї РІРѕР·РІСЂР°С‰Р°РµРјРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ РІ sol_LoadDictionary...,
+//              РІСЃРµ РІРѕР·РІСЂР°С‰Р°РµРјС‹Рµ bool'С‹ РїРµСЂРµРґРµР»Р°РЅС‹ РЅР° int'С‹
+// 02.08.2008 - РєРѕРґ sol_SeekThesaurus РїРµСЂРµРЅРµСЃРµРЅ РІ LexiconAutomat, С‡С‚РѕР±С‹
+//              Р±С‹Р» СѓРЅРёС„РёС†РёСЂРѕРІР°РЅРЅС‹Р№ СЃРїРѕСЃРѕР± РїРѕР»СѓС‡Р°С‚СЊ СЃРІСЏР·Р°РЅРЅС‹Рµ СЃС‚Р°С‚СЊРё Рё РІ
+//              РїРѕРёСЃРєРѕРІРѕР№ СЃРёСЃС‚РµРјРµ.
+// 20.11.2008 - РґРѕР±Р°РІР»РµРЅР° sol_MatchNGrams
+// 02.12.2008 - РґРѕР±Р°РІР»РµРЅР° sol_Syllabs - СЂР°Р·Р±РёРІРєР° СЃР»РѕРІР° РЅР° СЃР»РѕРіРё
+// 14.02.2009 - РґРѕР±Р°РІР»РµРЅС‹ API С‚РѕРєРµРЅРёР·Р°С‚РѕСЂР° Рё SentenceBroker'Р°
+// 25.02.2009 - РґРѕР±Р°РІР»РµРЅР° sol_PreloadNGramsCaches
+// 11.03.2009 - РґРѕР±Р°РІР»РµРЅС‹ sol_FindLanguage Рё sol_HasLanguage
+// 08.04.2009 - РёР· API СѓРґР°Р»РµРЅР° sol_PreloadCaches
+// 20.07.2009 - РїРµСЂРµСЂР°Р±РѕС‚РєР° API РґРѕСЃС‚СѓРїР° Рє Р±Р°Р·Рµ N-РіСЂР°РјРј: СѓР±СЂР°РЅР° sol_SeekNGrams,
+//              РґРѕР±Р°РІР»РµРЅС‹ sol_Seek2Grams, sol_Seek3Grams, sol_Seek4Grams,
 //              sol_Seek5Grams
-// 31.07.2010 - добавлена sol_ProcessPhraseEntry
-// 06.08.2010 - добавлены sol_GetPhraseLanguage и sol_GetPhraseClass
-// 21.08.2010 - добавлена sol_SetLinkFlags
-// 29.08.2010 - добавлена sol_AddWord
-// 04.09.2010 - в ряд функций добвлена поддержка сохранения подробностей ошибки
-//              в переменной, содержимое которой возвращается через sol_GetError.
-// 29.09.2010 - добавлены sol_SyntaxAnalysis8, sol_MorphologyAnalysis8,
+// 31.07.2010 - РґРѕР±Р°РІР»РµРЅР° sol_ProcessPhraseEntry
+// 06.08.2010 - РґРѕР±Р°РІР»РµРЅС‹ sol_GetPhraseLanguage Рё sol_GetPhraseClass
+// 21.08.2010 - РґРѕР±Р°РІР»РµРЅР° sol_SetLinkFlags
+// 29.08.2010 - РґРѕР±Р°РІР»РµРЅР° sol_AddWord
+// 04.09.2010 - РІ СЂСЏРґ С„СѓРЅРєС†РёР№ РґРѕР±РІР»РµРЅР° РїРѕРґРґРµСЂР¶РєР° СЃРѕС…СЂР°РЅРµРЅРёСЏ РїРѕРґСЂРѕР±РЅРѕСЃС‚РµР№ РѕС€РёР±РєРё
+//              РІ РїРµСЂРµРјРµРЅРЅРѕР№, СЃРѕРґРµСЂР¶РёРјРѕРµ РєРѕС‚РѕСЂРѕР№ РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ С‡РµСЂРµР· sol_GetError.
+// 29.09.2010 - РґРѕР±Р°РІР»РµРЅС‹ sol_SyntaxAnalysis8, sol_MorphologyAnalysis8,
 //              sol_LoadDictionary8, sol_CreateGrammarEngine8
-// 23.12.2010 - добавлены utf8-версии функций sol_Seek?Grams
-// 27.03.2011 - добавлена critical section для Errors API
-// 03.04.2011 - в вызовы ProjectWord добавлен параметр - ID текущего языка,
-//              так как теперь правила проекции могут быть привязаны к языку.
-// 19.04.2011 - функции sol_ListLinksTxt и sol_ListEntries в демо-версии отключены
-// 22.06.2011 - добавлена sol_GetLeafLinkType
-// 21.08.2011 - добавлена sol_ListPartsOfSpeech
-// 26.09.2011 - изменения в сигнатуре функций sol_MorphologyAnalysis и 
-//              sol_SyntaxAnalysis, по-другому задаются управляющие флаги.
-// 27.09.2011 - добавлен режим ленивой загрузки лексикона.
-// 09.01.2012 - переработка sol_Syllabs в связи с переделкой исполняющего движка,
-//              в частности в сигнатуру добавлен аргумент LanguageID.
-// 29.06.2012 - из API убраны методы, связанные с переводом.
-// 28.07.2012 - добавлен флаг SOL_GREN_ENABLE_RECONSTRUCTION для sol_MorphologyAnalysis
-//              и sol_SyntaxAnalysis, включающий реконструкцию токенов.
-// 07.01.2013 - в sol_MorphologyAnalysis и sol_SyntaxAnalysis добавлено управление
-//              морфологической вероятностной моделью языка (флаг SOL_GREN_MODEL)
-// 12.02.2013 - в sol_MorphologyAnalysis и sol_SyntaxAnalysis изменена семантика
-//              параметра таймаута - теперь старшие 10 битов задают максимальное
-//              число проверяемых при нисходящем разборе альтернативных путей, а
-//              младшие 22 бита - макс. таймаут в миллисекундах.
-// 28.03.2016 - добавлена начальная реализация функции приведения словосочетаний
-//              к нормальной форме.
+// 23.12.2010 - РґРѕР±Р°РІР»РµРЅС‹ utf8-РІРµСЂСЃРёРё С„СѓРЅРєС†РёР№ sol_Seek?Grams
+// 27.03.2011 - РґРѕР±Р°РІР»РµРЅР° critical section РґР»СЏ Errors API
+// 03.04.2011 - РІ РІС‹Р·РѕРІС‹ ProjectWord РґРѕР±Р°РІР»РµРЅ РїР°СЂР°РјРµС‚СЂ - ID С‚РµРєСѓС‰РµРіРѕ СЏР·С‹РєР°,
+//              С‚Р°Рє РєР°Рє С‚РµРїРµСЂСЊ РїСЂР°РІРёР»Р° РїСЂРѕРµРєС†РёРё РјРѕРіСѓС‚ Р±С‹С‚СЊ РїСЂРёРІСЏР·Р°РЅС‹ Рє СЏР·С‹РєСѓ.
+// 19.04.2011 - С„СѓРЅРєС†РёРё sol_ListLinksTxt Рё sol_ListEntries РІ РґРµРјРѕ-РІРµСЂСЃРёРё РѕС‚РєР»СЋС‡РµРЅС‹
+// 22.06.2011 - РґРѕР±Р°РІР»РµРЅР° sol_GetLeafLinkType
+// 21.08.2011 - РґРѕР±Р°РІР»РµРЅР° sol_ListPartsOfSpeech
+// 26.09.2011 - РёР·РјРµРЅРµРЅРёСЏ РІ СЃРёРіРЅР°С‚СѓСЂРµ С„СѓРЅРєС†РёР№ sol_MorphologyAnalysis Рё 
+//              sol_SyntaxAnalysis, РїРѕ-РґСЂСѓРіРѕРјСѓ Р·Р°РґР°СЋС‚СЃСЏ СѓРїСЂР°РІР»СЏСЋС‰РёРµ С„Р»Р°РіРё.
+// 27.09.2011 - РґРѕР±Р°РІР»РµРЅ СЂРµР¶РёРј Р»РµРЅРёРІРѕР№ Р·Р°РіСЂСѓР·РєРё Р»РµРєСЃРёРєРѕРЅР°.
+// 09.01.2012 - РїРµСЂРµСЂР°Р±РѕС‚РєР° sol_Syllabs РІ СЃРІСЏР·Рё СЃ РїРµСЂРµРґРµР»РєРѕР№ РёСЃРїРѕР»РЅСЏСЋС‰РµРіРѕ РґРІРёР¶РєР°,
+//              РІ С‡Р°СЃС‚РЅРѕСЃС‚Рё РІ СЃРёРіРЅР°С‚СѓСЂСѓ РґРѕР±Р°РІР»РµРЅ Р°СЂРіСѓРјРµРЅС‚ LanguageID.
+// 29.06.2012 - РёР· API СѓР±СЂР°РЅС‹ РјРµС‚РѕРґС‹, СЃРІСЏР·Р°РЅРЅС‹Рµ СЃ РїРµСЂРµРІРѕРґРѕРј.
+// 28.07.2012 - РґРѕР±Р°РІР»РµРЅ С„Р»Р°Рі SOL_GREN_ENABLE_RECONSTRUCTION РґР»СЏ sol_MorphologyAnalysis
+//              Рё sol_SyntaxAnalysis, РІРєР»СЋС‡Р°СЋС‰РёР№ СЂРµРєРѕРЅСЃС‚СЂСѓРєС†РёСЋ С‚РѕРєРµРЅРѕРІ.
+// 07.01.2013 - РІ sol_MorphologyAnalysis Рё sol_SyntaxAnalysis РґРѕР±Р°РІР»РµРЅРѕ СѓРїСЂР°РІР»РµРЅРёРµ
+//              РјРѕСЂС„РѕР»РѕРіРёС‡РµСЃРєРѕР№ РІРµСЂРѕСЏС‚РЅРѕСЃС‚РЅРѕР№ РјРѕРґРµР»СЊСЋ СЏР·С‹РєР° (С„Р»Р°Рі SOL_GREN_MODEL)
+// 12.02.2013 - РІ sol_MorphologyAnalysis Рё sol_SyntaxAnalysis РёР·РјРµРЅРµРЅР° СЃРµРјР°РЅС‚РёРєР°
+//              РїР°СЂР°РјРµС‚СЂР° С‚Р°Р№РјР°СѓС‚Р° - С‚РµРїРµСЂСЊ СЃС‚Р°СЂС€РёРµ 10 Р±РёС‚РѕРІ Р·Р°РґР°СЋС‚ РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ
+//              С‡РёСЃР»Рѕ РїСЂРѕРІРµСЂСЏРµРјС‹С… РїСЂРё РЅРёСЃС…РѕРґСЏС‰РµРј СЂР°Р·Р±РѕСЂРµ Р°Р»СЊС‚РµСЂРЅР°С‚РёРІРЅС‹С… РїСѓС‚РµР№, Р°
+//              РјР»Р°РґС€РёРµ 22 Р±РёС‚Р° - РјР°РєСЃ. С‚Р°Р№РјР°СѓС‚ РІ РјРёР»Р»РёСЃРµРєСѓРЅРґР°С….
+// 28.03.2016 - РґРѕР±Р°РІР»РµРЅР° РЅР°С‡Р°Р»СЊРЅР°СЏ СЂРµР°Р»РёР·Р°С†РёСЏ С„СѓРЅРєС†РёРё РїСЂРёРІРµРґРµРЅРёСЏ СЃР»РѕРІРѕСЃРѕС‡РµС‚Р°РЅРёР№
+//              Рє РЅРѕСЂРјР°Р»СЊРЅРѕР№ С„РѕСЂРјРµ.
+// 04.04.2018 - СЂРµС„Р°РєС‚РѕСЂРёРЅРі РєРѕРґР° СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј С„РёС‡ C++11
 // -----------------------------------------------------------------------------
 //
 // CD->29.04.2007
-// LC->13.09.2017
+// LC->21.04.2018
 // --------------
 
 #include <lem/config.h>
@@ -181,8 +182,8 @@
 #endif
 
 
-// Ограничение для ознакомительной версии - глобальный лок при вызове некоторых важных функций.
-// Это искусственное ограничение, в коммерческой версии его разумеется нет.
+// РћРіСЂР°РЅРёС‡РµРЅРёРµ РґР»СЏ РѕР·РЅР°РєРѕРјРёС‚РµР»СЊРЅРѕР№ РІРµСЂСЃРёРё - РіР»РѕР±Р°Р»СЊРЅС‹Р№ Р»РѕРє РїСЂРё РІС‹Р·РѕРІРµ РЅРµРєРѕС‚РѕСЂС‹С… РІР°Р¶РЅС‹С… С„СѓРЅРєС†РёР№.
+// Р­С‚Рѕ РёСЃРєСѓСЃСЃС‚РІРµРЅРЅРѕРµ РѕРіСЂР°РЅРёС‡РµРЅРёРµ, РІ РєРѕРјРјРµСЂС‡РµСЃРєРѕР№ РІРµСЂСЃРёРё РµРіРѕ СЂР°Р·СѓРјРµРµС‚СЃСЏ РЅРµС‚.
 #if defined SOLARIX_DEMO && defined LEM_THREADS
 #define DEMO_SINGLE_THREAD(_hEngine) lem::Process::CritSecLocker guard( & HandleEngine(_hEngine)->cs );
 #else
@@ -196,7 +197,7 @@
 // http://www.solarix.ru/api/ru/sol_CountInts.shtml
 GREN_API(int) sol_CountInts(HGREN_INTARRAY h)
 {
-    if (h == NULL)
+    if (h == nullptr)
         return -1;
 
     return CastSizeToInt(((lem::MCollect<int>*)h)->size());
@@ -207,7 +208,7 @@ GREN_API(int) sol_CountInts(HGREN_INTARRAY h)
 // http://www.solarix.ru/api/ru/sol_GetInt.shtml
 GREN_API(int) sol_GetInt(HGREN_INTARRAY h, int i)
 {
-    if (h == NULL)
+    if (h == nullptr)
         return -1;
 
     try
@@ -237,9 +238,9 @@ GREN_API(void) sol_DeleteInts(HGREN_INTARRAY h)
 // http://www.solarix.ru/api/en/sol_MaxLexemLen.shtml
 // Entry names and wordforms can be this length maximum (including C-string '\0')
 // 
-// Возвращает максимальную длину лексемы.
-// Имена словарных статей и словоформ могут иметь такую длину максимум (с учетом
-// завершающего 0).
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ РјР°РєСЃРёРјР°Р»СЊРЅСѓСЋ РґР»РёРЅСѓ Р»РµРєСЃРµРјС‹.
+// РРјРµРЅР° СЃР»РѕРІР°СЂРЅС‹С… СЃС‚Р°С‚РµР№ Рё СЃР»РѕРІРѕС„РѕСЂРј РјРѕРіСѓС‚ РёРјРµС‚СЊ С‚Р°РєСѓСЋ РґР»РёРЅСѓ РјР°РєСЃРёРјСѓРј (СЃ СѓС‡РµС‚РѕРј
+// Р·Р°РІРµСЂС€Р°СЋС‰РµРіРѕ 0).
 // ******************************************************************************
 GREN_API(int) sol_MaxLexemLen(HGREN hEngine)
 {
@@ -256,18 +257,18 @@ GREN_API(int) sol_MaxLexemLen8(HGREN hEngine)
 
 // ************************************************************************ 
 // Return version info
-// Если Major, Minor и Build не NULL, то через них возвращаются компоненты
-// полной версии релиза.
+// Р•СЃР»Рё Major, Minor Рё Build РЅРµ nullptr, С‚Рѕ С‡РµСЂРµР· РЅРёС… РІРѕР·РІСЂР°С‰Р°СЋС‚СЃСЏ РєРѕРјРїРѕРЅРµРЅС‚С‹
+// РїРѕР»РЅРѕР№ РІРµСЂСЃРёРё СЂРµР»РёР·Р°.
 //
-// Возвращает 0 для DEMO, 1 для PRO
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ 0 РґР»СЏ DEMO, 1 РґР»СЏ PRO
 // ************************************************************************ 
 GREN_API(int) sol_GetVersion(HGREN hEngine, int *Major, int *Minor, int *Build)
 {
     Solarix::Version_Info ver;
 
-    if (Major != NULL) *Major = ver.major;
-    if (Minor != NULL) *Minor = ver.minor;
-    if (Build != NULL) *Build = ver.build;
+    if (Major != nullptr) *Major = ver.major;
+    if (Minor != nullptr) *Minor = ver.minor;
+    if (Build != nullptr) *Build = ver.build;
 
 #if defined SOLARIX_DEMO
     return 0;
@@ -278,17 +279,17 @@ GREN_API(int) sol_GetVersion(HGREN hEngine, int *Major, int *Minor, int *Build)
 
 
 // ****************************************************************************
-// Быстрый поиск слова. Возвращается некий числовой код, одинаковый для всех
-// словоформ в рамках одной словарной статьи, либо -1 если поиск не удался.
+// Р‘С‹СЃС‚СЂС‹Р№ РїРѕРёСЃРє СЃР»РѕРІР°. Р’РѕР·РІСЂР°С‰Р°РµС‚СЃСЏ РЅРµРєРёР№ С‡РёСЃР»РѕРІРѕР№ РєРѕРґ, РѕРґРёРЅР°РєРѕРІС‹Р№ РґР»СЏ РІСЃРµС…
+// СЃР»РѕРІРѕС„РѕСЂРј РІ СЂР°РјРєР°С… РѕРґРЅРѕР№ СЃР»РѕРІР°СЂРЅРѕР№ СЃС‚Р°С‚СЊРё, Р»РёР±Рѕ -1 РµСЃР»Рё РїРѕРёСЃРє РЅРµ СѓРґР°Р»СЃСЏ.
 // ****************************************************************************
 GREN_API(int) sol_SeekWord(HGREN hEngine, const wchar_t *word, int Allow_Dynforms)
 {
-    if (!hEngine || word == NULL)
+    if (!hEngine || word == nullptr)
         return -1;
 
     try
     {
-        if (HandleEngine(hEngine)->seeker == NULL)
+        if (HandleEngine(hEngine)->seeker.IsNull())
         {
             lem::MCollect<Solarix::Word_Coord> found_list;
             lem::UCString w(word);
@@ -300,7 +301,7 @@ GREN_API(int) sol_SeekWord(HGREN hEngine, const wchar_t *word, int Allow_Dynform
         }
         else
         {
-            // Создание объекта на стеке. Плохо.
+            // РЎРѕР·РґР°РЅРёРµ РѕР±СЉРµРєС‚Р° РЅР° СЃС‚РµРєРµ. РџР»РѕС…Рѕ.
             lem::UCString w(word);
             return HandleEngine(hEngine)->seeker->Find(w, Allow_Dynforms == 1);
         }
@@ -331,7 +332,7 @@ GREN_API(int) sol_Free(HGREN hEngine, void *ptr)
 
 GREN_API(int) sol_CountStrings(HGREN_STR hStrings)
 {
-    if (hStrings == NULL)
+    if (hStrings == nullptr)
         return 0;
 
     try
@@ -347,7 +348,7 @@ GREN_API(int) sol_CountStrings(HGREN_STR hStrings)
 
 GREN_API(int) sol_GetStrings(HGREN_STR hStrings, wchar_t **Res)
 {
-    if (hStrings == NULL || Res == NULL)
+    if (hStrings == nullptr || Res == nullptr)
         return -1;
 
     try
@@ -367,7 +368,7 @@ GREN_API(int) sol_GetStrings(HGREN_STR hStrings, wchar_t **Res)
 
 GREN_API(int) sol_GetStringLen(HGREN_STR hStrings, int i)
 {
-    if (hStrings == NULL)
+    if (hStrings == nullptr)
         return -1;
 
     try
@@ -382,7 +383,7 @@ GREN_API(int) sol_GetStringLen(HGREN_STR hStrings, int i)
 
 GREN_API(int) sol_GetStringW(HGREN_STR hStrings, int i, wchar_t *Res)
 {
-    if (hStrings == NULL || Res == NULL)
+    if (hStrings == nullptr || Res == nullptr)
         return -1;
 
     try
@@ -400,7 +401,7 @@ GREN_API(int) sol_GetStringW(HGREN_STR hStrings, int i, wchar_t *Res)
 
 GREN_API(int) sol_GetStringA(HGREN_STR hStrings, int i, char *Res)
 {
-    if (hStrings == NULL || Res == NULL)
+    if (hStrings == nullptr || Res == nullptr)
         return -1;
 
     try
@@ -417,7 +418,7 @@ GREN_API(int) sol_GetStringA(HGREN_STR hStrings, int i, char *Res)
 
 GREN_API(int) sol_GetString8(HGREN_STR hStrings, int i, char *ResUtf8)
 {
-    if (hStrings == NULL || ResUtf8 == NULL)
+    if (hStrings == nullptr || ResUtf8 == nullptr)
         return -1;
 
     try
@@ -438,7 +439,7 @@ GREN_API(int) sol_DeleteStrings(HGREN_STR hStrings)
 {
     try
     {
-        if (hStrings != NULL)
+        if (hStrings != nullptr)
             delete HandleStrList(hStrings);
 
         return 0;
@@ -460,7 +461,7 @@ using namespace Solarix;
 #if defined SOLARIX_GRAMMAR_ENGINE || defined SOLARIX_SYNONYMIZER_ENGINE
 // ***********************************************************************
 // Grammar engine is completely removed from memory.
-// Словарь полностью удаляется из оперативной памяти.
+// РЎР»РѕРІР°СЂСЊ РїРѕР»РЅРѕСЃС‚СЊСЋ СѓРґР°Р»СЏРµС‚СЃСЏ РёР· РѕРїРµСЂР°С‚РёРІРЅРѕР№ РїР°РјСЏС‚Рё.
 //
 // http://www.solarix.ru/api/en/sol_DeleteGrammarEngine.shtml
 // ***********************************************************************
@@ -468,7 +469,7 @@ GREN_API(int) sol_DeleteGrammarEngine(HGREN hEngine)
 {
     try
     {
-        if (hEngine != NULL)
+        if (hEngine != nullptr)
         {
             GrammarEngineHolder * ptr = (GrammarEngineHolder*)hEngine;
             delete ptr;
@@ -498,15 +499,15 @@ GREN_API(HGREN) sol_CreateGrammarEngineExW(const wchar_t *DictionaryXml, int Fla
 #if defined LEM_THREADS
     if ((Flags & SOL_CREATE_GREN_DONT_INIT_SQLITE) != SOL_CREATE_GREN_DONT_INIT_SQLITE)
     {
-        // Инициализируем SQlite в безопасном многопоточном режиме, чтобы
-        // можно было одновременно из нескольких нитей работать с одним соединением.
-        // Если такое поведение нежелательно, то с помощью флага можно отключить инициализацию.
+        // РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј SQlite РІ Р±РµР·РѕРїР°СЃРЅРѕРј РјРЅРѕРіРѕРїРѕС‚РѕС‡РЅРѕРј СЂРµР¶РёРјРµ, С‡С‚РѕР±С‹
+        // РјРѕР¶РЅРѕ Р±С‹Р»Рѕ РѕРґРЅРѕРІСЂРµРјРµРЅРЅРѕ РёР· РЅРµСЃРєРѕР»СЊРєРёС… РЅРёС‚РµР№ СЂР°Р±РѕС‚Р°С‚СЊ СЃ РѕРґРЅРёРј СЃРѕРµРґРёРЅРµРЅРёРµРј.
+        // Р•СЃР»Рё С‚Р°РєРѕРµ РїРѕРІРµРґРµРЅРёРµ РЅРµР¶РµР»Р°С‚РµР»СЊРЅРѕ, С‚Рѕ СЃ РїРѕРјРѕС‰СЊСЋ С„Р»Р°РіР° РјРѕР¶РЅРѕ РѕС‚РєР»СЋС‡РёС‚СЊ РёРЅРёС†РёР°Р»РёР·Р°С†РёСЋ.
         static bool SQLiteInitialized = false;
         if (!SQLiteInitialized)
         {
             SQLiteInitialized = true;
             if (!lem::sqlite_init_serialized_mode())
-                return NULL;
+                return nullptr;
         }
     }
 #endif
@@ -530,7 +531,7 @@ GREN_API(HGREN) sol_CreateGrammarEngineExW(const wchar_t *DictionaryXml, int Fla
      wchar_t p[ lem::Path::MaxLen ];
      memset( p, 0, sizeof(p) );
      GetModuleFileNameW( GetModuleHandleW(L"solarix_grammar_engine.dll"), p, lem::Path::MaxLen );
-     MessageBoxW( NULL, p, L"DEBUG-1", MB_OK );
+     MessageBoxW( nullptr, p, L"DEBUG-1", MB_OK );
      // ---------------
     */
 
@@ -544,7 +545,7 @@ Failed:;
     sol_DeleteSearchEngine(hEngine);
 #endif
 
-    return NULL;
+    return nullptr;
 }
 
 GREN_API(HGREN) sol_CreateGrammarEngineW(const wchar_t *DictionaryXml)
@@ -583,7 +584,7 @@ GREN_API(HGREN) sol_CreateGrammarEngineExA(const char *DictionaryXml, int Flags)
 Failed:;
     sol_DeleteGrammarEngine(hEngine);
 
-    return NULL;
+    return nullptr;
 }
 
 GREN_API(HGREN) sol_CreateGrammarEngineA(const char *DictionaryXml)
@@ -623,7 +624,7 @@ GREN_API(int) sol_LoadDictionaryA(HGREN hEngine, const char *Filename)
 
 // ***********************************************************************
 // Load the grammatical dictionary engine in memory.
-// Загрузка словаря в оперативную память из указанного дискового файла.
+// Р—Р°РіСЂСѓР·РєР° СЃР»РѕРІР°СЂСЏ РІ РѕРїРµСЂР°С‚РёРІРЅСѓСЋ РїР°РјСЏС‚СЊ РёР· СѓРєР°Р·Р°РЅРЅРѕРіРѕ РґРёСЃРєРѕРІРѕРіРѕ С„Р°Р№Р»Р°.
 // http://www.solarix.ru/api/en/sol_LoadDictionary.shtml
 //
 // Returns: 
@@ -633,7 +634,7 @@ GREN_API(int) sol_LoadDictionaryA(HGREN hEngine, const char *Filename)
 // ***********************************************************************
 GREN_API(int) sol_LoadDictionaryW(HGREN hEngine, const wchar_t *Filename)
 {
-    if (lem::lem_is_empty(Filename) || hEngine == NULL)
+    if (lem::lem_is_empty(Filename) || hEngine == nullptr)
         return 0;
 
 #if defined LEM_THREADS
@@ -676,7 +677,7 @@ GREN_API(int) sol_LoadDictionaryExA(HGREN hEngine, const char *Filename, int Fla
 
 GREN_API(int) sol_LoadDictionaryExW(HGREN hEngine, const wchar_t *Filename, int Flags)
 {
-    if (lem::lem_is_empty(Filename) || hEngine == NULL)
+    if (lem::lem_is_empty(Filename) || hEngine == nullptr)
         return 0;
 
 #if defined LEM_THREADS
@@ -711,7 +712,7 @@ GREN_API(int) sol_IsDictionaryLoaded(HGREN hEngine)
 #if defined LEM_THREADS
     lem::Process::CritSecLocker guard(&ENGINE->cs);
 #endif
-    return (hEngine != NULL && !!HandleEngine(hEngine)->dict) ? 1 : 0;
+    return (hEngine != nullptr && !!HandleEngine(hEngine)->dict) ? 1 : 0;
 }
 
 
@@ -721,7 +722,7 @@ GREN_API(int) sol_IsDictionaryLoaded(HGREN hEngine)
 // http://www.solarix.ru/api/en/sol_UnloadDictionary.shtml
 GREN_API(void) sol_UnloadDictionary(HGREN hEngine)
 {
-    if (hEngine == NULL)
+    if (hEngine == nullptr)
         return;
 
     try
@@ -746,7 +747,7 @@ GREN_API(void) sol_UnloadDictionary(HGREN hEngine)
 // http://www.solarix.ru/api/en/sol_HasLanguage.shtml
 GREN_API(int) sol_HasLanguage(HGREN hEngine, int LanguageID)
 {
-    if (hEngine == NULL || LanguageID == UNKNOWN || HandleEngine(hEngine)->dict.IsNull())
+    if (hEngine == nullptr || LanguageID == UNKNOWN || HandleEngine(hEngine)->dict.IsNull())
         return 0;
 
     int ret = 0;
@@ -766,14 +767,14 @@ GREN_API(int) sol_HasLanguage(HGREN hEngine, int LanguageID)
 
 // ***********************************************************************
 // Count the total number of word and phrase entries in dictionary.
-// Сколько словарных статей в словаре
+// РЎРєРѕР»СЊРєРѕ СЃР»РѕРІР°СЂРЅС‹С… СЃС‚Р°С‚РµР№ РІ СЃР»РѕРІР°СЂРµ
 //
 // http://www.solarix.ru/api/en/sol_CountEntries.shtml
 // http://www.solarix.ru/api/ru/sol_CountEntries.shtml
 // ***********************************************************************
 GREN_API(int) sol_CountEntries(HGREN hEngine)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict)
         return -1;
 
     int ret = -1;
@@ -791,11 +792,11 @@ GREN_API(int) sol_CountEntries(HGREN hEngine)
 
 // ***********************************************************************
 // Count the total number of wordforms in dictionary.
-// Сколько словоформ (явно определенных) в словаре.
+// РЎРєРѕР»СЊРєРѕ СЃР»РѕРІРѕС„РѕСЂРј (СЏРІРЅРѕ РѕРїСЂРµРґРµР»РµРЅРЅС‹С…) РІ СЃР»РѕРІР°СЂРµ.
 // ***********************************************************************
 GREN_API(int) sol_CountForms(HGREN h)
 {
-    if (h == NULL || !HandleEngine(h)->dict)
+    if (h == nullptr || !HandleEngine(h)->dict)
         return -1;
 
     try
@@ -810,13 +811,13 @@ GREN_API(int) sol_CountForms(HGREN h)
 
 // ****************************************************************************
 // Returns the total number of links (word and phrase relations) in thesaurus.
-// Статистика тезауруса: сколько записей всего.
+// РЎС‚Р°С‚РёСЃС‚РёРєР° С‚РµР·Р°СѓСЂСѓСЃР°: СЃРєРѕР»СЊРєРѕ Р·Р°РїРёСЃРµР№ РІСЃРµРіРѕ.
 //
 // http://www.solarix.ru/api/en/sol_CountLinks.shtml
 // ****************************************************************************
 GREN_API(int) sol_CountLinks(HGREN hEngine)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict)
         return -1;
 
     try
@@ -834,12 +835,12 @@ GREN_API(int) sol_CountLinks(HGREN hEngine)
 
 
 // ********************************************************
-// Возвращает номер версии словаря.
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ РЅРѕРјРµСЂ РІРµСЂСЃРёРё СЃР»РѕРІР°СЂСЏ.
 // http://www.solarix.ru/api/ru/sol_DictionaryVersion.shtml
 // ********************************************************
 GREN_API(int) sol_DictionaryVersion(HGREN hEngine)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict)
         return -1;
 
     return HandleEngine(hEngine)->dict->version.code;
@@ -853,7 +854,7 @@ GREN_API(int) sol_DictionaryVersion(HGREN hEngine)
 // Set default language ID. This is vital parameter for correct normalization of characters.
 GREN_API(int) sol_SetLanguage(HGREN hEngine, int LanguageID)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict)
         return -1;
 
 #if defined LEM_THREADS
@@ -868,13 +869,13 @@ GREN_API(int) sol_SetLanguage(HGREN hEngine, int LanguageID)
 
 
 // ***********************************************************************
-// Поиск словоформы в Лексиконе.
-// В случае успеха возвращается число успешных проекций, и индексы статьи
-// и формы в полях ientry для ПЕРВОЙ проекции.
-// и iform соответственно.
-// Через поле iclass возвращается индекс грамматического класса.
+// РџРѕРёСЃРє СЃР»РѕРІРѕС„РѕСЂРјС‹ РІ Р›РµРєСЃРёРєРѕРЅРµ.
+// Р’ СЃР»СѓС‡Р°Рµ СѓСЃРїРµС…Р° РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ С‡РёСЃР»Рѕ СѓСЃРїРµС€РЅС‹С… РїСЂРѕРµРєС†РёР№, Рё РёРЅРґРµРєСЃС‹ СЃС‚Р°С‚СЊРё
+// Рё С„РѕСЂРјС‹ РІ РїРѕР»СЏС… ientry РґР»СЏ РџР•Р Р’РћР™ РїСЂРѕРµРєС†РёРё.
+// Рё iform СЃРѕРѕС‚РІРµС‚СЃС‚РІРµРЅРЅРѕ.
+// Р§РµСЂРµР· РїРѕР»Рµ iclass РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ РёРЅРґРµРєСЃ РіСЂР°РјРјР°С‚РёС‡РµСЃРєРѕРіРѕ РєР»Р°СЃСЃР°.
 //
-// Если найти не удалось - возвращается -1.
+// Р•СЃР»Рё РЅР°Р№С‚Рё РЅРµ СѓРґР°Р»РѕСЃСЊ - РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ -1.
 //
 // ***********************************************************************
 GREN_API(int) sol_FindWord(
@@ -885,12 +886,12 @@ GREN_API(int) sol_FindWord(
     int *Class
 )
 {
-    if (h == NULL || !HandleEngine(h)->dict)
+    if (h == nullptr || !HandleEngine(h)->dict)
         return -1;
 
-    if (EntryIndex != NULL) *EntryIndex = UNKNOWN;
-    if (Form != NULL) *Form = UNKNOWN;
-    if (Class != NULL) *Class = UNKNOWN;
+    if (EntryIndex != nullptr) *EntryIndex = UNKNOWN;
+    if (Form != nullptr) *Form = UNKNOWN;
+    if (Class != nullptr) *Class = UNKNOWN;
 
     DEMO_SINGLE_THREAD(h)
 
@@ -909,7 +910,7 @@ GREN_API(int) sol_FindWord(
         MCollect<ProjScore> val_list;
         PtrCollect<LA_ProjectInfo> inf_list;
 
-        HandleEngine(h)->dict->GetLexAuto().ProjectWord(rc, found_list, val_list, inf_list, LexicalAutomat/*::DynformsMode*/::Wordforms, 0, HandleEngine(h)->DefaultLanguage, NULL);
+        HandleEngine(h)->dict->GetLexAuto().ProjectWord(rc, found_list, val_list, inf_list, LexicalAutomat/*::DynformsMode*/::Wordforms, 0, HandleEngine(h)->DefaultLanguage, nullptr);
 
         if (!found_list.empty())
         {
@@ -948,8 +949,8 @@ static void getForms(
 
     const bool all_links = Synonyms && Grammar_Links && Translations && Semantics;
 
-    // Тут конечно возникает серьезный оверхед, так как этот список допустимых связок
-    // заполняется каждый раз при работе процедуры. 
+    // РўСѓС‚ РєРѕРЅРµС‡РЅРѕ РІРѕР·РЅРёРєР°РµС‚ СЃРµСЂСЊРµР·РЅС‹Р№ РѕРІРµСЂС…РµРґ, С‚Р°Рє РєР°Рє СЌС‚РѕС‚ СЃРїРёСЃРѕРє РґРѕРїСѓСЃС‚РёРјС‹С… СЃРІСЏР·РѕРє
+    // Р·Р°РїРѕР»РЅСЏРµС‚СЃСЏ РєР°Р¶РґС‹Р№ СЂР°Р· РїСЂРё СЂР°Р±РѕС‚Рµ РїСЂРѕС†РµРґСѓСЂС‹. 
     lem::MCollect< Tree_Link > allowed_links;
     if (!all_links)
     {
@@ -1007,14 +1008,14 @@ static void getForms(
     MCollect<ProjScore> val_list;
     PtrCollect<LA_ProjectInfo> inf_list;
 
-    la.ProjectWord(rc_ml, found_list, val_list, inf_list, morphology, 0, HandleEngine(h)->DefaultLanguage, NULL);
+    la.ProjectWord(rc_ml, found_list, val_list, inf_list, morphology, 0, HandleEngine(h)->DefaultLanguage, nullptr);
 
-    // Накапливаем неповторяющийся список индексов статей
+    // РќР°РєР°РїР»РёРІР°РµРј РЅРµРїРѕРІС‚РѕСЂСЏСЋС‰РёР№СЃСЏ СЃРїРёСЃРѕРє РёРЅРґРµРєСЃРѕРІ СЃС‚Р°С‚РµР№
     for (Container::size_type i = 0; i < found_list.size(); i++)
     {
         int ie = found_list[i].GetEntry();
 
-        // Лексическое содержимое всех словоформ статьи
+        // Р›РµРєСЃРёС‡РµСЃРєРѕРµ СЃРѕРґРµСЂР¶РёРјРѕРµ РІСЃРµС… СЃР»РѕРІРѕС„РѕСЂРј СЃС‚Р°С‚СЊРё
         const SG_Entry &e = sg.GetEntry(ie);
         const Container::size_type nf = e.forms().size();
         for (Container::size_type k = 0; k < nf; k++)
@@ -1033,7 +1034,7 @@ static void getForms(
                 res.push_back(str);
         }
 
-        // Если требуется искать связанные словарные статьи по тезаурусу
+        // Р•СЃР»Рё С‚СЂРµР±СѓРµС‚СЃСЏ РёСЃРєР°С‚СЊ СЃРІСЏР·Р°РЅРЅС‹Рµ СЃР»РѕРІР°СЂРЅС‹Рµ СЃС‚Р°С‚СЊРё РїРѕ С‚РµР·Р°СѓСЂСѓСЃСѓ
         if (Thesaurus)
             ientry_set.insert(ie);
     }
@@ -1046,7 +1047,7 @@ static void getForms(
         {
             links.clear();
 
-            // Связки
+            // РЎРІСЏР·РєРё
             if (all_links)
                 sg.Get_Net().Find_Linked_Entries(sg.GetEntry(*l).GetKey(), nJumps, links);
             else
@@ -1095,8 +1096,8 @@ GREN_API(HGREN_STR) sol_FindStringsEx(
     int nJumps
 )
 {
-    if (h == NULL || !HandleEngine(h)->dict)
-        return NULL;
+    if (h == nullptr || !HandleEngine(h)->dict)
+        return nullptr;
 
     GREN_Strings *res = new GREN_Strings;
 
@@ -1113,7 +1114,7 @@ GREN_API(HGREN_STR) sol_FindStringsEx(
     catch (...)
     {
         delete res;
-        return NULL;
+        return nullptr;
     }
 
     return res;
@@ -1154,8 +1155,8 @@ static int Correlate_All(
 
 
 // ***********************************************************************
-// Согласование существительного и числительного. Отдельно задается падеж
-// и (опционально) - одушевленность/неодушевленность.
+// РЎРѕРіР»Р°СЃРѕРІР°РЅРёРµ СЃСѓС‰РµСЃС‚РІРёС‚РµР»СЊРЅРѕРіРѕ Рё С‡РёСЃР»РёС‚РµР»СЊРЅРѕРіРѕ. РћС‚РґРµР»СЊРЅРѕ Р·Р°РґР°РµС‚СЃСЏ РїР°РґРµР¶
+// Рё (РѕРїС†РёРѕРЅР°Р»СЊРЅРѕ) - РѕРґСѓС€РµРІР»РµРЅРЅРѕСЃС‚СЊ/РЅРµРѕРґСѓС€РµРІР»РµРЅРЅРѕСЃС‚СЊ.
 // ***********************************************************************
 GREN_API(int) sol_CorrNounNumber(
     HGREN h,
@@ -1166,7 +1167,7 @@ GREN_API(int) sol_CorrNounNumber(
     wchar_t *Result
 )
 {
-    if (h == NULL || !HandleEngine(h)->dict || Result == NULL)
+    if (h == nullptr || !HandleEngine(h)->dict || Result == nullptr)
         return -1;
 
     *Result = 0;
@@ -1182,7 +1183,7 @@ GREN_API(int) sol_CorrNounNumber(
 
         if (e.GetClass() == NOUN_ru)
         {
-            // Нашли среди проекций существительное русского языка
+            // РќР°С€Р»Рё СЃСЂРµРґРё РїСЂРѕРµРєС†РёР№ СЃСѓС‰РµСЃС‚РІРёС‚РµР»СЊРЅРѕРµ СЂСѓСЃСЃРєРѕРіРѕ СЏР·С‹РєР°
 
             int factor = Value % 100;
             factor = factor < 20l ? factor % 20l : factor % 10l;
@@ -1207,11 +1208,11 @@ GREN_API(int) sol_CorrNounNumber(
             }
 
             if (iform == UNKNOWN)
-                // Не найдена подходящая форма слова 
+                // РќРµ РЅР°Р№РґРµРЅР° РїРѕРґС…РѕРґСЏС‰Р°СЏ С„РѕСЂРјР° СЃР»РѕРІР° 
                 return -3;
 
-            // Нашли нужную форму слова.
-            // Извлекаем лексическое содержание формы
+            // РќР°С€Р»Рё РЅСѓР¶РЅСѓСЋ С„РѕСЂРјСѓ СЃР»РѕРІР°.
+            // РР·РІР»РµРєР°РµРј Р»РµРєСЃРёС‡РµСЃРєРѕРµ СЃРѕРґРµСЂР¶Р°РЅРёРµ С„РѕСЂРјС‹
             lem_strcpy(Result, e.forms()[iform].name().c_str());
             return 0;
         }
@@ -1221,7 +1222,7 @@ GREN_API(int) sol_CorrNounNumber(
         return -1;
     }
 
-    // Слово не найдено в словаре
+    // РЎР»РѕРІРѕ РЅРµ РЅР°Р№РґРµРЅРѕ РІ СЃР»РѕРІР°СЂРµ
     return -2;
 }
 
@@ -1393,7 +1394,7 @@ static int Correlate_All(
 
 
 // ********************************************************************
-// Поиск словоформы в указанной статье.
+// РџРѕРёСЃРє СЃР»РѕРІРѕС„РѕСЂРјС‹ РІ СѓРєР°Р·Р°РЅРЅРѕР№ СЃС‚Р°С‚СЊРµ.
 // ********************************************************************
 static int Decline(
     HGREN h,
@@ -1423,8 +1424,8 @@ static int Decline(
 }
 
 // ****************************************************************
-// Число, заданное целочисленным аргументом value, преобразуем в
-// текстовое представление.
+// Р§РёСЃР»Рѕ, Р·Р°РґР°РЅРЅРѕРµ С†РµР»РѕС‡РёСЃР»РµРЅРЅС‹Рј Р°СЂРіСѓРјРµРЅС‚РѕРј value, РїСЂРµРѕР±СЂР°Р·СѓРµРј РІ
+// С‚РµРєСЃС‚РѕРІРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ.
 // ****************************************************************
 GREN_API(int) sol_Value2Text(
     HGREN h,
@@ -1433,9 +1434,10 @@ GREN_API(int) sol_Value2Text(
     int Gender
 )
 {
-    if (h == NULL || !HandleEngine(h)->dict || Result == NULL)
+    if (h == nullptr || !HandleEngine(h)->dict || Result == nullptr)
         return -1;
 
+    *Result = 0;
 #if defined LEM_OFMT_MICROSOL
     try
     {
@@ -1467,13 +1469,13 @@ GREN_API(int) sol_Value2Text(
 //         -1  word entry not found
 //         -2  internal error  
 //
-// Поиск индекса словарной статьи во внутреннем списке. Другие функции
-// грамматической машины могут выполнять операции со словами с использованием
-// этого индекса (чтобы не повторять поиск в словаре).
+// РџРѕРёСЃРє РёРЅРґРµРєСЃР° СЃР»РѕРІР°СЂРЅРѕР№ СЃС‚Р°С‚СЊРё РІРѕ РІРЅСѓС‚СЂРµРЅРЅРµРј СЃРїРёСЃРєРµ. Р”СЂСѓРіРёРµ С„СѓРЅРєС†РёРё
+// РіСЂР°РјРјР°С‚РёС‡РµСЃРєРѕР№ РјР°С€РёРЅС‹ РјРѕРіСѓС‚ РІС‹РїРѕР»РЅСЏС‚СЊ РѕРїРµСЂР°С†РёРё СЃРѕ СЃР»РѕРІР°РјРё СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј
+// СЌС‚РѕРіРѕ РёРЅРґРµРєСЃР° (С‡С‚РѕР±С‹ РЅРµ РїРѕРІС‚РѕСЂСЏС‚СЊ РїРѕРёСЃРє РІ СЃР»РѕРІР°СЂРµ).
 //
-// Возвращает:
-//            -1  словарная статья не найдена 
-//            -2  внутренний сбой
+// Р’РѕР·РІСЂР°С‰Р°РµС‚:
+//            -1  СЃР»РѕРІР°СЂРЅР°СЏ СЃС‚Р°С‚СЊСЏ РЅРµ РЅР°Р№РґРµРЅР° 
+//            -2  РІРЅСѓС‚СЂРµРЅРЅРёР№ СЃР±РѕР№
 // ***************************************************************************
 GREN_API(int) sol_FindEntry(
     HGREN h,
@@ -1482,7 +1484,7 @@ GREN_API(int) sol_FindEntry(
     int Language         // Language ID (if ambiguos)
 )
 {
-    if (h == NULL || !HandleEngine(h)->dict)
+    if (h == nullptr || !HandleEngine(h)->dict)
         return -2;
 
     DEMO_SINGLE_THREAD(h)
@@ -1493,7 +1495,7 @@ GREN_API(int) sol_FindEntry(
         UCString uWord(Word);
         uWord.to_upper();
 
-        // Ищем словарную статью с таким именем
+        // РС‰РµРј СЃР»РѕРІР°СЂРЅСѓСЋ СЃС‚Р°С‚СЊСЋ СЃ С‚Р°РєРёРј РёРјРµРЅРµРј
         return HandleEngine(h)->dict->GetSynGram().FindEntry(uWord, Class, false);
     }
     catch (...)
@@ -1516,7 +1518,7 @@ GREN_API(int) sol_FindEntry8(HGREN hEngine, const char *Word, int Class, int Lan
 // http://www.solarix.ru/api/en/sol_GetNounGender.shtml
 // http://www.solarix.ru/api/ru/sol_GetNounGender.shtml
 //
-// Возвращает род существительного (неприменимо для английского)
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ СЂРѕРґ СЃСѓС‰РµСЃС‚РІРёС‚РµР»СЊРЅРѕРіРѕ (РЅРµРїСЂРёРјРµРЅРёРјРѕ РґР»СЏ Р°РЅРіР»РёР№СЃРєРѕРіРѕ)
 // *************************************************************
 GREN_API(int) sol_GetNounGender(
     HGREN h,
@@ -1547,7 +1549,7 @@ GREN_API(int) sol_GetNounGender(
 // Get the noun form for given case and number. Result will contain the 
 // lexical content of the wordform (or empty string if not found). 
 // 
-// Возвращает в Result форму существительного с заданным падежом и числом.
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ РІ Result С„РѕСЂРјСѓ СЃСѓС‰РµСЃС‚РІРёС‚РµР»СЊРЅРѕРіРѕ СЃ Р·Р°РґР°РЅРЅС‹Рј РїР°РґРµР¶РѕРј Рё С‡РёСЃР»РѕРј.
 // ***********************************************************************
 GREN_API(int) sol_GetNounForm(
     HGREN h,
@@ -1559,7 +1561,7 @@ GREN_API(int) sol_GetNounForm(
 {
     *Result = 0;
 
-    if (!h || !HandleEngine(h)->dict || EntryIndex == -1 || Result == NULL)
+    if (!h || !HandleEngine(h)->dict || EntryIndex == -1 || Result == nullptr)
         return -2;
 
     try
@@ -1599,11 +1601,11 @@ GREN_API(int) sol_GetNounForm(
 
         int iform = e.FindFormIndex(dim);
         if (iform == UNKNOWN)
-            // Не найдена подходящая форма слова 
+            // РќРµ РЅР°Р№РґРµРЅР° РїРѕРґС…РѕРґСЏС‰Р°СЏ С„РѕСЂРјР° СЃР»РѕРІР° 
             return -3;
 
-        // Нашли нужную форму слова.
-        // Извлекаем лексическое содержание формы
+        // РќР°С€Р»Рё РЅСѓР¶РЅСѓСЋ С„РѕСЂРјСѓ СЃР»РѕРІР°.
+        // РР·РІР»РµРєР°РµРј Р»РµРєСЃРёС‡РµСЃРєРѕРµ СЃРѕРґРµСЂР¶Р°РЅРёРµ С„РѕСЂРјС‹
         const SG_EntryForm &f = e.forms()[iform];
         lem_strcpy(Result, e.forms()[iform].name().c_str());
         return 0;
@@ -1619,7 +1621,7 @@ GREN_API(int) sol_GetNounForm(
 // ************************************************************
 // Get the proper verb form.
 //
-// Ищет подходящую форму глагола. 
+// РС‰РµС‚ РїРѕРґС…РѕРґСЏС‰СѓСЋ С„РѕСЂРјСѓ РіР»Р°РіРѕР»Р°. 
 // ************************************************************
 GREN_API(int) sol_GetVerbForm(
     HGREN h,
@@ -1631,7 +1633,7 @@ GREN_API(int) sol_GetVerbForm(
     wchar_t *Result
 )
 {
-    if (!h || !HandleEngine(h)->dict || EntryIndex == -1 || Result == NULL)
+    if (!h || !HandleEngine(h)->dict || EntryIndex == -1 || Result == nullptr)
         return -2;
 
     *Result = 0;
@@ -1680,11 +1682,11 @@ GREN_API(int) sol_GetVerbForm(
 
         int iform = e.FindFormIndex(dim);;
         if (iform == UNKNOWN)
-            // Не найдена подходящая форма слова 
+            // РќРµ РЅР°Р№РґРµРЅР° РїРѕРґС…РѕРґСЏС‰Р°СЏ С„РѕСЂРјР° СЃР»РѕРІР° 
             return -3;
 
-        // Нашли нужную форму слова.
-        // Извлекаем лексическое содержание формы
+        // РќР°С€Р»Рё РЅСѓР¶РЅСѓСЋ С„РѕСЂРјСѓ СЃР»РѕРІР°.
+        // РР·РІР»РµРєР°РµРј Р»РµРєСЃРёС‡РµСЃРєРѕРµ СЃРѕРґРµСЂР¶Р°РЅРёРµ С„РѕСЂРјС‹
         lem_strcpy(Result, e.forms()[iform].name().c_str());
         return 0;
     }
@@ -1706,7 +1708,7 @@ GREN_API(int) sol_CorrVerbNumber(
     wchar_t *Result
 )
 {
-    if (!h || !HandleEngine(h)->dict || EntryIndex == -1 || Result == NULL)
+    if (!h || !HandleEngine(h)->dict || EntryIndex == -1 || Result == nullptr)
         return -2;
 
     *Result = 0;
@@ -1754,7 +1756,7 @@ GREN_API(int) sol_GetAdjectiveForm(
     wchar_t *Result
 )
 {
-    if (!h || !HandleEngine(h)->dict || EntryIndex == -1 || Result == NULL)
+    if (!h || !HandleEngine(h)->dict || EntryIndex == -1 || Result == nullptr)
         return -2;
 
     *Result = 0;
@@ -1813,11 +1815,11 @@ GREN_API(int) sol_GetAdjectiveForm(
 
         int iform = e.FindFormIndex(dim);;
         if (iform == UNKNOWN)
-            // Не найдена подходящая форма слова 
+            // РќРµ РЅР°Р№РґРµРЅР° РїРѕРґС…РѕРґСЏС‰Р°СЏ С„РѕСЂРјР° СЃР»РѕРІР° 
             return -3;
 
-        // Нашли нужную форму слова.
-        // Извлекаем лексическое содержание формы
+        // РќР°С€Р»Рё РЅСѓР¶РЅСѓСЋ С„РѕСЂРјСѓ СЃР»РѕРІР°.
+        // РР·РІР»РµРєР°РµРј Р»РµРєСЃРёС‡РµСЃРєРѕРµ СЃРѕРґРµСЂР¶Р°РЅРёРµ С„РѕСЂРјС‹
         const SG_EntryForm &f = e.forms()[iform];
         lem_strcpy(Result, f.name().c_str());
         return 0;
@@ -1873,7 +1875,7 @@ GREN_API(int) sol_CorrAdjNumber(
     wchar_t *Result
 )
 {
-    if (!h || !HandleEngine(h)->dict || EntryIndex == -1 || Result == NULL)
+    if (!h || !HandleEngine(h)->dict || EntryIndex == -1 || Result == nullptr)
         return -2;
 
     *Result = 0;
@@ -1886,7 +1888,7 @@ GREN_API(int) sol_CorrAdjNumber(
 
         if (e.GetClass() == ADJ_ru)
         {
-            // Нашли среди проекций существительное русского языка
+            // РќР°С€Р»Рё СЃСЂРµРґРё РїСЂРѕРµРєС†РёР№ СЃСѓС‰РµСЃС‚РІРёС‚РµР»СЊРЅРѕРµ СЂСѓСЃСЃРєРѕРіРѕ СЏР·С‹РєР°
 
             int factor = Value % 100;
             factor = factor < 20l ? factor % 20l : factor % 10l;
@@ -1911,11 +1913,11 @@ GREN_API(int) sol_CorrAdjNumber(
             }
 
             if (iform == UNKNOWN)
-                // Не найдена подходящая форма слова 
+                // РќРµ РЅР°Р№РґРµРЅР° РїРѕРґС…РѕРґСЏС‰Р°СЏ С„РѕСЂРјР° СЃР»РѕРІР° 
                 return -3;
 
-            // Нашли нужную форму слова.
-            // Извлекаем лексическое содержание формы
+            // РќР°С€Р»Рё РЅСѓР¶РЅСѓСЋ С„РѕСЂРјСѓ СЃР»РѕРІР°.
+            // РР·РІР»РµРєР°РµРј Р»РµРєСЃРёС‡РµСЃРєРѕРµ СЃРѕРґРµСЂР¶Р°РЅРёРµ С„РѕСЂРјС‹
             lem_strcpy(Result, e.forms()[iform].name().c_str());
             return 0;
         }
@@ -2038,9 +2040,9 @@ static int Correlate_Accus_Adj(
             Gender
         );
 
-    // вижу одну белую розу
-    // вижу один большой камень
-    // вижу одного большого пса
+    // РІРёР¶Сѓ РѕРґРЅСѓ Р±РµР»СѓСЋ СЂРѕР·Сѓ
+    // РІРёР¶Сѓ РѕРґРёРЅ Р±РѕР»СЊС€РѕР№ РєР°РјРµРЅСЊ
+    // РІРёР¶Сѓ РѕРґРЅРѕРіРѕ Р±РѕР»СЊС€РѕРіРѕ РїСЃР°
     if (factor == 1)
         return Decline_Adj(
             h,
@@ -2051,9 +2053,9 @@ static int Correlate_Accus_Adj(
             Gender
         );
 
-    // вижу 2 круглых камня
-    // вижу 2 пушистых кошки
-    // вижу 2 белых розы
+    // РІРёР¶Сѓ 2 РєСЂСѓРіР»С‹С… РєР°РјРЅСЏ
+    // РІРёР¶Сѓ 2 РїСѓС€РёСЃС‚С‹С… РєРѕС€РєРё
+    // РІРёР¶Сѓ 2 Р±РµР»С‹С… СЂРѕР·С‹
     if (factor >= 2 && factor <= 4)
     {
         return Decline_Adj(
@@ -2066,8 +2068,8 @@ static int Correlate_Accus_Adj(
         );
     }
 
-    // вижу 5 круглых камней
-    // вижу 5 пушистых кошек
+    // РІРёР¶Сѓ 5 РєСЂСѓРіР»С‹С… РєР°РјРЅРµР№
+    // РІРёР¶Сѓ 5 РїСѓС€РёСЃС‚С‹С… РєРѕС€РµРє
     return Decline_Adj(
         h,
         ientry,
@@ -2120,7 +2122,7 @@ static int Correlate_All_Adj(
 
 
 // ********************************************************************
-// Поиск словоформы в указанной статье.
+// РџРѕРёСЃРє СЃР»РѕРІРѕС„РѕСЂРјС‹ РІ СѓРєР°Р·Р°РЅРЅРѕР№ СЃС‚Р°С‚СЊРµ.
 // ********************************************************************
 static int Decline_Adj(HGREN h, int ientry, int Case, int Number, int Anim, int Gender)
 {
@@ -2160,22 +2162,22 @@ static int Decline_Adj(HGREN h, int ientry, int Case, int Number, int Anim, int 
 
 
 // **********************************************************
-// Простая лемматизация слова - приведение к базовой форме
+// РџСЂРѕСЃС‚Р°СЏ Р»РµРјРјР°С‚РёР·Р°С†РёСЏ СЃР»РѕРІР° - РїСЂРёРІРµРґРµРЅРёРµ Рє Р±Р°Р·РѕРІРѕР№ С„РѕСЂРјРµ
 // **********************************************************
 GREN_API(int) sol_LemmatizeWord(HGREN h, wchar_t *word, int Allow_Dynforms)
 {
-    if (!h || HandleEngine(h)->seeker == NULL || word == NULL)
+    if (!h || HandleEngine(h)->seeker.IsNull() || word == nullptr)
         return 0;
 
     DEMO_SINGLE_THREAD(h)
 
-        // Создание объекта на стеке. Плохо.
+        // РЎРѕР·РґР°РЅРёРµ РѕР±СЉРµРєС‚Р° РЅР° СЃС‚РµРєРµ. РџР»РѕС…Рѕ.
         UCString w(word);
     const int ientry = HandleEngine(h)->seeker->Find(w, Allow_Dynforms == 1);
 
     if (ientry != UNKNOWN)
     {
-        // Копируем имя статьи - почти всегда это базовая форма
+        // РљРѕРїРёСЂСѓРµРј РёРјСЏ СЃС‚Р°С‚СЊРё - РїРѕС‡С‚Рё РІСЃРµРіРґР° СЌС‚Рѕ Р±Р°Р·РѕРІР°СЏ С„РѕСЂРјР°
         lem_strcpy(word, HandleEngine(h)->sg->GetEntry(ientry).GetName().c_str());
         return 1;
     }
@@ -2189,13 +2191,13 @@ GREN_API(int) sol_LemmatizeWord(HGREN h, wchar_t *word, int Allow_Dynforms)
 
 // ***************************************************************************
 //
-// Словарная статья приводится к семантически эквивалентному
-// существительному, например "ИСКАТЬ->ПОИСК". Для работы необходим
-// тезаурус!
-// Входной аргумент EntryIndex - результат предыдущего вызова sol_Find_Entry.
-// Возвращается ID словарной статьи (существительное) для использования,
-// например, в sol_GetNounForm, либо -1 если привести к существительному
-// не представляется возможным.
+// РЎР»РѕРІР°СЂРЅР°СЏ СЃС‚Р°С‚СЊСЏ РїСЂРёРІРѕРґРёС‚СЃСЏ Рє СЃРµРјР°РЅС‚РёС‡РµСЃРєРё СЌРєРІРёРІР°Р»РµРЅС‚РЅРѕРјСѓ
+// СЃСѓС‰РµСЃС‚РІРёС‚РµР»СЊРЅРѕРјСѓ, РЅР°РїСЂРёРјРµСЂ "РРЎРљРђРўР¬->РџРћРРЎРљ". Р”Р»СЏ СЂР°Р±РѕС‚С‹ РЅРµРѕР±С…РѕРґРёРј
+// С‚РµР·Р°СѓСЂСѓСЃ!
+// Р’С…РѕРґРЅРѕР№ Р°СЂРіСѓРјРµРЅС‚ EntryIndex - СЂРµР·СѓР»СЊС‚Р°С‚ РїСЂРµРґС‹РґСѓС‰РµРіРѕ РІС‹Р·РѕРІР° sol_Find_Entry.
+// Р’РѕР·РІСЂР°С‰Р°РµС‚СЃСЏ ID СЃР»РѕРІР°СЂРЅРѕР№ СЃС‚Р°С‚СЊРё (СЃСѓС‰РµСЃС‚РІРёС‚РµР»СЊРЅРѕРµ) РґР»СЏ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ,
+// РЅР°РїСЂРёРјРµСЂ, РІ sol_GetNounForm, Р»РёР±Рѕ -1 РµСЃР»Рё РїСЂРёРІРµСЃС‚Рё Рє СЃСѓС‰РµСЃС‚РІРёС‚РµР»СЊРЅРѕРјСѓ
+// РЅРµ РїСЂРµРґСЃС‚Р°РІР»СЏРµС‚СЃСЏ РІРѕР·РјРѕР¶РЅС‹Рј.
 //
 // http://www.solarix.ru/api/ru/sol_TranslateToNoun.shtml
 //
@@ -2216,17 +2218,17 @@ GREN_API(int) sol_TranslateToNoun(HGREN hEngine, int EntryID)
             e.GetClass() == NOUN_fr ||
             e.GetClass() == NOUN_es
             )
-            // Преобразование не требуется, так как исходное слово уже является
-            // существительным.
+            // РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ, С‚Р°Рє РєР°Рє РёСЃС…РѕРґРЅРѕРµ СЃР»РѕРІРѕ СѓР¶Рµ СЏРІР»СЏРµС‚СЃСЏ
+            // СЃСѓС‰РµСЃС‚РІРёС‚РµР»СЊРЅС‹Рј.
             return EntryID;
 
-        lem::MCollect<int> key_list; // список связанных существительных
+        lem::MCollect<int> key_list; // СЃРїРёСЃРѕРє СЃРІСЏР·Р°РЅРЅС‹С… СЃСѓС‰РµСЃС‚РІРёС‚РµР»СЊРЅС‹С…
         if (HandleEngine(hEngine)->dict->GetLexAuto().Translate_To_Nouns(EntryID, key_list))
         {
-            // НАШЛИ ФОРМУ СУЩЕСТВИТЕЛЬНОГО
+            // РќРђРЁР›Р Р¤РћР РњРЈ РЎРЈР©Р•РЎРўР’РРўР•Р›Р¬РќРћР“Рћ
             if (key_list.size() > 1)
             {
-                // выберем существительное с максимальной встречаемостью
+                // РІС‹Р±РµСЂРµРј СЃСѓС‰РµСЃС‚РІРёС‚РµР»СЊРЅРѕРµ СЃ РјР°РєСЃРёРјР°Р»СЊРЅРѕР№ РІСЃС‚СЂРµС‡Р°РµРјРѕСЃС‚СЊСЋ
                 int max_id = UNKNOWN, max_freq = 0;
                 for (lem::Container::size_type k = 0; k < key_list.size(); ++k)
                 {
@@ -2253,8 +2255,8 @@ GREN_API(int) sol_TranslateToNoun(HGREN hEngine, int EntryID)
 
 // ************************************************************************
 //
-// Приведение словарной статьи к семантически или грамматически связанной
-// неопределенной форме глагола (инфинитиву).
+// РџСЂРёРІРµРґРµРЅРёРµ СЃР»РѕРІР°СЂРЅРѕР№ СЃС‚Р°С‚СЊРё Рє СЃРµРјР°РЅС‚РёС‡РµСЃРєРё РёР»Рё РіСЂР°РјРјР°С‚РёС‡РµСЃРєРё СЃРІСЏР·Р°РЅРЅРѕР№
+// РЅРµРѕРїСЂРµРґРµР»РµРЅРЅРѕР№ С„РѕСЂРјРµ РіР»Р°РіРѕР»Р° (РёРЅС„РёРЅРёС‚РёРІСѓ).
 //
 // http://www.solarix.ru/api/ru/sol_TranslateToInfinitive.shtml
 //
@@ -2273,10 +2275,10 @@ GREN_API(int) sol_TranslateToInfinitive(HGREN hEngine, int EntryID)
         if (pos_id == INFINITIVE_ru || pos_id == VERB_en)
             return EntryID;
 
-        lem::MCollect<int> key_list; // список связанных инфинитивов
+        lem::MCollect<int> key_list; // СЃРїРёСЃРѕРє СЃРІСЏР·Р°РЅРЅС‹С… РёРЅС„РёРЅРёС‚РёРІРѕРІ
         if (HandleEngine(hEngine)->dict->GetLexAuto().Translate_To_Infinitives(EntryID, key_list))
         {
-            // НАШЛИ ФОРМУ ИНФИНИТИВА
+            // РќРђРЁР›Р Р¤РћР РњРЈ РРќР¤РРќРРўРР’Рђ
             return key_list.front();
         }
     }
@@ -2289,16 +2291,16 @@ GREN_API(int) sol_TranslateToInfinitive(HGREN hEngine, int EntryID)
 
 // ***************************************************************************************
 //
-// Поиск заданного слова в слова и применение правил несловарной морфологии.
-// Результат - список вариантов распознавания в виде кортежей id словарной статьи, теги.
+// РџРѕРёСЃРє Р·Р°РґР°РЅРЅРѕРіРѕ СЃР»РѕРІР° РІ СЃР»РѕРІР° Рё РїСЂРёРјРµРЅРµРЅРёРµ РїСЂР°РІРёР» РЅРµСЃР»РѕРІР°СЂРЅРѕР№ РјРѕСЂС„РѕР»РѕРіРёРё.
+// Р РµР·СѓР»СЊС‚Р°С‚ - СЃРїРёСЃРѕРє РІР°СЂРёР°РЅС‚РѕРІ СЂР°СЃРїРѕР·РЅР°РІР°РЅРёСЏ РІ РІРёРґРµ РєРѕСЂС‚РµР¶РµР№ id СЃР»РѕРІР°СЂРЅРѕР№ СЃС‚Р°С‚СЊРё, С‚РµРіРё.
 //
 // http://www.solarix.ru/api/ru/sol_ProjectWord.shtml
 //
 // ***************************************************************************************
 GREN_API(HGREN_WCOORD) sol_ProjectWord(HGREN hEngine, const wchar_t *Word, int Allow_Dynforms)
 {
-    if (!hEngine || !HandleEngine(hEngine)->dict || Word == NULL)
-        return NULL;
+    if (!hEngine || !HandleEngine(hEngine)->dict || Word == nullptr)
+        return nullptr;
 
     DEMO_SINGLE_THREAD(hEngine)
 
@@ -2326,10 +2328,10 @@ GREN_API(HGREN_WCOORD) sol_ProjectWord(HGREN hEngine, const wchar_t *Word, int A
             Allow_Dynforms ? LexicalAutomat::Dynforms_Last_Chance : LexicalAutomat::Wordforms,
             0,
             HandleEngine(hEngine)->DefaultLanguage,
-            NULL
+            nullptr
         );
 
-        // заполним списки тегов для каждого варианта распознавания.
+        // Р·Р°РїРѕР»РЅРёРј СЃРїРёСЃРєРё С‚РµРіРѕРІ РґР»СЏ РєР°Р¶РґРѕРіРѕ РІР°СЂРёР°РЅС‚Р° СЂР°СЃРїРѕР·РЅР°РІР°РЅРёСЏ.
         if (!res->list.empty())
         {
             for (lem::Container::size_type i = 0; i < res->list.size(); ++i)
@@ -2337,8 +2339,8 @@ GREN_API(HGREN_WCOORD) sol_ProjectWord(HGREN hEngine, const wchar_t *Word, int A
                 CP_Array item_tags;
 
                 const int ientry = res->list[i].GetEntry();
-                // для каждого варианта распознавания может быть получена пара из id статьи+id формы слова,
-                // или id UNK-статьи и список тегов в случае несловарной морфологии.
+                // РґР»СЏ РєР°Р¶РґРѕРіРѕ РІР°СЂРёР°РЅС‚Р° СЂР°СЃРїРѕР·РЅР°РІР°РЅРёСЏ РјРѕР¶РµС‚ Р±С‹С‚СЊ РїРѕР»СѓС‡РµРЅР° РїР°СЂР° РёР· id СЃС‚Р°С‚СЊРё+id С„РѕСЂРјС‹ СЃР»РѕРІР°,
+                // РёР»Рё id UNK-СЃС‚Р°С‚СЊРё Рё СЃРїРёСЃРѕРє С‚РµРіРѕРІ РІ СЃР»СѓС‡Р°Рµ РЅРµСЃР»РѕРІР°СЂРЅРѕР№ РјРѕСЂС„РѕР»РѕРіРёРё.
 
                 if (ientry != UNKNOWN)
                 {
@@ -2346,11 +2348,11 @@ GREN_API(HGREN_WCOORD) sol_ProjectWord(HGREN hEngine, const wchar_t *Word, int A
                     item_tags = e.forms()[res->list[i].GetForm()].coords();
                 }
 
-                if (inf_list[i] != NULL && !inf_list[i]->coords.empty())
+                if (inf_list[i] != nullptr && !inf_list[i]->coords.empty())
                 {
                     for (lem::Container::size_type j = 0; j < inf_list[i]->coords.size(); ++j)
                     {
-                        // добавляем в итоговый список тегов без повторов.
+                        // РґРѕР±Р°РІР»СЏРµРј РІ РёС‚РѕРіРѕРІС‹Р№ СЃРїРёСЃРѕРє С‚РµРіРѕРІ Р±РµР· РїРѕРІС‚РѕСЂРѕРІ.
                         if (item_tags.find(inf_list[i]->coords[j]) == UNKNOWN)
                         {
                             item_tags.push_back(inf_list[i]->coords[j]);
@@ -2358,20 +2360,20 @@ GREN_API(HGREN_WCOORD) sol_ProjectWord(HGREN hEngine, const wchar_t *Word, int A
                     }
                 }
 
-                // запоминаем получившийся список тегов для данного варианта распознавания.
+                // Р·Р°РїРѕРјРёРЅР°РµРј РїРѕР»СѓС‡РёРІС€РёР№СЃСЏ СЃРїРёСЃРѕРє С‚РµРіРѕРІ РґР»СЏ РґР°РЅРЅРѕРіРѕ РІР°СЂРёР°РЅС‚Р° СЂР°СЃРїРѕР·РЅР°РІР°РЅРёСЏ.
                 res->tags.push_back(item_tags);
             }
 
             return res;
         }
 
-        // Ни одного варианта распознавания.
+        // РќРё РѕРґРЅРѕРіРѕ РІР°СЂРёР°РЅС‚Р° СЂР°СЃРїРѕР·РЅР°РІР°РЅРёСЏ.
         delete res;
-        return NULL;
+        return nullptr;
     }
     CATCH_API(hEngine)
     {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -2384,7 +2386,7 @@ GREN_API(HGREN_WCOORD) sol_ProjectWord8(HGREN hEngine, const char *WordUtf8, int
 
 
 // ****************************************************************
-// Нечеткая проекция - допускается nmissmax несовпадений символов.
+// РќРµС‡РµС‚РєР°СЏ РїСЂРѕРµРєС†РёСЏ - РґРѕРїСѓСЃРєР°РµС‚СЃСЏ nmissmax РЅРµСЃРѕРІРїР°РґРµРЅРёР№ СЃРёРјРІРѕР»РѕРІ.
 // ****************************************************************
 GREN_API(HGREN_WCOORD) sol_ProjectMisspelledWord(
     HGREN hEngine,
@@ -2393,8 +2395,8 @@ GREN_API(HGREN_WCOORD) sol_ProjectMisspelledWord(
     int nmaxmiss
 )
 {
-    if (!hEngine || !HandleEngine(hEngine)->dict || Word == NULL)
-        return NULL;
+    if (!hEngine || !HandleEngine(hEngine)->dict || Word == nullptr)
+        return nullptr;
 
     DEMO_SINGLE_THREAD(hEngine)
 
@@ -2421,7 +2423,7 @@ GREN_API(HGREN_WCOORD) sol_ProjectMisspelledWord(
             Allow_Dynforms ? LexicalAutomat::Dynforms_Last_Chance : LexicalAutomat::Wordforms,
             nmaxmiss,
             HandleEngine(hEngine)->DefaultLanguage,
-            NULL
+            nullptr
         );
 
         if (!res->list.empty())
@@ -2438,7 +2440,7 @@ GREN_API(HGREN_WCOORD) sol_ProjectMisspelledWord(
                     item_tags = e.forms()[res->list[i].GetForm()].coords();
                 }
 
-                if (inf_list[i] != NULL && !inf_list[i]->coords.empty())
+                if (inf_list[i] != nullptr && !inf_list[i]->coords.empty())
                 {
                     for (lem::Container::size_type j = 0; j < inf_list[i]->coords.size(); ++j)
                     {
@@ -2458,11 +2460,11 @@ GREN_API(HGREN_WCOORD) sol_ProjectMisspelledWord(
 
         delete res;
 
-        return NULL;
+        return nullptr;
     }
     CATCH_API(hEngine)
     {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -2479,12 +2481,12 @@ GREN_API(HGREN_WCOORD) sol_ProjectMisspelledWord8(
 
 
 // ***************************************************************************************
-// Возвращает количество элементов (проекций) в списке hList, который получен в результате
-// работы sol_ProjectWord или sol_ProjectMisspelledWord.
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ (РїСЂРѕРµРєС†РёР№) РІ СЃРїРёСЃРєРµ hList, РєРѕС‚РѕСЂС‹Р№ РїРѕР»СѓС‡РµРЅ РІ СЂРµР·СѓР»СЊС‚Р°С‚Рµ
+// СЂР°Р±РѕС‚С‹ sol_ProjectWord РёР»Рё sol_ProjectMisspelledWord.
 // ***************************************************************************************
 GREN_API(int) sol_CountProjections(HGREN_WCOORD hList)
 {
-    if (hList == NULL)
+    if (hList == nullptr)
         return 0;
 
     return CastSizeToInt(((const Solarix::GREN_WordCoords*)hList)->list.size());
@@ -2499,7 +2501,7 @@ GREN_API(void) sol_DeleteProjections(HGREN_WCOORD hList)
 
 
 // *************************************************************
-// Возвращается id (primary key) словарной статьи среди проекций
+// Р’РѕР·РІСЂР°С‰Р°РµС‚СЃСЏ id (primary key) СЃР»РѕРІР°СЂРЅРѕР№ СЃС‚Р°С‚СЊРё СЃСЂРµРґРё РїСЂРѕРµРєС†РёР№
 // *************************************************************
 GREN_API(int) sol_GetIEntry(HGREN_WCOORD hList, int Index)
 {
@@ -2511,7 +2513,7 @@ GREN_API(int) sol_GetIEntry(HGREN_WCOORD hList, int Index)
 
 
 // **********************************************************************
-// Возвращается состояние грамматического признака Coord у проекции Index
+// Р’РѕР·РІСЂР°С‰Р°РµС‚СЃСЏ СЃРѕСЃС‚РѕСЏРЅРёРµ РіСЂР°РјРјР°С‚РёС‡РµСЃРєРѕРіРѕ РїСЂРёР·РЅР°РєР° Coord Сѓ РїСЂРѕРµРєС†РёРё Index
 // **********************************************************************
 GREN_API(int) sol_GetProjCoordState(
     HGREN hEngine,
@@ -2623,7 +2625,7 @@ GREN_API(int) sol_GetProjStateId(
 
 
 // ****************************************************************************
-// Выполнение морфологического анализа.
+// Р’С‹РїРѕР»РЅРµРЅРёРµ РјРѕСЂС„РѕР»РѕРіРёС‡РµСЃРєРѕРіРѕ Р°РЅР°Р»РёР·Р°.
 // ****************************************************************************
 GREN_API(HGREN_RESPACK) sol_MorphologyAnalysis(
     HGREN hEngine,
@@ -2634,8 +2636,8 @@ GREN_API(HGREN_RESPACK) sol_MorphologyAnalysis(
     int LanguageID
 )
 {
-    if (!hEngine || !HandleEngine(hEngine)->dict || Sentence == NULL)
-        return NULL;
+    if (!hEngine || !HandleEngine(hEngine)->dict || Sentence == nullptr)
+        return nullptr;
 
     DEMO_SINGLE_THREAD(hEngine)
 
@@ -2649,17 +2651,17 @@ GREN_API(HGREN_RESPACK) sol_MorphologyAnalysis(
 
         const bool Schedule1 = (MorphologicalFlags == 0 && SyntacticFlags == 0);
 
-        WrittenTextAnalysisSession current_analysis(HandleEngine(hEngine)->dict.get(), NULL);
+        WrittenTextAnalysisSession current_analysis(HandleEngine(hEngine)->dict.get(), nullptr);
         current_analysis.params.SetLanguageID(UseLanguageID);
         current_analysis.params.Pretokenized = Pretokenized;
         current_analysis.params.AllowPrimaryFuzzyWordRecog = Allow_Fuzzy;
         current_analysis.params.ApplyModel = ApplyModel;
 
-        // Ограничение на суммарное затраченное время в миллисекундах
+        // РћРіСЂР°РЅРёС‡РµРЅРёРµ РЅР° СЃСѓРјРјР°СЂРЅРѕРµ Р·Р°С‚СЂР°С‡РµРЅРЅРѕРµ РІСЂРµРјСЏ РІ РјРёР»Р»РёСЃРµРєСѓРЅРґР°С…
         const int MaxMillisecTimeout = 0x002fffff & Constraints;
         current_analysis.params.timeout.max_elapsed_millisecs = MaxMillisecTimeout > 0 ? MaxMillisecTimeout : lem::int_max;
 
-        // Ограничение на макс. число параллельно проверяемых альтернативных путей построения синтаксического дерева
+        // РћРіСЂР°РЅРёС‡РµРЅРёРµ РЅР° РјР°РєСЃ. С‡РёСЃР»Рѕ РїР°СЂР°Р»Р»РµР»СЊРЅРѕ РїСЂРѕРІРµСЂСЏРµРјС‹С… Р°Р»СЊС‚РµСЂРЅР°С‚РёРІРЅС‹С… РїСѓС‚РµР№ РїРѕСЃС‚СЂРѕРµРЅРёСЏ СЃРёРЅС‚Р°РєСЃРёС‡РµСЃРєРѕРіРѕ РґРµСЂРµРІР°
         const int MaxAlt = ((0xffc00000 & Constraints) >> 22) & 0x000002ff;
         current_analysis.params.timeout.max_alt = MaxAlt;
 
@@ -2679,20 +2681,14 @@ GREN_API(HGREN_RESPACK) sol_MorphologyAnalysis(
             current_analysis.params.CompleteAnalysisOnly = CompleteAnalysisOnly;
         }
 
-        if ((MorphologicalFlags&SOL_GREN_DISABLE_FILTERS) == SOL_GREN_DISABLE_FILTERS)
-        {
-            current_analysis.params.max_filter_len = 0; // отключаем предварительные фильтры
-            current_analysis.params.ApplyCollocFilters = false;
-        }
-
         if ((MorphologicalFlags&SOL_GREN_TOKENIZE_ONLY) == SOL_GREN_TOKENIZE_ONLY)
         {
-            // выполняем только токенизацию.
+            // РІС‹РїРѕР»РЅСЏРµРј С‚РѕР»СЊРєРѕ С‚РѕРєРµРЅРёР·Р°С†РёСЋ.
             current_analysis.Tokenize(Sentence);
         }
         else if ((MorphologicalFlags&SOL_GREN_MODEL_ONLY) == SOL_GREN_MODEL_ONLY)
         {
-            // применяем вероятностную модель морфологии для снятия неоднозначностей, но правила не применяем.
+            // РїСЂРёРјРµРЅСЏРµРј РІРµСЂРѕСЏС‚РЅРѕСЃС‚РЅСѓСЋ РјРѕРґРµР»СЊ РјРѕСЂС„РѕР»РѕРіРёРё РґР»СЏ СЃРЅСЏС‚РёСЏ РЅРµРѕРґРЅРѕР·РЅР°С‡РЅРѕСЃС‚РµР№, РЅРѕ РїСЂР°РІРёР»Р° РЅРµ РїСЂРёРјРµРЅСЏРµРј.
             current_analysis.ApplyFilters(Sentence);
         }
         else
@@ -2704,10 +2700,10 @@ GREN_API(HGREN_RESPACK) sol_MorphologyAnalysis(
     }
     CATCH_API(hEngine)
     {
-        return NULL;
+        return nullptr;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 
@@ -2784,7 +2780,7 @@ static lem::UFString NormalizePhrase(HGREN hEngine, HGREN_RESPACK hLinkages)
         {
             const TrFunction * func = dict.GetLexAuto().GetFunctions().Get().Find(func_name);
 
-            TrFunContext ctx0((TrFunContext*)NULL);
+            TrFunContext ctx0((TrFunContext*)nullptr);
             TrContextInvokation ctx2(&ctx0);
             ctx2.AddVar(L"((return))", lem::Ptr<TrValue>(new TrTypeValue(TrTreeType())));
 
@@ -2792,7 +2788,7 @@ static lem::UFString NormalizePhrase(HGREN hEngine, HGREN_RESPACK hLinkages)
             ctx2.AddVar(func->arg_name[0], v);
 
             ElapsedTimeConstraint null_constraints(100000, 10000);
-            func->GetBody().Run(null_constraints, dict.GetLexAuto(), ctx2, NULL);
+            func->GetBody().Run(null_constraints, dict.GetLexAuto(), ctx2, nullptr);
 
             lem::Ptr<TrValue> func_ret(ctx2.GetVar(L"((return))"));
 
@@ -2824,8 +2820,8 @@ GREN_API(wchar_t*) sol_NormalizePhraseW(
     HGREN_RESPACK hLinkages
 )
 {
-    if (!hEngine || !HandleEngine(hEngine)->dict || hLinkages == NULL)
-        return NULL;
+    if (!hEngine || !HandleEngine(hEngine)->dict || hLinkages == nullptr)
+        return nullptr;
 
     DEMO_SINGLE_THREAD(hEngine)
 
@@ -2838,8 +2834,8 @@ GREN_API(wchar_t*) sol_NormalizePhraseW(
 
 GREN_API(char*) sol_NormalizePhrase8(HGREN hEngine, HGREN_RESPACK hLinkages)
 {
-    if (!hEngine || !HandleEngine(hEngine)->dict || hLinkages == NULL)
-        return NULL;
+    if (!hEngine || !HandleEngine(hEngine)->dict || hLinkages == nullptr)
+        return nullptr;
 
     DEMO_SINGLE_THREAD(hEngine)
 
@@ -2853,8 +2849,8 @@ GREN_API(char*) sol_NormalizePhrase8(HGREN hEngine, HGREN_RESPACK hLinkages)
 
 
 // ****************************************************************************
-// Выполнение синтаксического анализа - на входе фраза, на выходе получается
-// объект, хранящий альтернативные варианты построения синтаксического графа.
+// Р’С‹РїРѕР»РЅРµРЅРёРµ СЃРёРЅС‚Р°РєСЃРёС‡РµСЃРєРѕРіРѕ Р°РЅР°Р»РёР·Р° - РЅР° РІС…РѕРґРµ С„СЂР°Р·Р°, РЅР° РІС‹С…РѕРґРµ РїРѕР»СѓС‡Р°РµС‚СЃСЏ
+// РѕР±СЉРµРєС‚, С…СЂР°РЅСЏС‰РёР№ Р°Р»СЊС‚РµСЂРЅР°С‚РёРІРЅС‹Рµ РІР°СЂРёР°РЅС‚С‹ РїРѕСЃС‚СЂРѕРµРЅРёСЏ СЃРёРЅС‚Р°РєСЃРёС‡РµСЃРєРѕРіРѕ РіСЂР°С„Р°.
 // ****************************************************************************
 GREN_API(HGREN_RESPACK) sol_SyntaxAnalysis(
     HGREN hEngine,
@@ -2865,12 +2861,12 @@ GREN_API(HGREN_RESPACK) sol_SyntaxAnalysis(
     int LanguageID
 )
 {
-    if (!hEngine || !HandleEngine(hEngine)->dict || Sentence == NULL)
-        return NULL;
+    if (!hEngine || !HandleEngine(hEngine)->dict || Sentence == nullptr)
+        return nullptr;
 
-    DEMO_SINGLE_THREAD(hEngine)
+    DEMO_SINGLE_THREAD(hEngine);
 
-        try
+    try
     {
         const bool Allow_Fuzzy = (MorphologicalFlags & SOL_GREN_ALLOW_FUZZY) == SOL_GREN_ALLOW_FUZZY;
         const bool CompleteAnalysisOnly = (MorphologicalFlags & SOL_GREN_COMPLETE_ONLY) == SOL_GREN_COMPLETE_ONLY;
@@ -2882,20 +2878,20 @@ GREN_API(HGREN_RESPACK) sol_SyntaxAnalysis(
         const bool FindFacts = (SyntacticFlags&SOL_GREN_FINDFACTS) == SOL_GREN_FINDFACTS;
         const bool Schedule1 = (SyntacticFlags & ~SOL_GREN_REORDER_TREE) == 0;
 
-        WrittenTextAnalysisSession current_analysis(HandleEngine(hEngine)->dict.get(), NULL);
+        WrittenTextAnalysisSession current_analysis(HandleEngine(hEngine)->dict.get(), nullptr);
         current_analysis.params.SetLanguageID(UseLanguageID);
 
         current_analysis.params.Pretokenized = Pretokenized;
         current_analysis.params.AllowPrimaryFuzzyWordRecog = Allow_Fuzzy;
         current_analysis.params.ApplyModel = ApplyModel;
 
-        // Ограничение на суммарное затраченное время в миллисекундах
+        // РћРіСЂР°РЅРёС‡РµРЅРёРµ РЅР° СЃСѓРјРјР°СЂРЅРѕРµ Р·Р°С‚СЂР°С‡РµРЅРЅРѕРµ РІСЂРµРјСЏ РІ РјРёР»Р»РёСЃРµРєСѓРЅРґР°С…
         const int MaxMillisecTimeout = 0x002fffff & Constraints;
         //lem::mout->printf( "Constraints=%d MaxMillisecTimeout=%d\n", Constraints, MaxMillisecTimeout );
         current_analysis.params.timeout.max_elapsed_millisecs = MaxMillisecTimeout > 0 ? MaxMillisecTimeout : lem::int_max;
 
-        // Ограничение на макс. число параллельно проверяемых альтернативных путей построения синтаксического дерева.
-        // Оно задается в старших 10 битах
+        // РћРіСЂР°РЅРёС‡РµРЅРёРµ РЅР° РјР°РєСЃ. С‡РёСЃР»Рѕ РїР°СЂР°Р»Р»РµР»СЊРЅРѕ РїСЂРѕРІРµСЂСЏРµРјС‹С… Р°Р»СЊС‚РµСЂРЅР°С‚РёРІРЅС‹С… РїСѓС‚РµР№ РїРѕСЃС‚СЂРѕРµРЅРёСЏ СЃРёРЅС‚Р°РєСЃРёС‡РµСЃРєРѕРіРѕ РґРµСЂРµРІР°.
+        // РћРЅРѕ Р·Р°РґР°РµС‚СЃСЏ РІ СЃС‚Р°СЂС€РёС… 10 Р±РёС‚Р°С…
         const int MaxAlt = ((0xffC00000 & Constraints) >> 22) & 0x000002ff;
         current_analysis.params.timeout.max_alt = MaxAlt;
         current_analysis.params.timeout.max_bottomup_trees = MaxAlt;
@@ -2917,12 +2913,6 @@ GREN_API(HGREN_RESPACK) sol_SyntaxAnalysis(
             current_analysis.params.CompleteAnalysisOnly = CompleteAnalysisOnly;
         }
 
-        if ((MorphologicalFlags&SOL_GREN_DISABLE_FILTERS) == SOL_GREN_DISABLE_FILTERS)
-        {
-            current_analysis.params.max_filter_len = 0; // отключаем предварительные фильтры
-            current_analysis.params.ApplyCollocFilters = false;
-        }
-
         current_analysis.params.ReorderTree = ReorderTree;
         current_analysis.FindFacts = FindFacts;
 
@@ -2932,10 +2922,10 @@ GREN_API(HGREN_RESPACK) sol_SyntaxAnalysis(
     }
     CATCH_API(hEngine)
     {
-        return NULL;
+        return nullptr;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 
@@ -2983,9 +2973,7 @@ GREN_API(void) sol_DeleteResPack(HGREN_RESPACK hPack)
 {
     try
     {
-#if !defined SOL_NO_AA
         delete (Solarix::Res_Pack*)hPack;
-#endif
     }
     catch (...)
     {
@@ -2994,9 +2982,9 @@ GREN_API(void) sol_DeleteResPack(HGREN_RESPACK hPack)
 
 
 // *************************************************************
-// Возвращает "имя" словарной статьи - обычно это базовая форма,
-// но могут быть особые случаи (например, статьи ЕСТЬ - кушать
-// и ЕСТЬ - иметься)
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ "РёРјСЏ" СЃР»РѕРІР°СЂРЅРѕР№ СЃС‚Р°С‚СЊРё - РѕР±С‹С‡РЅРѕ СЌС‚Рѕ Р±Р°Р·РѕРІР°СЏ С„РѕСЂРјР°,
+// РЅРѕ РјРѕРіСѓС‚ Р±С‹С‚СЊ РѕСЃРѕР±С‹Рµ СЃР»СѓС‡Р°Рё (РЅР°РїСЂРёРјРµСЂ, СЃС‚Р°С‚СЊРё Р•РЎРўР¬ - РєСѓС€Р°С‚СЊ
+// Рё Р•РЎРўР¬ - РёРјРµС‚СЊСЃСЏ)
 //
 // http://www.solarix.ru/api/en/sol_GetEntryName.shtml
 // http://www.solarix.ru/api/ru/sol_GetEntryName.shtml
@@ -3007,7 +2995,7 @@ GREN_API(int) sol_GetEntryName(
     wchar_t *Result
 )
 {
-    if (!h || EntryIndex == -1 || Result == NULL)
+    if (!h || EntryIndex == -1 || Result == nullptr)
         return -2;
 
     *Result = 0;
@@ -3084,8 +3072,8 @@ GREN_API(int) sol_GetEntryName8(HGREN h, int EntryIndex, char *Result)
 
 
 
-// Возвращает индекс грамматического класса, к которому относится
-// словарная статья.
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ РёРЅРґРµРєСЃ РіСЂР°РјРјР°С‚РёС‡РµСЃРєРѕРіРѕ РєР»Р°СЃСЃР°, Рє РєРѕС‚РѕСЂРѕРјСѓ РѕС‚РЅРѕСЃРёС‚СЃСЏ
+// СЃР»РѕРІР°СЂРЅР°СЏ СЃС‚Р°С‚СЊСЏ.
 // http://www.solarix.ru/api/en/sol_GetEntryClass.shtml
 // http://www.solarix.ru/api/ru/sol_GetEntryClass.shtml
 GREN_API(int) sol_GetEntryClass(HGREN h, int EntryIndex)
@@ -3125,9 +3113,9 @@ GREN_API(int) sol_GetEntryCoordState(HGREN hEngine, int EntryID, int CategoryID)
 }
 
 
-// В некоторых случаях статья может иметь несколько состояний одной координаты. Например,
-// падежная валентность глагола РИСОВАТЬ включает винительный, дательный и творительный падежи.
-// Данная процедура позволяет узнать, присутствует ли координатная пара среди атрибутов.
+// Р’ РЅРµРєРѕС‚РѕСЂС‹С… СЃР»СѓС‡Р°СЏС… СЃС‚Р°С‚СЊСЏ РјРѕР¶РµС‚ РёРјРµС‚СЊ РЅРµСЃРєРѕР»СЊРєРѕ СЃРѕСЃС‚РѕСЏРЅРёР№ РѕРґРЅРѕР№ РєРѕРѕСЂРґРёРЅР°С‚С‹. РќР°РїСЂРёРјРµСЂ,
+// РїР°РґРµР¶РЅР°СЏ РІР°Р»РµРЅС‚РЅРѕСЃС‚СЊ РіР»Р°РіРѕР»Р° Р РРЎРћР’РђРўР¬ РІРєР»СЋС‡Р°РµС‚ РІРёРЅРёС‚РµР»СЊРЅС‹Р№, РґР°С‚РµР»СЊРЅС‹Р№ Рё С‚РІРѕСЂРёС‚РµР»СЊРЅС‹Р№ РїР°РґРµР¶Рё.
+// Р”Р°РЅРЅР°СЏ РїСЂРѕС†РµРґСѓСЂР° РїРѕР·РІРѕР»СЏРµС‚ СѓР·РЅР°С‚СЊ, РїСЂРёСЃСѓС‚СЃС‚РІСѓРµС‚ Р»Рё РєРѕРѕСЂРґРёРЅР°С‚РЅР°СЏ РїР°СЂР° СЃСЂРµРґРё Р°С‚СЂРёР±СѓС‚РѕРІ.
 // http://www.solarix.ru/api/ru/sol_FindEntryCoordPair.shtml
 GREN_API(int) sol_FindEntryCoordPair(HGREN hEngine, int EntryID, int CategoryID, int StateID)
 {
@@ -3150,12 +3138,12 @@ GREN_API(int) sol_FindEntryCoordPair(HGREN hEngine, int EntryID, int CategoryID,
 
 
 // **********************************************************************************
-// Возвращает имя грамматического класса (части речи) по его ID
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ РёРјСЏ РіСЂР°РјРјР°С‚РёС‡РµСЃРєРѕРіРѕ РєР»Р°СЃСЃР° (С‡Р°СЃС‚Рё СЂРµС‡Рё) РїРѕ РµРіРѕ ID
 // http://www.solarix.ru/api/en/sol_GetClassName.shtml
 // http://www.solarix.ru/api/ru/sol_GetClassName.shtml
 //
-// Результат: 0   имя часчти речи скопировано в Result
-//            -1  ошибка, например указан некорректный ClassIndex
+// Р РµР·СѓР»СЊС‚Р°С‚: 0   РёРјСЏ С‡Р°СЃС‡С‚Рё СЂРµС‡Рё СЃРєРѕРїРёСЂРѕРІР°РЅРѕ РІ Result
+//            -1  РѕС€РёР±РєР°, РЅР°РїСЂРёРјРµСЂ СѓРєР°Р·Р°РЅ РЅРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ ClassIndex
 // **********************************************************************************
 GREN_API(int) sol_GetClassName(HGREN hEngine, int ClassID, wchar_t *Result)
 {
@@ -3351,55 +3339,68 @@ GREN_API(int) sol_CountCoordStates(HGREN hEngine, int CoordID)
 
 
 // ***************************************************
-// Сколько альтернативных вариантов анализа фразы?  
+// РЎРєРѕР»СЊРєРѕ Р°Р»СЊС‚РµСЂРЅР°С‚РёРІРЅС‹С… РІР°СЂРёР°РЅС‚РѕРІ Р°РЅР°Р»РёР·Р° С„СЂР°Р·С‹?  
 // ***************************************************
 GREN_API(int) sol_CountGrafs(HGREN_RESPACK hPack)
 {
-#if !defined SOL_NO_AA
-    if (hPack == NULL)
+    if (hPack == nullptr)
         return 0;
 
     return CastSizeToInt(((Res_Pack*)hPack)->vars().size());
-#else
-    return 0;
-#endif
 }
 
 
 // *************************************************************
-// Сколько деревьев (узлов верхнего уровня) в заданном графе?
+// РЎРєРѕР»СЊРєРѕ РґРµСЂРµРІСЊРµРІ (СѓР·Р»РѕРІ РІРµСЂС…РЅРµРіРѕ СѓСЂРѕРІРЅСЏ) РІ Р·Р°РґР°РЅРЅРѕРј РіСЂР°С„Рµ?
 // *************************************************************
 GREN_API(int) sol_CountRoots(HGREN_RESPACK hPack, int iGraf)
 {
     try
     {
-#if !defined SOL_NO_AA
-        if (hPack == NULL)
+        if (hPack == nullptr)
             return 0;
 
         if (iGraf < 0 || iGraf >= CastSizeToInt(((Res_Pack*)hPack)->vars().size()))
             return -1;
 
         return ((Res_Pack*)hPack)->vars()[iGraf]->size();
-#else
-        return 0;
-#endif
     }
     catch (...)
     {
         return -1;
+    }
 }
+
+
+
+GREN_API(int) sol_GetGrafScore(HGREN_RESPACK hPack, int iGraf)
+{
+    try
+    {
+        if (hPack == nullptr)
+            return 0;
+
+        if (iGraf < 0 || iGraf >= CastSizeToInt(((Res_Pack*)hPack)->vars().size()))
+            return -1;
+
+        return ((Res_Pack*)hPack)->vars()[iGraf]->GetScore();
+    }
+    catch (...)
+    {
+        return -1;
+    }
 }
+
 
 
 // *****************************************************
-// Получение указателя на заданный узел верхнего уровня 
+// РџРѕР»СѓС‡РµРЅРёРµ СѓРєР°Р·Р°С‚РµР»СЏ РЅР° Р·Р°РґР°РЅРЅС‹Р№ СѓР·РµР» РІРµСЂС…РЅРµРіРѕ СѓСЂРѕРІРЅСЏ 
 // *****************************************************
 GREN_API(HGREN_TREENODE) sol_GetRoot(HGREN_RESPACK hPack, int iGraf, int iRoot)
 {
 #if !defined SOL_NO_AA
-    if (hPack == NULL)
-        return NULL;
+    if (hPack == nullptr)
+        return nullptr;
 
     try
     {
@@ -3407,21 +3408,21 @@ GREN_API(HGREN_TREENODE) sol_GetRoot(HGREN_RESPACK hPack, int iGraf, int iRoot)
     }
     catch (...)
     {
-        return NULL;
+        return nullptr;
     }
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
 
 // *****************************************************
-// Количество прикрепленных к данному узлу веток
+// РљРѕР»РёС‡РµСЃС‚РІРѕ РїСЂРёРєСЂРµРїР»РµРЅРЅС‹С… Рє РґР°РЅРЅРѕРјСѓ СѓР·Р»Сѓ РІРµС‚РѕРє
 // *****************************************************
 GREN_API(int) sol_CountLeafs(HGREN_TREENODE hNode)
 {
 #if !defined SOL_NO_AA
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return 0;
 
     return CastSizeToInt(HandleNode(hNode)->leafs().size());
@@ -3432,13 +3433,13 @@ GREN_API(int) sol_CountLeafs(HGREN_TREENODE hNode)
 
 
 // *****************************************************
-// Возвращает указатель на заданную ветку
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° Р·Р°РґР°РЅРЅСѓСЋ РІРµС‚РєСѓ
 // http://www.solarix.ru/api/ru/sol_GetLeaf.shtml
 // *****************************************************
 GREN_API(HGREN_TREENODE) sol_GetLeaf(HGREN_TREENODE hNode, int iLeaf)
 {
 #if !defined SOL_NO_AA
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return 0;
 
     try
@@ -3447,11 +3448,11 @@ GREN_API(HGREN_TREENODE) sol_GetLeaf(HGREN_TREENODE hNode, int iLeaf)
     }
     catch (...)
     {
-        return NULL;
+        return nullptr;
     }
 
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -3461,7 +3462,7 @@ GREN_API(HGREN_TREENODE) sol_GetLeaf(HGREN_TREENODE hNode, int iLeaf)
 GREN_API(int) sol_GetLeafLinkType(HGREN_TREENODE hNode, int iLeaf)
 {
 #if !defined SOL_NO_AA
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return 0;
 
     try
@@ -3480,15 +3481,15 @@ GREN_API(int) sol_GetLeafLinkType(HGREN_TREENODE hNode, int iLeaf)
 
 
 // *****************************************************
-// Возвращает индекс словарной статьи в узле.
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ РёРЅРґРµРєСЃ СЃР»РѕРІР°СЂРЅРѕР№ СЃС‚Р°С‚СЊРё РІ СѓР·Р»Рµ.
 // *****************************************************
 GREN_API(int) sol_GetNodeIEntry(HGREN hEngine, HGREN_TREENODE hNode)
 {
-    if (hEngine == NULL || HandleEngine(hEngine)->dict == NULL)
+    if (hEngine == nullptr || HandleEngine(hEngine)->dict.IsNull())
         return UNKNOWN;
 
 #if !defined SOL_NO_AA
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return 0;
 
     int ekey = HandleNode(hNode)->GetNode().GetEntryKey();
@@ -3501,11 +3502,11 @@ GREN_API(int) sol_GetNodeIEntry(HGREN hEngine, HGREN_TREENODE hNode)
 
 GREN_API(int) sol_GetNodeVerIEntry(HGREN hEngine, HGREN_TREENODE hNode, int iver)
 {
-    if (hEngine == NULL || HandleEngine(hEngine)->dict == NULL)
+    if (hEngine == nullptr || HandleEngine(hEngine)->dict.IsNull())
         return UNKNOWN;
 
 #if !defined SOL_NO_AA
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return 0;
 
     int ekey = UNKNOWN;
@@ -3524,7 +3525,7 @@ GREN_API(int) sol_GetNodeVerIEntry(HGREN hEngine, HGREN_TREENODE hNode, int iver
 GREN_API(int) sol_GetNodeVersionCount(HGREN hEngine, HGREN_TREENODE hNode)
 {
 #if !defined SOL_NO_AA
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return 0;
 
     return CastSizeToInt(HandleNode(hNode)->GetNode().GetAlts().size()) + 1;
@@ -3536,7 +3537,7 @@ GREN_API(int) sol_GetNodeVersionCount(HGREN hEngine, HGREN_TREENODE hNode)
 
 GREN_API(int) sol_GetNodePosition(HGREN_TREENODE hNode)
 {
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return -1;
 
 #if !defined SOL_NO_AA
@@ -3551,7 +3552,7 @@ GREN_API(int) sol_GetNodePosition(HGREN_TREENODE hNode)
 
 GREN_API(int) sol_CountNodeMarks(HGREN_TREENODE hNode)
 {
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return -1;
 
     try
@@ -3567,7 +3568,7 @@ GREN_API(int) sol_CountNodeMarks(HGREN_TREENODE hNode)
 
 GREN_API(int) sol_GetNodeMarkNameW(HGREN_TREENODE hNode, int mark_index, wchar_t * name_buffer)
 {
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return -1;
 
     try
@@ -3584,8 +3585,8 @@ GREN_API(int) sol_GetNodeMarkNameW(HGREN_TREENODE hNode, int mark_index, wchar_t
 
 GREN_API(HGREN_LONGSTRING) sol_SerializeNodeMark(HGREN hEngine, HGREN_TREENODE hNode, int mark_index, int format)
 {
-    if (hNode == NULL)
-        return NULL;
+    if (hNode == nullptr)
+        return nullptr;
 
     try
     {
@@ -3597,13 +3598,13 @@ GREN_API(HGREN_LONGSTRING) sol_SerializeNodeMark(HGREN hEngine, HGREN_TREENODE h
     }
     catch (...)
     {
-        return NULL;
+        return nullptr;
     }
 }
 
 GREN_API(int) sol_GetLongStringLenW(HGREN_LONGSTRING hString)
 {
-    if (hString == NULL)
+    if (hString == nullptr)
         return 0;
 
     try
@@ -3619,7 +3620,7 @@ GREN_API(int) sol_GetLongStringLenW(HGREN_LONGSTRING hString)
 
 GREN_API(int) sol_GetLongStringW(HGREN_LONGSTRING hString, wchar_t * buffer)
 {
-    if (hString == NULL)
+    if (hString == nullptr)
         return 0;
 
     try
@@ -3654,12 +3655,12 @@ GREN_API(int) sol_DeleteLongString(HGREN_LONGSTRING hString)
 
 
 // *****************************************************
-// Текстовое содержимое узла.
+// РўРµРєСЃС‚РѕРІРѕРµ СЃРѕРґРµСЂР¶РёРјРѕРµ СѓР·Р»Р°.
 //
 // *****************************************************
 GREN_API(void) sol_GetNodeContents(HGREN_TREENODE hNode, wchar_t *Buffer)
 {
-    if (Buffer == NULL)
+    if (Buffer == nullptr)
         return;
 
     try
@@ -3667,7 +3668,7 @@ GREN_API(void) sol_GetNodeContents(HGREN_TREENODE hNode, wchar_t *Buffer)
         *Buffer = 0;
 
 #if !defined SOL_NO_AA
-        if (hNode == NULL)
+        if (hNode == nullptr)
             return;
 
         const Word_Form &wf = HandleNode(hNode)->GetNode();
@@ -3685,7 +3686,7 @@ GREN_API(void) sol_GetNodeContents(HGREN_TREENODE hNode, wchar_t *Buffer)
 
 GREN_API(void) sol_GetNodeContents8(HGREN_TREENODE hNode, char *BufferUtf8)
 {
-    if (BufferUtf8 == NULL)
+    if (BufferUtf8 == nullptr)
         return;
 
     try
@@ -3693,7 +3694,7 @@ GREN_API(void) sol_GetNodeContents8(HGREN_TREENODE hNode, char *BufferUtf8)
         *BufferUtf8 = 0;
 
 #if !defined SOL_NO_AA
-        if (hNode == NULL)
+        if (hNode == nullptr)
             return;
 
         const Word_Form &wf = HandleNode(hNode)->GetNode();
@@ -3715,7 +3716,7 @@ GREN_API(int) sol_GetNodeContentsLen(HGREN_TREENODE hNode)
     try
     {
 #if !defined SOL_NO_AA
-        if (hNode == NULL)
+        if (hNode == nullptr)
             return -1;
 
         const int len = HandleNode(hNode)->GetNode().GetName()->ToWord().length();
@@ -3757,7 +3758,7 @@ GREN_API(int) sol_RestoreCasing(HGREN hEngine, wchar_t *Word, int EntryIndex)
 
 GREN_API(int) sol_RestoreCasing8(HGREN hEngine, char *WordUtf8, int EntryIndex)
 {
-    if (WordUtf8 == NULL || EntryIndex == UNKNOWN)
+    if (WordUtf8 == nullptr || EntryIndex == UNKNOWN)
         return -1;
 
     wchar_t buf[lem::UCString::max_len + 1];
@@ -3774,24 +3775,24 @@ GREN_API(int) sol_RestoreCasing8(HGREN hEngine, char *WordUtf8, int EntryIndex)
 
 
 // ***********************************************************************
-// Приведение к базовой форме. Вернет 1, если преобразование имело место.
+// РџСЂРёРІРµРґРµРЅРёРµ Рє Р±Р°Р·РѕРІРѕР№ С„РѕСЂРјРµ. Р’РµСЂРЅРµС‚ 1, РµСЃР»Рё РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ РёРјРµР»Рѕ РјРµСЃС‚Рѕ.
 //
-// Аргумент AllowDynforms позволяет включить сложную морфологию.
+// РђСЂРіСѓРјРµРЅС‚ AllowDynforms РїРѕР·РІРѕР»СЏРµС‚ РІРєР»СЋС‡РёС‚СЊ СЃР»РѕР¶РЅСѓСЋ РјРѕСЂС„РѕР»РѕРіРёСЋ.
 // ***********************************************************************
 GREN_API(int) sol_TranslateToBase(HGREN hEngine, wchar_t *Word, int AllowDynforms)
 {
-    if (hEngine == NULL || HandleEngine(hEngine)->dict == NULL || Word == NULL)
+    if (hEngine == nullptr || HandleEngine(hEngine)->dict.IsNull() || Word == nullptr)
         return UNKNOWN;
 
     DEMO_SINGLE_THREAD(hEngine)
 
         try
     {
-        // Быстрый поиск словоформы.
+        // Р‘С‹СЃС‚СЂС‹Р№ РїРѕРёСЃРє СЃР»РѕРІРѕС„РѕСЂРјС‹.
         UCString w(Word);
 
         int ientry = UNKNOWN;
-        if (HandleEngine(hEngine)->seeker == NULL)
+        if (HandleEngine(hEngine)->seeker.IsNull())
         {
             MCollect<Word_Coord> found_list;
             HandleEngine(hEngine)->dict->GetLexAuto().ProjectWord(w, found_list, UNKNOWN);
@@ -3807,7 +3808,7 @@ GREN_API(int) sol_TranslateToBase(HGREN hEngine, wchar_t *Word, int AllowDynform
         if (ientry == UNKNOWN)
             return 0;
 
-        // Зная индекс словарной статьи, можем преобразовать к названию статьи.
+        // Р—РЅР°СЏ РёРЅРґРµРєСЃ СЃР»РѕРІР°СЂРЅРѕР№ СЃС‚Р°С‚СЊРё, РјРѕР¶РµРј РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ Рє РЅР°Р·РІР°РЅРёСЋ СЃС‚Р°С‚СЊРё.
         const SG_Entry &e = HandleEngine(hEngine)->dict->GetSynGram().GetEntry(ientry);
         wcscpy(Word, e.GetName().c_str());
         sol_RestoreCasing(hEngine, Word, e.GetKey());
@@ -3820,7 +3821,7 @@ GREN_API(int) sol_TranslateToBase(HGREN hEngine, wchar_t *Word, int AllowDynform
 
 
 // *****************************************************************
-// Возвращает список базовых форм для слова. 
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃРїРёСЃРѕРє Р±Р°Р·РѕРІС‹С… С„РѕСЂРј РґР»СЏ СЃР»РѕРІР°. 
 // *****************************************************************
 GREN_API(HGREN_STR) sol_TranslateToBases(
     HGREN hEngine,
@@ -3828,8 +3829,8 @@ GREN_API(HGREN_STR) sol_TranslateToBases(
     int AllowDynforms
 )
 {
-    if (!hEngine || !HandleEngine(hEngine)->dict || Word == NULL)
-        return NULL;
+    if (!hEngine || !HandleEngine(hEngine)->dict || Word == nullptr)
+        return nullptr;
 
     DEMO_SINGLE_THREAD(hEngine)
 
@@ -3855,11 +3856,11 @@ GREN_API(HGREN_STR) sol_TranslateToBases(
             AllowDynforms ? LexicalAutomat::Dynforms_Last_Chance : LexicalAutomat::Wordforms,
             0,
             HandleEngine(hEngine)->DefaultLanguage,
-            NULL
+            nullptr
         );
 
         if (coords.empty())
-            return NULL;
+            return nullptr;
 
         SynGram &sg = HandleEngine(hEngine)->dict->GetSynGram();
         GREN_Strings *res = new GREN_Strings;
@@ -3891,36 +3892,36 @@ GREN_API(HGREN_STR) sol_TranslateToBases(
     }
     CATCH_API(hEngine)
 
-        return NULL;
+        return nullptr;
 }
 
 // *****************************************************************************
-// Стеммер - возвращает число символов в слове, которые составляют 
-// "корень", неизменный для всех форм этого слова. В случае невозможности
-// выделить корень, вернет 0.
+// РЎС‚РµРјРјРµСЂ - РІРѕР·РІСЂР°С‰Р°РµС‚ С‡РёСЃР»Рѕ СЃРёРјРІРѕР»РѕРІ РІ СЃР»РѕРІРµ, РєРѕС‚РѕСЂС‹Рµ СЃРѕСЃС‚Р°РІР»СЏСЋС‚ 
+// "РєРѕСЂРµРЅСЊ", РЅРµРёР·РјРµРЅРЅС‹Р№ РґР»СЏ РІСЃРµС… С„РѕСЂРј СЌС‚РѕРіРѕ СЃР»РѕРІР°. Р’ СЃР»СѓС‡Р°Рµ РЅРµРІРѕР·РјРѕР¶РЅРѕСЃС‚Рё
+// РІС‹РґРµР»РёС‚СЊ РєРѕСЂРµРЅСЊ, РІРµСЂРЅРµС‚ 0.
 // *****************************************************************************
 GREN_API(int) sol_Stemmer(HGREN hEngine, const wchar_t *Word)
 {
 #if defined GM_STEMMER
-    if (!hEngine || !HandleEngine(hEngine)->dict || Word == NULL)
+    if (!hEngine || !HandleEngine(hEngine)->dict || Word == nullptr)
         return -1;
 
     DEMO_SINGLE_THREAD(hEngine)
 
         try
     {
-        // Быстрый поиск словоформы по лексикону
+        // Р‘С‹СЃС‚СЂС‹Р№ РїРѕРёСЃРє СЃР»РѕРІРѕС„РѕСЂРјС‹ РїРѕ Р»РµРєСЃРёРєРѕРЅСѓ
         UCString w(Word);
-        int ientry = HandleEngine(hEngine)->seeker == NULL ? UNKNOWN : HandleEngine(hEngine)->seeker->Find(w, true);
+        int ientry = HandleEngine(hEngine)->seeker.IsNull() ? UNKNOWN : HandleEngine(hEngine)->seeker->Find(w, true);
         if (ientry == UNKNOWN)
         {
-            // Это слово отсутствует в лексиконе.
-            // Попробуем применить известные правила аффиксов.
+            // Р­С‚Рѕ СЃР»РѕРІРѕ РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚ РІ Р»РµРєСЃРёРєРѕРЅРµ.
+            // РџРѕРїСЂРѕР±СѓРµРј РїСЂРёРјРµРЅРёС‚СЊ РёР·РІРµСЃС‚РЅС‹Рµ РїСЂР°РІРёР»Р° Р°С„С„РёРєСЃРѕРІ.
 
-            LEM_CHECKIT_Z(HandleEngine(hEngine)->fuzzy != NULL);
+            LEM_CHECKIT_Z(HandleEngine(hEngine)->fuzzy.NotNull());
 
-            if (HandleEngine(hEngine)->fuzzy == NULL)
-                // Отсутствует нужный модуль.
+            if (HandleEngine(hEngine)->fuzzy.NotNull())
+                // РћС‚СЃСѓС‚СЃС‚РІСѓРµС‚ РЅСѓР¶РЅС‹Р№ РјРѕРґСѓР»СЊ.
                 return -1;
 
             lem::MCollect<UCString> roots;
@@ -3930,7 +3931,7 @@ GREN_API(int) sol_Stemmer(HGREN hEngine, const wchar_t *Word)
 
             if (!roots.empty())
             {
-                // Вообще говоря, тут есть выбор - возвращать самый длинный корень или самый короткий.
+                // Р’РѕРѕР±С‰Рµ РіРѕРІРѕСЂСЏ, С‚СѓС‚ РµСЃС‚СЊ РІС‹Р±РѕСЂ - РІРѕР·РІСЂР°С‰Р°С‚СЊ СЃР°РјС‹Р№ РґР»РёРЅРЅС‹Р№ РєРѕСЂРµРЅСЊ РёР»Рё СЃР°РјС‹Р№ РєРѕСЂРѕС‚РєРёР№.
                 int best_len = roots.front().length();
 
                 for (lem::Container::size_type j = 1; j < roots.size(); j++)
@@ -3943,7 +3944,7 @@ GREN_API(int) sol_Stemmer(HGREN hEngine, const wchar_t *Word)
 
             if (!!HandleEngine(hEngine)->dict->stemmer)
             {
-                // Попробуем использовать загруженный стеммер.
+                // РџРѕРїСЂРѕР±СѓРµРј РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ Р·Р°РіСЂСѓР¶РµРЅРЅС‹Р№ СЃС‚РµРјРјРµСЂ.
                 UCString stem;
                 if (HandleEngine(hEngine)->dict->stemmer->Stem(w, stem))
                     return stem.length();
@@ -3953,7 +3954,7 @@ GREN_API(int) sol_Stemmer(HGREN hEngine, const wchar_t *Word)
         }
         else
         {
-            // Так как словарная статья найдена, то используем известный для нее корень.
+            // РўР°Рє РєР°Рє СЃР»РѕРІР°СЂРЅР°СЏ СЃС‚Р°С‚СЊСЏ РЅР°Р№РґРµРЅР°, С‚Рѕ РёСЃРїРѕР»СЊР·СѓРµРј РёР·РІРµСЃС‚РЅС‹Р№ РґР»СЏ РЅРµРµ РєРѕСЂРµРЅСЊ.
             return HandleEngine(hEngine)->dict->GetSynGram().GetEntry(ientry).GetRoot().length();
         }
 
@@ -3971,8 +3972,8 @@ GREN_API(int) sol_Stemmer(HGREN hEngine, const wchar_t *Word)
 
 
 // **********************************************************
-// Поиск в тезаурусе связанных статей для указанной iEntry.
-// Возвращается список индексов статей.
+// РџРѕРёСЃРє РІ С‚РµР·Р°СѓСЂСѓСЃРµ СЃРІСЏР·Р°РЅРЅС‹С… СЃС‚Р°С‚РµР№ РґР»СЏ СѓРєР°Р·Р°РЅРЅРѕР№ iEntry.
+// Р’РѕР·РІСЂР°С‰Р°РµС‚СЃСЏ СЃРїРёСЃРѕРє РёРЅРґРµРєСЃРѕРІ СЃС‚Р°С‚РµР№.
 // **********************************************************
 GREN_API(HGREN_INTARRAY) sol_SeekThesaurus(
     HGREN hEngine,
@@ -3984,8 +3985,8 @@ GREN_API(HGREN_INTARRAY) sol_SeekThesaurus(
     int nJumps
 )
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict)
-        return NULL;
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict)
+        return nullptr;
 
 #if defined GM_THESAURUS
     lem::MCollect<int> *list = new lem::MCollect<int>();
@@ -4007,15 +4008,15 @@ GREN_API(HGREN_INTARRAY) sol_SeekThesaurus(
         }
 
         return list;
-        }
+    }
     CATCH_API(hEngine)
 
         delete list;
-    return NULL;
+    return nullptr;
 #endif
 
-    return NULL;
-    }
+    return nullptr;
+}
 
 
 GREN_API(HGREN_INTARRAY) sol_Thesaurus(
@@ -4024,8 +4025,8 @@ GREN_API(HGREN_INTARRAY) sol_Thesaurus(
     int Link
 )
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict || iEntry == UNKNOWN || Link == UNKNOWN)
-        return NULL;
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict || iEntry == UNKNOWN || Link == UNKNOWN)
+        return nullptr;
 
 #if defined SOLARIX_PRO && defined GM_THESAURUS
     lem::MCollect<int> *list = new lem::MCollect<int>();
@@ -4038,7 +4039,7 @@ GREN_API(HGREN_INTARRAY) sol_Thesaurus(
         Tree_Link l(Link);
 
         IntCollect links;
-        HandleEngine(hEngine)->dict->GetSynGram().Get_Net().Find_Linked_Entries(ekey, l, links, NULL);
+        HandleEngine(hEngine)->dict->GetSynGram().Get_Net().Find_Linked_Entries(ekey, l, links, nullptr);
 
         for (lem::Container::size_type i = 0; i < links.size(); ++i)
         {
@@ -4051,28 +4052,28 @@ GREN_API(HGREN_INTARRAY) sol_Thesaurus(
     catch (...)
     {
         delete list;
-        return NULL;
+        return nullptr;
     }
 #endif
 
-    return NULL;
+    return nullptr;
 }
 
 
 // ***********************************************************************
 // http://www.solarix.ru/for_developers/api/ngrams-api.shtml
 //
-// Возвращается количество N-грамм заданного порядка (Order=1...5) и
-// типа (0-буквальные,1-нормализованные).
+// Р’РѕР·РІСЂР°С‰Р°РµС‚СЃСЏ РєРѕР»РёС‡РµСЃС‚РІРѕ N-РіСЂР°РјРј Р·Р°РґР°РЅРЅРѕРіРѕ РїРѕСЂСЏРґРєР° (Order=1...5) Рё
+// С‚РёРїР° (0-Р±СѓРєРІР°Р»СЊРЅС‹Рµ,1-РЅРѕСЂРјР°Р»РёР·РѕРІР°РЅРЅС‹Рµ).
 //
-// Так как записей может быть>4 млрд, то 64-битный результат возвращается
-// в виде двух 32-битных частей.
+// РўР°Рє РєР°Рє Р·Р°РїРёСЃРµР№ РјРѕР¶РµС‚ Р±С‹С‚СЊ>4 РјР»СЂРґ, С‚Рѕ 64-Р±РёС‚РЅС‹Р№ СЂРµР·СѓР»СЊС‚Р°С‚ РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ
+// РІ РІРёРґРµ РґРІСѓС… 32-Р±РёС‚РЅС‹С… С‡Р°СЃС‚РµР№.
 //
-// Возвращаемое значение: 1 - успех, 0 - нет записей или какая-то ошибка.
+// Р’РѕР·РІСЂР°С‰Р°РµРјРѕРµ Р·РЅР°С‡РµРЅРёРµ: 1 - СѓСЃРїРµС…, 0 - РЅРµС‚ Р·Р°РїРёСЃРµР№ РёР»Рё РєР°РєР°СЏ-С‚Рѕ РѕС€РёР±РєР°.
 // ************************************************************************
 GREN_API(int) sol_CountNGrams(HGREN hEngine, int type, int Order, unsigned int *Hi, unsigned int *Lo)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict || type < 0 || type>1 || Order < 1 || Order>5 || Hi == NULL || Lo == NULL)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict || type < 0 || type>1 || Order < 1 || Order>5 || Hi == nullptr || Lo == nullptr)
         return 0;
 
 #if !defined SOL_NO_NGRAMS
@@ -4117,7 +4118,7 @@ GREN_API(int) sol_CountNGrams(HGREN hEngine, int type, int Order, unsigned int *
 // http://www.solarix.ru/for_developers/api/ngrams-api.shtml
 GREN_API(int) sol_Seek1Grams(HGREN hEngine, int type, const wchar_t *word1)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict || word1 == NULL)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict || word1 == nullptr)
         return 0;
 
 #if !defined SOL_NO_NGRAMS
@@ -4162,7 +4163,7 @@ GREN_API(int) sol_Seek2Grams(
     const wchar_t *word2
 )
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict || word1 == NULL || word2 == NULL)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict || word1 == nullptr || word2 == nullptr)
         return 0;
 
 #if !defined SOL_NO_NGRAMS
@@ -4218,7 +4219,7 @@ GREN_API(int) sol_Seek3Grams(
     const wchar_t *word3
 )
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict || word1 == NULL || word2 == NULL || word3 == NULL)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict || word1 == nullptr || word2 == nullptr || word3 == nullptr)
         return 0;
 
 #if !defined SOL_NO_NGRAMS
@@ -4277,8 +4278,8 @@ GREN_API(int) sol_Seek4Grams(
     const wchar_t *word4
 )
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict ||
-        word1 == NULL || word2 == NULL || word3 == NULL || word4 == NULL)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict ||
+        word1 == nullptr || word2 == nullptr || word3 == nullptr || word4 == nullptr)
         return 0;
 
 #if !defined SOL_NO_NGRAMS
@@ -4339,8 +4340,8 @@ GREN_API(int) sol_Seek5Grams(
     const wchar_t *word5
 )
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict ||
-        word1 == NULL || word2 == NULL || word3 == NULL || word4 == NULL || word5 == NULL)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict ||
+        word1 == nullptr || word2 == nullptr || word3 == nullptr || word4 == nullptr || word5 == nullptr)
         return 0;
 
 #if !defined SOL_NO_NGRAMS
@@ -4400,13 +4401,13 @@ GREN_API(int) sol_Seek5Grams8(
 
 //////////////////////////////////////////////////////////////////////
 ///
-/// \brief Является ли строка фразой на указанном языке
+/// \brief РЇРІР»СЏРµС‚СЃСЏ Р»Рё СЃС‚СЂРѕРєР° С„СЂР°Р·РѕР№ РЅР° СѓРєР°Р·Р°РЅРЅРѕРј СЏР·С‹РєРµ
 ///
 //////////////////////////////////////////////////////////////////////
 GREN_API(int) sol_IsLanguagePhrase(HGREN hEngine, const wchar_t *Phrase, int Language)
 {
 #if defined SOLARIX_PRO
-    if (hEngine == NULL || lem::lem_is_empty(Phrase) || !HandleEngine(hEngine)->dict)
+    if (hEngine == nullptr || lem::lem_is_empty(Phrase) || !HandleEngine(hEngine)->dict)
         return 0;
 
 #if defined SOL_CAA
@@ -4435,15 +4436,15 @@ GREN_API(int) sol_IsLanguagePhrase(HGREN hEngine, const wchar_t *Phrase, int Lan
 
 //////////////////////////////////////////////////////////////////////
 ///
-/// \brief  Определяет язык для фразы
+/// \brief  РћРїСЂРµРґРµР»СЏРµС‚ СЏР·С‹Рє РґР»СЏ С„СЂР°Р·С‹
 ///
-/// @param Phrase null terminated строка с текстом
-/// @return Код языка, или -1 (не удалось подобрать), или -2 (ошибка)
+/// @param Phrase null terminated СЃС‚СЂРѕРєР° СЃ С‚РµРєСЃС‚РѕРј
+/// @return РљРѕРґ СЏР·С‹РєР°, РёР»Рё -1 (РЅРµ СѓРґР°Р»РѕСЃСЊ РїРѕРґРѕР±СЂР°С‚СЊ), РёР»Рё -2 (РѕС€РёР±РєР°)
 //////////////////////////////////////////////////////////////////////
 GREN_API(int) sol_GuessPhraseLanguage(HGREN hEngine, const wchar_t *Phrase)
 {
 #if defined SOLARIX_PRO
-    if (hEngine == NULL || lem::lem_is_empty(Phrase) || !HandleEngine(hEngine)->dict)
+    if (hEngine == nullptr || lem::lem_is_empty(Phrase) || !HandleEngine(hEngine)->dict)
         return -2;
 
 #if defined SOL_CAA
@@ -4479,7 +4480,7 @@ GREN_API(int) sol_GuessPhraseLanguage(HGREN hEngine, const wchar_t *Phrase)
 // http://www.solarix.ru/api/ru/sol_FindClass.shtml
 GREN_API(int) sol_FindClass(HGREN hEngine, const wchar_t *ClassName)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict || lem::lem_is_empty(ClassName))
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict || lem::lem_is_empty(ClassName))
         return -2;
 
     try
@@ -4508,7 +4509,7 @@ GREN_API(int) sol_FindClass8(HGREN hEngine, const char *ClassNameUtf8)
 // http://www.solarix.ru/api/ru/sol_FindEnum.shtml
 GREN_API(int) sol_FindEnum(HGREN hEngine, const wchar_t *EnumName)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict || lem::lem_is_empty(EnumName))
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict || lem::lem_is_empty(EnumName))
         return -2;
 
     try
@@ -4534,7 +4535,7 @@ GREN_API(int) sol_FindEnum8(HGREN hEngine, const char *EnumNameUtf8)
 // http://www.solarix.ru/api/ru/sol_FindEnumState.shtml
 GREN_API(int) sol_FindEnumState(HGREN hEngine, int CoordID, const wchar_t *StateName)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict || CoordID < 0 || lem::lem_is_empty(StateName))
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict || CoordID < 0 || lem::lem_is_empty(StateName))
         return -2;
 
     try
@@ -4566,13 +4567,13 @@ GREN_API(int) sol_MatchNGrams(
 )
 {
 #if !defined SOL_NO_NGRAMS && !defined SOL_NO_AA
-    if (hEngine == NULL || !HandleEngine(hEngine)->ok || Text == NULL)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->ok || Text == nullptr)
         return -1;
 
     try
     {
         Solarix::Sentence sent;
-        sent.Parse(Text, false, HandleEngine(hEngine)->dict.get(), HandleEngine(hEngine)->DefaultLanguage, NULL);
+        sent.Parse(Text, false, HandleEngine(hEngine)->dict.get(), HandleEngine(hEngine)->DefaultLanguage, nullptr);
 
         lem::MCollect<lem::UCString> words;
         for (int i = 0; i < CastSizeToInt(sent.size()); ++i)
@@ -4605,7 +4606,7 @@ GREN_API(int) sol_Syllabs(
 )
 {
 #if !defined SOL_NO_AA
-    if (hEngine == NULL || !HandleEngine(hEngine)->ok || OrgWord == NULL)
+    if (hEngine == nullptr || !HandleEngine(hEngine)->ok || OrgWord == nullptr)
         return -1;
 
     try
@@ -4617,7 +4618,7 @@ GREN_API(int) sol_Syllabs(
         lem::UCString word(OrgWord);
         lem::MCollect<lem::UCString> slb_list;
 
-        HandleEngine(hEngine)->dict->GetGraphGram().FindSyllabs(word, LanguageID, false, slb_list, NULL);
+        HandleEngine(hEngine)->dict->GetGraphGram().FindSyllabs(word, LanguageID, false, slb_list, nullptr);
 
         for (lem::Container::size_type i = 0; i < slb_list.size(); ++i)
         {
@@ -4666,7 +4667,7 @@ GREN_API(int) sol_Syllabs8(
 
 
 // **********************************************************
-// Токенизация строки - разбивка на лексемы.
+// РўРѕРєРµРЅРёР·Р°С†РёСЏ СЃС‚СЂРѕРєРё - СЂР°Р·Р±РёРІРєР° РЅР° Р»РµРєСЃРµРјС‹.
 //
 // API Help:
 // http://www.solarix.ru/api/en/sol_Tokenize.shtml
@@ -4678,11 +4679,11 @@ GREN_API(int) sol_Syllabs8(
 // **********************************************************
 GREN_API(HGREN_STR) sol_TokenizeW(HGREN hEngine, const wchar_t *Sentence, int LanguageID)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->ok || Sentence == NULL)
-        return NULL;
+    if (hEngine == nullptr || !HandleEngine(hEngine)->ok || Sentence == nullptr)
+        return nullptr;
 
 #if defined SOL_CAA && !defined SOL_NO_AA
-    std::auto_ptr<GREN_Strings> list(new GREN_Strings);
+    std::unique_ptr<GREN_Strings> list(new GREN_Strings);
 
     DEMO_SINGLE_THREAD(hEngine)
 
@@ -4691,7 +4692,7 @@ GREN_API(HGREN_STR) sol_TokenizeW(HGREN hEngine, const wchar_t *Sentence, int La
         lem::UFString sentence(Sentence);
 
         Solarix::Sentence sent;
-        sent.Parse(sentence, false, HandleEngine(hEngine)->dict.get(), LanguageID, NULL);
+        sent.Parse(sentence, false, HandleEngine(hEngine)->dict.get(), LanguageID, nullptr);
         for (int i = 0; i < CastSizeToInt(sent.size()); ++i)
             list->list.push_back(sent.GetWord(i));
 
@@ -4700,7 +4701,7 @@ GREN_API(HGREN_STR) sol_TokenizeW(HGREN hEngine, const wchar_t *Sentence, int La
     CATCH_API(hEngine)
 #endif
 
-        return NULL;
+        return nullptr;
 }
 
 
@@ -4725,8 +4726,8 @@ GREN_API(HGREN_SBROKER) sol_CreateSentenceBroker(
     int LanguageID
 )
 {
-    if (hEngine == NULL || lem::lem_is_empty(Filename))
-        return NULL;
+    if (hEngine == nullptr || lem::lem_is_empty(Filename))
+        return nullptr;
 
     try
     {
@@ -4745,7 +4746,7 @@ GREN_API(HGREN_SBROKER) sol_CreateSentenceBroker(
             }
             catch (...)
             {
-                return NULL;
+                return nullptr;
             }
         }
 
@@ -4779,7 +4780,7 @@ GREN_API(HGREN_SBROKER) sol_CreateSentenceBroker(
     }
     CATCH_API(hEngine)
 
-        return NULL;
+        return nullptr;
 }
 
 GREN_API(HGREN_SBROKER) sol_CreateSentenceBroker8(
@@ -4794,8 +4795,8 @@ GREN_API(HGREN_SBROKER) sol_CreateSentenceBroker8(
 
 GREN_API(HGREN_SBROKER) sol_CreateSentenceBrokerMemW(HGREN hEngine, const wchar_t *Text, int LanguageID)
 {
-    if (hEngine == NULL || lem::lem_is_empty(Text))
-        return NULL;
+    if (hEngine == nullptr || lem::lem_is_empty(Text))
+        return nullptr;
 
     try
     {
@@ -4805,7 +4806,7 @@ GREN_API(HGREN_SBROKER) sol_CreateSentenceBrokerMemW(HGREN hEngine, const wchar_
     }
     CATCH_API(hEngine)
 
-        return NULL;
+        return nullptr;
 }
 
 
@@ -4817,8 +4818,8 @@ GREN_API(HGREN_SBROKER) sol_CreateSentenceBrokerMemA(HGREN hEngine, const char *
 
 GREN_API(HGREN_SBROKER) sol_CreateSentenceBrokerMem8(HGREN hEngine, const char *TextUtf8, int LanguageID)
 {
-    if (hEngine == NULL || lem::lem_is_empty(TextUtf8))
-        return NULL;
+    if (hEngine == nullptr || lem::lem_is_empty(TextUtf8))
+        return nullptr;
 
     try
     {
@@ -4828,7 +4829,7 @@ GREN_API(HGREN_SBROKER) sol_CreateSentenceBrokerMem8(HGREN hEngine, const char *
     }
     CATCH_API(hEngine)
 
-        return NULL;
+        return nullptr;
 }
 
 
@@ -4840,7 +4841,7 @@ GREN_API(int) sol_FetchSentence(HGREN_SBROKER hBroker)
 {
     try
     {
-        if (hBroker != NULL)
+        if (hBroker != nullptr)
         {
             if (!((SentenceBroker*)hBroker)->Fetch())
                 return -1; // no more sentences is available
@@ -4861,7 +4862,7 @@ GREN_API(int) sol_GetFetchedSentenceLen(HGREN_SBROKER hBroker)
 {
     try
     {
-        if (hBroker != NULL)
+        if (hBroker != nullptr)
         {
             return ((SentenceBroker*)hBroker)->GetFetchedSentence().length();
         }
@@ -4878,7 +4879,7 @@ GREN_API(int) sol_GetFetchedSentenceW(HGREN_SBROKER hBroker, wchar_t *Buffer)
 {
     try
     {
-        if (hBroker != NULL && Buffer != NULL)
+        if (hBroker != nullptr && Buffer != nullptr)
         {
             lem::lem_strcpy(Buffer, ((SentenceBroker*)hBroker)->GetFetchedSentence().c_str());
             return ((SentenceBroker*)hBroker)->GetFetchedSentence().length();
@@ -4896,7 +4897,7 @@ GREN_API(int) sol_GetFetchedSentenceA(HGREN_SBROKER hBroker, char *Buffer)
 {
     try
     {
-        if (hBroker != NULL && Buffer != NULL)
+        if (hBroker != nullptr && Buffer != nullptr)
         {
             lem::lem_strcpy(Buffer, lem::to_ascii(((SentenceBroker*)hBroker)->GetFetchedSentence()).c_str());
             return lem::lem_strlen(Buffer);
@@ -4914,7 +4915,7 @@ GREN_API(int) sol_GetFetchedSentence8(HGREN_SBROKER hBroker, char *BufferUtf8)
 {
     try
     {
-        if (hBroker != NULL && BufferUtf8 != NULL)
+        if (hBroker != nullptr && BufferUtf8 != nullptr)
         {
             lem::lem_strcpy(BufferUtf8, lem::to_utf8(((SentenceBroker*)hBroker)->GetFetchedSentence()).c_str());
             return lem::lem_strlen(BufferUtf8);
@@ -4960,7 +4961,7 @@ GREN_API(int) sol_Bits(void)
 // http://www.solarix.ru/api/en/sol_FindLanguage.shtml
 GREN_API(int) sol_FindLanguage(HGREN hEngine, const wchar_t *LanguageName)
 {
-    if (hEngine == NULL || lem::lem_is_empty(LanguageName))
+    if (hEngine == nullptr || lem::lem_is_empty(LanguageName))
         return -1;
 
     try
@@ -4985,11 +4986,11 @@ GREN_API(int) sol_FindLanguage8(HGREN hEngine, const char *LanguageNameUtf8)
 
 
 // **********************************
-// Состояние координаты для узла
+// РЎРѕСЃС‚РѕСЏРЅРёРµ РєРѕРѕСЂРґРёРЅР°С‚С‹ РґР»СЏ СѓР·Р»Р°
 // **********************************
 GREN_API(int) sol_GetNodeCoordState(HGREN_TREENODE hNode, int CoordID)
 {
-    if (hNode == NULL || CoordID == -1)
+    if (hNode == nullptr || CoordID == -1)
         return -1;
 
     try
@@ -5006,11 +5007,11 @@ GREN_API(int) sol_GetNodeCoordState(HGREN_TREENODE hNode, int CoordID)
 
 
 // *******************************************
-// Состояние координаты для версии словоформы
+// РЎРѕСЃС‚РѕСЏРЅРёРµ РєРѕРѕСЂРґРёРЅР°С‚С‹ РґР»СЏ РІРµСЂСЃРёРё СЃР»РѕРІРѕС„РѕСЂРјС‹
 // *******************************************
 GREN_API(int) sol_GetNodeVerCoordState(HGREN_TREENODE hNode, int iver, int CoordID)
 {
-    if (hNode == NULL || CoordID == -1)
+    if (hNode == nullptr || CoordID == -1)
         return -1;
 
     try
@@ -5038,7 +5039,7 @@ GREN_API(int) sol_GetNodeVerCoordState(HGREN_TREENODE hNode, int iver, int Coord
 // http://www.solarix.ru/api/ru/sol_GetNodeCoordPair.shtml
 GREN_API(int) sol_GetNodeCoordPair(HGREN_TREENODE hNode, int CoordID, int StateID)
 {
-    if (hNode == NULL || CoordID == -1 || StateID == -1)
+    if (hNode == nullptr || CoordID == -1 || StateID == -1)
         return 0;
 
     bool res = HandleNode(hNode)->GetNode().GetPairs().FindOnce(Solarix::GramCoordPair(CoordID, StateID)) != UNKNOWN;
@@ -5049,7 +5050,7 @@ GREN_API(int) sol_GetNodeCoordPair(HGREN_TREENODE hNode, int CoordID, int StateI
 // http://www.solarix.ru/api/ru/sol_GetNodeVerCoordPair.shtml
 GREN_API(int) sol_GetNodeVerCoordPair(HGREN_TREENODE hNode, int iver, int CoordID, int StateID)
 {
-    if (hNode == NULL || CoordID == -1 || StateID == -1)
+    if (hNode == nullptr || CoordID == -1 || StateID == -1)
         return 0;
 
     bool res;
@@ -5066,7 +5067,7 @@ GREN_API(int) sol_GetNodeVerCoordPair(HGREN_TREENODE hNode, int iver, int CoordI
 // http://www.solarix.ru/api/ru/sol_GetNodePairsCount.shtml
 GREN_API(int) sol_GetNodePairsCount(HGREN_TREENODE hNode)
 {
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return -1;
 
     return CastSizeToInt(HandleNode(hNode)->GetNode().GetPairs().size());
@@ -5076,7 +5077,7 @@ GREN_API(int) sol_GetNodePairsCount(HGREN_TREENODE hNode)
 // http://www.solarix.ru/api/ru/sol_GetNodeVerPairsCount.shtml
 GREN_API(int) sol_GetNodeVerPairsCount(HGREN_TREENODE hNode, int iver)
 {
-    if (hNode == NULL)
+    if (hNode == nullptr)
         return -1;
 
     if (iver == 0)
@@ -5089,7 +5090,7 @@ GREN_API(int) sol_GetNodeVerPairsCount(HGREN_TREENODE hNode, int iver)
 // http://www.solarix.ru/api/ru/sol_GetNodePairCoord.shtml
 GREN_API(int) sol_GetNodePairCoord(HGREN_TREENODE hNode, int ipair)
 {
-    if (hNode == NULL || ipair < 0 || ipair >= CastSizeToInt(HandleNode(hNode)->GetNode().GetPairs().size()))
+    if (hNode == nullptr || ipair < 0 || ipair >= CastSizeToInt(HandleNode(hNode)->GetNode().GetPairs().size()))
         return -1;
 
     return HandleNode(hNode)->GetNode().GetPairs()[ipair].GetCoord().GetIndex();
@@ -5099,7 +5100,7 @@ GREN_API(int) sol_GetNodePairCoord(HGREN_TREENODE hNode, int ipair)
 // http://www.solarix.ru/api/ru/sol_GetNodeVerPairCoord.shtml
 GREN_API(int) sol_GetNodeVerPairCoord(HGREN_TREENODE hNode, int iver, int ipair)
 {
-    if (hNode == NULL || ipair < 0)
+    if (hNode == nullptr || ipair < 0)
         return -1;
 
     if (iver == 0)
@@ -5122,7 +5123,7 @@ GREN_API(int) sol_GetNodeVerPairCoord(HGREN_TREENODE hNode, int iver, int ipair)
 // http://www.solarix.ru/api/ru/sol_GetNodePairState.shtml
 GREN_API(int) sol_GetNodePairState(HGREN_TREENODE hNode, int ipair)
 {
-    if (hNode == NULL || ipair < 0 || ipair >= CastSizeToInt(HandleNode(hNode)->GetNode().GetPairs().size()))
+    if (hNode == nullptr || ipair < 0 || ipair >= CastSizeToInt(HandleNode(hNode)->GetNode().GetPairs().size()))
         return -1;
 
     return HandleNode(hNode)->GetNode().GetPairs()[ipair].GetState();
@@ -5132,7 +5133,7 @@ GREN_API(int) sol_GetNodePairState(HGREN_TREENODE hNode, int ipair)
 // http://www.solarix.ru/api/ru/sol_GetNodeVerPairState.shtml
 GREN_API(int) sol_GetNodeVerPairState(HGREN_TREENODE hNode, int iver, int ipair)
 {
-    if (hNode == NULL || ipair < 0)
+    if (hNode == nullptr || ipair < 0)
         return -1;
 
     if (iver == 0)
@@ -5160,7 +5161,7 @@ GREN_API(int) sol_GenerateWordform(
     wchar_t *Result
 )
 {
-    if (hEng == NULL || ie == UNKNOWN)
+    if (hEng == nullptr || ie == UNKNOWN)
     {
         return -1;
     }
@@ -5198,9 +5199,9 @@ GREN_API(int) sol_GenerateWordform(
 
 
 // ***********************************************************************************************
-// Получение форм заданного слова, содержащих указанные грамматические признаки.
-// Может быть возвращает пустой список, если подходящих форм не нашлось, или более 1 строки, если
-// подходящих форм несколько.
+// РџРѕР»СѓС‡РµРЅРёРµ С„РѕСЂРј Р·Р°РґР°РЅРЅРѕРіРѕ СЃР»РѕРІР°, СЃРѕРґРµСЂР¶Р°С‰РёС… СѓРєР°Р·Р°РЅРЅС‹Рµ РіСЂР°РјРјР°С‚РёС‡РµСЃРєРёРµ РїСЂРёР·РЅР°РєРё.
+// РњРѕР¶РµС‚ Р±С‹С‚СЊ РІРѕР·РІСЂР°С‰Р°РµС‚ РїСѓСЃС‚РѕР№ СЃРїРёСЃРѕРє, РµСЃР»Рё РїРѕРґС…РѕРґСЏС‰РёС… С„РѕСЂРј РЅРµ РЅР°С€Р»РѕСЃСЊ, РёР»Рё Р±РѕР»РµРµ 1 СЃС‚СЂРѕРєРё, РµСЃР»Рё
+// РїРѕРґС…РѕРґСЏС‰РёС… С„РѕСЂРј РЅРµСЃРєРѕР»СЊРєРѕ.
 // http://www.solarix.ru/api/ru/sol_GenerateWordforms.shtml
 // ***********************************************************************************************
 GREN_API(HGREN_STR) sol_GenerateWordforms(
@@ -5210,9 +5211,9 @@ GREN_API(HGREN_STR) sol_GenerateWordforms(
     const int *pairs
 )
 {
-    if (hEngine == NULL || EntryID == UNKNOWN)
+    if (hEngine == nullptr || EntryID == UNKNOWN)
     {
-        return NULL;
+        return nullptr;
     }
 
     DEMO_SINGLE_THREAD(hEngine)
@@ -5240,7 +5241,7 @@ GREN_API(HGREN_STR) sol_GenerateWordforms(
     }
     catch (...)
     {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -5251,7 +5252,7 @@ GREN_API(HGREN_STR) sol_GenerateWordforms(
 
 GREN_API(int) sol_CountLexems(HGREN hEng)
 {
-    if (hEng == NULL)
+    if (hEng == nullptr)
     {
         return -1;
     }
@@ -5273,18 +5274,18 @@ GREN_API(int) sol_CountLexems(HGREN hEng)
 struct MatchingParadigma : lem::NonCopyable
 {
     Solarix::Lexem entry_name;
-    lem::MCollect<int> ies; // если найдены точные словарные статьи
-    lem::MCollect<lem::UCString> paradigmas; // имена подходящих парадигм
-    lem::MCollect<int> iparadigmas; // индексы подходящих парадигм во внутреннем списке
+    lem::MCollect<int> ies; // РµСЃР»Рё РЅР°Р№РґРµРЅС‹ С‚РѕС‡РЅС‹Рµ СЃР»РѕРІР°СЂРЅС‹Рµ СЃС‚Р°С‚СЊРё
+    lem::MCollect<lem::UCString> paradigmas; // РёРјРµРЅР° РїРѕРґС…РѕРґСЏС‰РёС… РїР°СЂР°РґРёРіРј
+    lem::MCollect<int> iparadigmas; // РёРЅРґРµРєСЃС‹ РїРѕРґС…РѕРґСЏС‰РёС… РїР°СЂР°РґРёРіРј РІРѕ РІРЅСѓС‚СЂРµРЅРЅРµРј СЃРїРёСЃРєРµ
 };
 
 
 
 GREN_API(HFLEXIONS) sol_FindFlexionHandlers(HGREN hEngine, const wchar_t *WordBasicForm, int Flags)
 {
-    if (hEngine == NULL && lem::lem_is_empty(WordBasicForm))
+    if (hEngine == nullptr && lem::lem_is_empty(WordBasicForm))
     {
-        return NULL;
+        return nullptr;
     }
 
     try
@@ -5299,14 +5300,14 @@ GREN_API(HFLEXIONS) sol_FindFlexionHandlers(HGREN hEngine, const wchar_t *WordBa
 
         if (Flags == 1)
         {
-            // Во-первых, ищем подходящие словарные статьи.
+            // Р’Рѕ-РїРµСЂРІС‹С…, РёС‰РµРј РїРѕРґС…РѕРґСЏС‰РёРµ СЃР»РѕРІР°СЂРЅС‹Рµ СЃС‚Р°С‚СЊРё.
             sg.FindEntries(res->entry_name, res->ies);
         }
 
-        // Во-вторых, ищем автопарадигмы
+        // Р’Рѕ-РІС‚РѕСЂС‹С…, РёС‰РµРј Р°РІС‚РѕРїР°СЂР°РґРёРіРјС‹
         sg.Get_DSA().FindDecl(res->entry_name, res->iparadigmas);
 
-        // Заполняем список их именами  
+        // Р—Р°РїРѕР»РЅСЏРµРј СЃРїРёСЃРѕРє РёС… РёРјРµРЅР°РјРё  
         for (lem::Container::size_type i = 0; i < res->iparadigmas.size(); ++i)
             res->paradigmas.push_back(sg.Get_DSA().GetDecl(res->iparadigmas[i]).GetName());
 
@@ -5314,16 +5315,16 @@ GREN_API(HFLEXIONS) sol_FindFlexionHandlers(HGREN hEngine, const wchar_t *WordBa
     }
     catch (...)
     {
-        return NULL;
+        return nullptr;
     }
 }
 
 // Flexion engine: return the number of matching entries
 GREN_API(int) sol_CountEntriesInFlexionHandlers(HGREN hEng, HFLEXIONS hFlexs)
 {
-    if (hEng == NULL && hFlexs == NULL)
+    if (hEng == nullptr && hFlexs == nullptr)
     {
-        return NULL;
+        return -1;
     }
 
     try
@@ -5340,9 +5341,9 @@ GREN_API(int) sol_CountEntriesInFlexionHandlers(HGREN hEng, HFLEXIONS hFlexs)
 // Flexion engine: return the number of matching paradigmas
 GREN_API(int) sol_CountParadigmasInFlexionHandlers(HGREN hEng, HFLEXIONS hFlexs)
 {
-    if (hEng == NULL && hFlexs == NULL)
+    if (hEng == nullptr && hFlexs == nullptr)
     {
-        return NULL;
+        return -1;
     }
 
     try
@@ -5360,9 +5361,9 @@ GREN_API(int) sol_CountParadigmasInFlexionHandlers(HGREN hEng, HFLEXIONS hFlexs)
 // Flexion engine: return the entry ID
 GREN_API(int) sol_GetEntryInFlexionHandlers(HGREN hEng, HFLEXIONS hFlexs, int Index)
 {
-    if (hEng == NULL && hFlexs == NULL)
+    if (hEng == nullptr && hFlexs == nullptr)
     {
-        return NULL;
+        return -1;
     }
 
     try
@@ -5380,16 +5381,16 @@ GREN_API(int) sol_GetEntryInFlexionHandlers(HGREN hEng, HFLEXIONS hFlexs, int In
 // Flexion engine: return the paradigma internal index and human-friendly name
 GREN_API(int) sol_GetParadigmaInFlexionHandlers(HGREN hEng, HFLEXIONS hFlexs, int Index, wchar_t *ParadigmaName)
 {
-    if (hEng == NULL && hFlexs == NULL)
+    if (hEng == nullptr && hFlexs == nullptr)
     {
-        return NULL;
+        return -1;
     }
 
     try
     {
         const MatchingParadigma *x = (const MatchingParadigma*)hFlexs;
 
-        if (ParadigmaName != NULL)
+        if (ParadigmaName != nullptr)
             lem::lem_strcpy(ParadigmaName, x->paradigmas[Index].c_str());
 
         return x->iparadigmas[Index];
@@ -5416,9 +5417,9 @@ GREN_API(HFLEXIONTABLE) sol_BuildFlexionHandler(
     int EntryIndex
 )
 {
-    if (hEng == NULL && (hFlexs == NULL && !lem::lem_is_empty(ParadigmaName)))
+    if (hEng == nullptr && (hFlexs == nullptr && !lem::lem_is_empty(ParadigmaName)))
     {
-        return NULL;
+        return nullptr;
     }
 
     try
@@ -5431,7 +5432,7 @@ GREN_API(HFLEXIONTABLE) sol_BuildFlexionHandler(
         {
             const MatchingParadigma *xpar = (const MatchingParadigma*)hFlexs;
 
-            // Отыскиваем нужную парадигму.
+            // РћС‚С‹СЃРєРёРІР°РµРј РЅСѓР¶РЅСѓСЋ РїР°СЂР°РґРёРіРјСѓ.
             const int ipar = sg.Get_DSA().FindDecl(ParadigmaName);
             if (ipar != UNKNOWN)
             {
@@ -5461,7 +5462,7 @@ GREN_API(HFLEXIONTABLE) sol_BuildFlexionHandler(
     }
     catch (...)
     {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -5469,7 +5470,7 @@ GREN_API(int) sol_CountFlexionHandlerWordform(HGREN hEngine, HFLEXIONTABLE hFlex
 {
     try
     {
-        if (hFlex == NULL)
+        if (hFlex == nullptr)
             return 0;
 
         const FlexionTable *table = (const FlexionTable*)hFlex;
@@ -5484,7 +5485,7 @@ GREN_API(const wchar_t*) sol_GetFlexionHandlerWordformText(HGREN hEngine, HFLEXI
 {
     try
     {
-        if (hFlex == NULL)
+        if (hFlex == nullptr)
             return 0;
 
         const FlexionTable *table = (const FlexionTable*)hFlex;
@@ -5492,7 +5493,7 @@ GREN_API(const wchar_t*) sol_GetFlexionHandlerWordformText(HGREN hEngine, HFLEXI
     }
     CATCH_API(hEngine);
 
-    return NULL;
+    return nullptr;
 }
 
 
@@ -5506,7 +5507,7 @@ GREN_API(const wchar_t*) sol_GetFlexionHandlerWordform(
     {
         const FlexionTable *table = (const FlexionTable*)hFlex;
 
-        // Сначала надо распарсить строку координат dims на координатные пары
+        // РЎРЅР°С‡Р°Р»Р° РЅР°РґРѕ СЂР°СЃРїР°СЂСЃРёС‚СЊ СЃС‚СЂРѕРєСѓ РєРѕРѕСЂРґРёРЅР°С‚ dims РЅР° РєРѕРѕСЂРґРёРЅР°С‚РЅС‹Рµ РїР°СЂС‹
         lem::UFString sdims(dims);
         lem::Collect< lem::UFString > spairs;
         lem::parse(sdims, spairs, L" ,;");
@@ -5525,9 +5526,9 @@ GREN_API(const wchar_t*) sol_GetFlexionHandlerWordform(
             {
                 int istate = UNKNOWN;
 
-                // Для бистабильных координат формат задания состояния немного другой:
-                // ~КРАТКИЙ = КРАТКИЙ:0
-                // КРАТКИЙ  = КРАТКИЙ:1
+                // Р”Р»СЏ Р±РёСЃС‚Р°Р±РёР»СЊРЅС‹С… РєРѕРѕСЂРґРёРЅР°С‚ С„РѕСЂРјР°С‚ Р·Р°РґР°РЅРёСЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ РЅРµРјРЅРѕРіРѕ РґСЂСѓРіРѕР№:
+                // ~РљР РђРўРљРР™ = РљР РђРўРљРР™:0
+                // РљР РђРўРљРР™  = РљР РђРўРљРР™:1
 
                 const Solarix::GramCoord &c = sg.coords()[icoord];
 
@@ -5550,9 +5551,9 @@ GREN_API(const wchar_t*) sol_GetFlexionHandlerWordform(
             }
         }
 
-        // Получили список координатных пар, которые должны присутствовать в искомой форме.
-        // Ищем форму. Подойдет первая, у которой все необходимые координаты есть и минимум
-        // прочих координат.
+        // РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РєРѕРѕСЂРґРёРЅР°С‚РЅС‹С… РїР°СЂ, РєРѕС‚РѕСЂС‹Рµ РґРѕР»Р¶РЅС‹ РїСЂРёСЃСѓС‚СЃС‚РІРѕРІР°С‚СЊ РІ РёСЃРєРѕРјРѕР№ С„РѕСЂРјРµ.
+        // РС‰РµРј С„РѕСЂРјСѓ. РџРѕРґРѕР№РґРµС‚ РїРµСЂРІР°СЏ, Сѓ РєРѕС‚РѕСЂРѕР№ РІСЃРµ РЅРµРѕР±С…РѕРґРёРјС‹Рµ РєРѕРѕСЂРґРёРЅР°С‚С‹ РµСЃС‚СЊ Рё РјРёРЅРёРјСѓРј
+        // РїСЂРѕС‡РёС… РєРѕРѕСЂРґРёРЅР°С‚.
         int ibest_form = UNKNOWN, best_form_dims = lem::int_max;
 
         for (lem::Container::size_type i = 0; i < table->form_dims.size(); ++i)
@@ -5587,7 +5588,7 @@ GREN_API(const wchar_t*) sol_GetFlexionHandlerWordform(
     }
     CATCH_API(hEng);
 
-    return NULL;
+    return nullptr;
 }
 
 
@@ -5624,7 +5625,7 @@ GREN_API(int) sol_DeleteFlexionHandler(HGREN hEng, HFLEXIONTABLE hFlex)
 
 
 // ******************************************************************
-// Поиск фразовой статьи. Возвращается первичный ключ записи.
+// РџРѕРёСЃРє С„СЂР°Р·РѕРІРѕР№ СЃС‚Р°С‚СЊРё. Р’РѕР·РІСЂР°С‰Р°РµС‚СЃСЏ РїРµСЂРІРёС‡РЅС‹Р№ РєР»СЋС‡ Р·Р°РїРёСЃРё.
 // http://www.solarix.ru/api/en/sol_FindPhrase.shtml
 //
 // Flags=0 - ignore case
@@ -5632,7 +5633,7 @@ GREN_API(int) sol_DeleteFlexionHandler(HGREN hEng, HFLEXIONTABLE hFlex)
 // ******************************************************************
 GREN_API(int) sol_FindPhrase(HGREN hEngine, const wchar_t *Phrase, int Flags)
 {
-    if (hEngine == NULL || lem::lem_is_empty(Phrase))
+    if (hEngine == nullptr || lem::lem_is_empty(Phrase))
         return -2;
 
     try
@@ -5657,13 +5658,13 @@ GREN_API(int) sol_FindPhrase8(HGREN hEngine, const char *PhraseUtf8, int Flags)
 
 struct LinkInfo : lem::NonCopyable
 {
-    int type; // 0 - для словарных статей, 1 - для фразовых
-    int id; // первичный ключ записи в соответствующей таблице связей.
-    int code; // код типа связи
-    int ekey1, ekey2; // ключи словарных или фразовых статей
-    lem::UFString tags_txt; // список тегов
+    int type; // 0 - РґР»СЏ СЃР»РѕРІР°СЂРЅС‹С… СЃС‚Р°С‚РµР№, 1 - РґР»СЏ С„СЂР°Р·РѕРІС‹С…
+    int id; // РїРµСЂРІРёС‡РЅС‹Р№ РєР»СЋС‡ Р·Р°РїРёСЃРё РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РµР№ С‚Р°Р±Р»РёС†Рµ СЃРІСЏР·РµР№.
+    int code; // РєРѕРґ С‚РёРїР° СЃРІСЏР·Рё
+    int ekey1, ekey2; // РєР»СЋС‡Рё СЃР»РѕРІР°СЂРЅС‹С… РёР»Рё С„СЂР°Р·РѕРІС‹С… СЃС‚Р°С‚РµР№
+    lem::UFString tags_txt; // СЃРїРёСЃРѕРє С‚РµРіРѕРІ
     lem::FString tags_txt8;
-    lem::UFString flags; // список флагов
+    lem::UFString flags; // СЃРїРёСЃРѕРє С„Р»Р°РіРѕРІ
     lem::FString flags8;
 };
 
@@ -5673,10 +5674,10 @@ typedef void* HLINKSINFO;
 
 
 
-// Ищем все связи в тезаурусе для словарной или фразовой статьи.
-// Key1 - id словарной (ключ) или фразовой статьи
-// LinkCode - константа типа связи
-// Flags - дополнительные управляющие флаги: 0-для словарных статей, 1 - для фразовых.
+// РС‰РµРј РІСЃРµ СЃРІСЏР·Рё РІ С‚РµР·Р°СѓСЂСѓСЃРµ РґР»СЏ СЃР»РѕРІР°СЂРЅРѕР№ РёР»Рё С„СЂР°Р·РѕРІРѕР№ СЃС‚Р°С‚СЊРё.
+// Key1 - id СЃР»РѕРІР°СЂРЅРѕР№ (РєР»СЋС‡) РёР»Рё С„СЂР°Р·РѕРІРѕР№ СЃС‚Р°С‚СЊРё
+// LinkCode - РєРѕРЅСЃС‚Р°РЅС‚Р° С‚РёРїР° СЃРІСЏР·Рё
+// Flags - РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ СѓРїСЂР°РІР»СЏСЋС‰РёРµ С„Р»Р°РіРё: 0-РґР»СЏ СЃР»РѕРІР°СЂРЅС‹С… СЃС‚Р°С‚РµР№, 1 - РґР»СЏ С„СЂР°Р·РѕРІС‹С….
 
 // http://www.solarix.ru/api/ru/sol_ListLinksTxt.shtml
 
@@ -5687,7 +5688,7 @@ GREN_API(HLINKSINFO) sol_ListLinksTxt(
     int Flags
 )
 {
-    LinksInfo * res = NULL;
+    LinksInfo * res = nullptr;
 
 #if !defined SOLARIX_DEMO
     try
@@ -5701,7 +5702,7 @@ GREN_API(HLINKSINFO) sol_ListLinksTxt(
         {
             const int Key1 = sg.GetEntry(ie1).GetKey();
 
-            // Ищем связи для словарных статей.
+            // РС‰РµРј СЃРІСЏР·Рё РґР»СЏ СЃР»РѕРІР°СЂРЅС‹С… СЃС‚Р°С‚РµР№.
             lem::Ptr<WordLinkEnumerator> links(sg.Get_Net().EnumerateWordLinks(Key1, LinkCode));
             while (links->Fetch())
             {
@@ -5710,7 +5711,7 @@ GREN_API(HLINKSINFO) sol_ListLinksTxt(
                 li->id = links->GetLinkId();
                 li->code = links->GetLinkType();
                 li->ekey1 = ie1;
-                li->ekey2 = links->GetEntryKey2();//sg.FindEntryIndexByKey( links->GetEntryKey2() );
+                li->ekey2 = links->GetEntryKey2();
 
 #if defined SOL_SAVETXT
                 Solarix::PrintTags(links->GetTags(), li->tags_txt, sg);
@@ -5721,7 +5722,7 @@ GREN_API(HLINKSINFO) sol_ListLinksTxt(
         }
         else if (Flags == 1)
         {
-            // Ищем связи для фразовых статей.
+            // РС‰РµРј СЃРІСЏР·Рё РґР»СЏ С„СЂР°Р·РѕРІС‹С… СЃС‚Р°С‚РµР№.
             lem::MCollect<int> tl_id, te_id;
 
             const int Key1 = ie1;
@@ -5732,7 +5733,7 @@ GREN_API(HLINKSINFO) sol_ListLinksTxt(
 
             for (lem::Container::size_type i = 0; i < tl_id.size(); ++i)
             {
-                lem::Ptr<SG_ComplexLink> lnk = th.GetComplexLink(tl_id[i]);
+                std::unique_ptr<SG_ComplexLink> lnk(th.GetComplexLink(tl_id[i]));
 
                 SG_Phrase frz;
                 sg.GetStorage().GetPhrase(te_id[i], frz);
@@ -5765,7 +5766,7 @@ GREN_API(HLINKSINFO) sol_ListLinksTxt(
     CATCH_API(hEngine);
 #endif
 
-    return NULL;
+    return nullptr;
 }
 
 
@@ -5774,7 +5775,7 @@ GREN_API(int) sol_DeleteLinksInfo(HGREN hEng, HLINKSINFO hList)
 {
     try
     {
-        if (hList != NULL)
+        if (hList != nullptr)
         {
             delete (LinksInfo*)hList;
         }
@@ -5787,13 +5788,13 @@ GREN_API(int) sol_DeleteLinksInfo(HGREN hEng, HLINKSINFO hList)
     }
 }
 
-// Возвращается число найденных связей в списке.
+// Р’РѕР·РІСЂР°С‰Р°РµС‚СЃСЏ С‡РёСЃР»Рѕ РЅР°Р№РґРµРЅРЅС‹С… СЃРІСЏР·РµР№ РІ СЃРїРёСЃРєРµ.
 // http://www.solarix.ru/api/ru/sol_LinksInfoCount.shtml
 GREN_API(int) sol_LinksInfoCount(HGREN hEngine, HLINKSINFO hList)
 {
     try
     {
-        if (hList == NULL)
+        if (hList == nullptr)
             return 0;
 
         return CastSizeToInt(((LinksInfo*)hList)->size());
@@ -5805,13 +5806,13 @@ GREN_API(int) sol_LinksInfoCount(HGREN hEngine, HLINKSINFO hList)
 
 
 
-// Возвращается тип связи в списке: 0 - для словарных статей, 1 - для фразовых
+// Р’РѕР·РІСЂР°С‰Р°РµС‚СЃСЏ С‚РёРї СЃРІСЏР·Рё РІ СЃРїРёСЃРєРµ: 0 - РґР»СЏ СЃР»РѕРІР°СЂРЅС‹С… СЃС‚Р°С‚РµР№, 1 - РґР»СЏ С„СЂР°Р·РѕРІС‹С…
 // http://www.solarix.ru/api/ru/sol_LinksInfoType.shtml
 GREN_API(int) sol_LinksInfoType(HGREN hEngine, HLINKSINFO hList, int Index)
 {
     try
     {
-        if (hList == NULL)
+        if (hList == nullptr)
             return -1;
 
         const LinksInfo& list = *(LinksInfo*)hList;
@@ -5823,13 +5824,13 @@ GREN_API(int) sol_LinksInfoType(HGREN hEngine, HLINKSINFO hList, int Index)
 }
 
 
-// Возвращается числовая константа для типа связи (по справочнику типов).
+// Р’РѕР·РІСЂР°С‰Р°РµС‚СЃСЏ С‡РёСЃР»РѕРІР°СЏ РєРѕРЅСЃС‚Р°РЅС‚Р° РґР»СЏ С‚РёРїР° СЃРІСЏР·Рё (РїРѕ СЃРїСЂР°РІРѕС‡РЅРёРєСѓ С‚РёРїРѕРІ).
 // http://www.solarix.ru/api/ru/sol_LinksInfoCode.shtml
 GREN_API(int) sol_LinksInfoCode(HGREN hEngine, HLINKSINFO hList, int Index)
 {
     try
     {
-        if (hList == NULL)
+        if (hList == nullptr)
             return -1;
 
         const LinksInfo& list = *(LinksInfo*)hList;
@@ -5842,13 +5843,13 @@ GREN_API(int) sol_LinksInfoCode(HGREN hEngine, HLINKSINFO hList, int Index)
 
 
 // *************************************************************************
-// Возвращается первичный ключ записи для связи в списке.
+// Р’РѕР·РІСЂР°С‰Р°РµС‚СЃСЏ РїРµСЂРІРёС‡РЅС‹Р№ РєР»СЋС‡ Р·Р°РїРёСЃРё РґР»СЏ СЃРІСЏР·Рё РІ СЃРїРёСЃРєРµ.
 // *************************************************************************
 GREN_API(int) sol_LinksInfoID(HGREN hEngine, HLINKSINFO hList, int Index)
 {
     try
     {
-        if (hList == NULL)
+        if (hList == nullptr)
             return -1;
 
         const LinksInfo& list = *(LinksInfo*)hList;
@@ -5861,13 +5862,13 @@ GREN_API(int) sol_LinksInfoID(HGREN hEngine, HLINKSINFO hList, int Index)
 
 
 // *************************************************************************
-// Возращается ключ словарной или фразовой статьи слева в связи.
+// Р’РѕР·СЂР°С‰Р°РµС‚СЃСЏ РєР»СЋС‡ СЃР»РѕРІР°СЂРЅРѕР№ РёР»Рё С„СЂР°Р·РѕРІРѕР№ СЃС‚Р°С‚СЊРё СЃР»РµРІР° РІ СЃРІСЏР·Рё.
 // *************************************************************************
 GREN_API(int) sol_LinksInfoEKey1(HGREN hEngine, HLINKSINFO hList, int Index)
 {
     try
     {
-        if (hList == NULL)
+        if (hList == nullptr)
             return -1;
 
         const LinksInfo& list = *(LinksInfo*)hList;
@@ -5880,13 +5881,13 @@ GREN_API(int) sol_LinksInfoEKey1(HGREN hEngine, HLINKSINFO hList, int Index)
 
 
 // *************************************************************************
-// Возращается ключ словарной или фразовой статьи справа в связи.
+// Р’РѕР·СЂР°С‰Р°РµС‚СЃСЏ РєР»СЋС‡ СЃР»РѕРІР°СЂРЅРѕР№ РёР»Рё С„СЂР°Р·РѕРІРѕР№ СЃС‚Р°С‚СЊРё СЃРїСЂР°РІР° РІ СЃРІСЏР·Рё.
 // *************************************************************************
 GREN_API(int) sol_LinksInfoEKey2(HGREN hEngine, HLINKSINFO hList, int Index)
 {
     try
     {
-        if (hList == NULL)
+        if (hList == nullptr)
             return -1;
 
         const LinksInfo& list = *(LinksInfo*)hList;
@@ -5900,8 +5901,8 @@ GREN_API(int) sol_LinksInfoEKey2(HGREN hEngine, HLINKSINFO hList, int Index)
 
 
 // ********************************************************************
-// Возвращается текстовое представление тегов для связи в списке.
-// Если тегов у связи нет, то вернет NULL.
+// Р’РѕР·РІСЂР°С‰Р°РµС‚СЃСЏ С‚РµРєСЃС‚РѕРІРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ С‚РµРіРѕРІ РґР»СЏ СЃРІСЏР·Рё РІ СЃРїРёСЃРєРµ.
+// Р•СЃР»Рё С‚РµРіРѕРІ Сѓ СЃРІСЏР·Рё РЅРµС‚, С‚Рѕ РІРµСЂРЅРµС‚ nullptr.
 // ********************************************************************
 GREN_API(const wchar_t*) sol_LinksInfoTagsTxt(
     HGREN hEngine,
@@ -5911,15 +5912,15 @@ GREN_API(const wchar_t*) sol_LinksInfoTagsTxt(
 {
     try
     {
-        if (hList == NULL)
-            return NULL;
+        if (hList == nullptr)
+            return nullptr;
 
         const LinksInfo& list = *(LinksInfo*)hList;
         return list[Index]->tags_txt.c_str();
     }
     CATCH_API(hEngine);
 
-    return NULL;
+    return nullptr;
 }
 
 GREN_API(const char*) sol_LinksInfoTagsTxt8(
@@ -5930,8 +5931,8 @@ GREN_API(const char*) sol_LinksInfoTagsTxt8(
 {
     try
     {
-        if (hList == NULL)
-            return NULL;
+        if (hList == nullptr)
+            return nullptr;
 
         LinksInfo& list = *(LinksInfo*)hList;
 
@@ -5948,12 +5949,12 @@ GREN_API(const char*) sol_LinksInfoTagsTxt8(
     }
     CATCH_API(hEngine);
 
-    return NULL;
+    return nullptr;
 }
 
 // ********************************************************************
-// Возвращается текстовое представление списка флагов для связи.
-// Если тегов у связи нет, то вернет NULL.
+// Р’РѕР·РІСЂР°С‰Р°РµС‚СЃСЏ С‚РµРєСЃС‚РѕРІРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ СЃРїРёСЃРєР° С„Р»Р°РіРѕРІ РґР»СЏ СЃРІСЏР·Рё.
+// Р•СЃР»Рё С‚РµРіРѕРІ Сѓ СЃРІСЏР·Рё РЅРµС‚, С‚Рѕ РІРµСЂРЅРµС‚ nullptr.
 // ********************************************************************
 GREN_API(const char*) sol_LinksInfoFlagsTxt8(
     HGREN hEngine,
@@ -5963,8 +5964,8 @@ GREN_API(const char*) sol_LinksInfoFlagsTxt8(
 {
     try
     {
-        if (hList == NULL)
-            return NULL;
+        if (hList == nullptr)
+            return nullptr;
 
         LinksInfo& list = *(LinksInfo*)hList;
 
@@ -5979,8 +5980,9 @@ GREN_API(const char*) sol_LinksInfoFlagsTxt8(
         return list[Index]->flags8.c_str();
     }
     CATCH_API(hEngine);
-    return NULL;
+    return nullptr;
 }
+
 
 GREN_API(const wchar_t*) sol_LinksInfoFlagsTxt(
     HGREN hEngine,
@@ -5990,25 +5992,25 @@ GREN_API(const wchar_t*) sol_LinksInfoFlagsTxt(
 {
     try
     {
-        if (hList == NULL)
-            return NULL;
+        if (hList == nullptr)
+            return nullptr;
 
         const LinksInfo& list = *(LinksInfo*)hList;
         return list[Index]->flags.c_str();
     }
     CATCH_API(hEngine);
-    return NULL;
+    return nullptr;
 }
 
 
 
 // *******************************************************************
-// Из соответствующих таблиц удаляем запись о связи.
-// LinkID - первичный ключ удаляемой записи.
-// LinkType - 0 для словарных статей, 1 для фразовых
+// РР· СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёС… С‚Р°Р±Р»РёС† СѓРґР°Р»СЏРµРј Р·Р°РїРёСЃСЊ Рѕ СЃРІСЏР·Рё.
+// LinkID - РїРµСЂРІРёС‡РЅС‹Р№ РєР»СЋС‡ СѓРґР°Р»СЏРµРјРѕР№ Р·Р°РїРёСЃРё.
+// LinkType - 0 РґР»СЏ СЃР»РѕРІР°СЂРЅС‹С… СЃС‚Р°С‚РµР№, 1 РґР»СЏ С„СЂР°Р·РѕРІС‹С…
 //
-// ВАЖНО: после добавления связи для словарных статей становятся невалидными
-// все ранее полученные id связей.
+// Р’РђР–РќРћ: РїРѕСЃР»Рµ РґРѕР±Р°РІР»РµРЅРёСЏ СЃРІСЏР·Рё РґР»СЏ СЃР»РѕРІР°СЂРЅС‹С… СЃС‚Р°С‚РµР№ СЃС‚Р°РЅРѕРІСЏС‚СЃСЏ РЅРµРІР°Р»РёРґРЅС‹РјРё
+// РІСЃРµ СЂР°РЅРµРµ РїРѕР»СѓС‡РµРЅРЅС‹Рµ id СЃРІСЏР·РµР№.
 // *******************************************************************
 GREN_API(int) sol_DeleteLink(HGREN hEngine, int LinkID, int LinkType)
 {
@@ -6043,12 +6045,12 @@ GREN_API(int) sol_DeleteLink(HGREN hEngine, int LinkID, int LinkType)
 
 
 // ***************************************************************************
-// Добавляем новую запись о связи между словарными или фразовыми статьями.
-// LinkType=0 для словарных статей, 1 для фразовых.
-// Возвращается ID добавленной записи.
+// Р”РѕР±Р°РІР»СЏРµРј РЅРѕРІСѓСЋ Р·Р°РїРёСЃСЊ Рѕ СЃРІСЏР·Рё РјРµР¶РґСѓ СЃР»РѕРІР°СЂРЅС‹РјРё РёР»Рё С„СЂР°Р·РѕРІС‹РјРё СЃС‚Р°С‚СЊСЏРјРё.
+// LinkType=0 РґР»СЏ СЃР»РѕРІР°СЂРЅС‹С… СЃС‚Р°С‚РµР№, 1 РґР»СЏ С„СЂР°Р·РѕРІС‹С….
+// Р’РѕР·РІСЂР°С‰Р°РµС‚СЃСЏ ID РґРѕР±Р°РІР»РµРЅРЅРѕР№ Р·Р°РїРёСЃРё.
 //
-// ВАЖНО: после добавления связи для словарных статей становятся невалидными
-// все ранее полученные id связей.
+// Р’РђР–РќРћ: РїРѕСЃР»Рµ РґРѕР±Р°РІР»РµРЅРёСЏ СЃРІСЏР·Рё РґР»СЏ СЃР»РѕРІР°СЂРЅС‹С… СЃС‚Р°С‚РµР№ СЃС‚Р°РЅРѕРІСЏС‚СЃСЏ РЅРµРІР°Р»РёРґРЅС‹РјРё
+// РІСЃРµ СЂР°РЅРµРµ РїРѕР»СѓС‡РµРЅРЅС‹Рµ id СЃРІСЏР·РµР№.
 // ***************************************************************************
 GREN_API(int) sol_AddLink(
     HGREN hEngine,
@@ -6059,7 +6061,7 @@ GREN_API(int) sol_AddLink(
     const wchar_t *Tags
 )
 {
-    if (hEngine == NULL || IE1 == UNKNOWN || IE2 == UNKNOWN)
+    if (hEngine == nullptr || IE1 == UNKNOWN || IE2 == UNKNOWN)
         return -2;
 
     try
@@ -6107,14 +6109,14 @@ GREN_API(int) sol_AddLink8(
 
 
 // Manual page: http://www.solarix.ru/api/en/sol_SetLinkFlags.shtml
-// Описание:    http://www.solarix.ru/api/ru/sol_SetLinkFlags.shtml
+// РћРїРёСЃР°РЅРёРµ:    http://www.solarix.ru/api/ru/sol_SetLinkFlags.shtml
 GREN_API(int) sol_SetLinkFlags(
     HGREN hEngine,
     int id_link,
     const wchar_t *Flags
 )
 {
-    if (hEngine == NULL || id_link == UNKNOWN)
+    if (hEngine == nullptr || id_link == UNKNOWN)
         return -2;
 
     try
@@ -6135,10 +6137,10 @@ GREN_API(int) sol_SetLinkFlags(
             lem::Collect< lem::UFString > pairs;
             lem::parse(str, pairs, L" ");
 
-            for (lem::Container::size_type i = 0; i < pairs.size(); ++i)
+            for (auto& pair : pairs)
             {
                 lem::Collect<lem::UFString> toks;
-                lem::parse(pairs[i], toks, L"=");
+                lem::parse(pair, toks, L"=");
                 const lem::UFString &flag = toks[0];
                 const lem::UFString &val = toks[1];
                 SG_LinkFlag x(UNKNOWN, flag, val);
@@ -6168,7 +6170,7 @@ GREN_API(int) sol_SetLinkFlags8(
 
 
 // Manual page: http://www.solarix.ru/api/ru/sol_SetLinkTags.shtml
-// Описание:    http://www.solarix.ru/api/en/sol_SetLinkTags.shtml
+// РћРїРёСЃР°РЅРёРµ:    http://www.solarix.ru/api/en/sol_SetLinkTags.shtml
 GREN_API(int) sol_SetLinkTags(
     HGREN hEngine,
     int LinkType,
@@ -6176,7 +6178,7 @@ GREN_API(int) sol_SetLinkTags(
     const wchar_t *Tags
 )
 {
-    if (hEngine == NULL || link_id == -1)
+    if (hEngine == nullptr || link_id == -1)
         return -2;
 
     try
@@ -6224,13 +6226,13 @@ GREN_API(int) sol_SetLinkTags8(
 //
 // http://www.solarix.ru/api/en/sol_GetPhraseText.shtml
 //
-// Возвращается текст фразовой статьи по ее ключу.
-// Возвращенный указатель нужно освободить вызовом sol_Free;
+// Р’РѕР·РІСЂР°С‰Р°РµС‚СЃСЏ С‚РµРєСЃС‚ С„СЂР°Р·РѕРІРѕР№ СЃС‚Р°С‚СЊРё РїРѕ РµРµ РєР»СЋС‡Сѓ.
+// Р’РѕР·РІСЂР°С‰РµРЅРЅС‹Р№ СѓРєР°Р·Р°С‚РµР»СЊ РЅСѓР¶РЅРѕ РѕСЃРІРѕР±РѕРґРёС‚СЊ РІС‹Р·РѕРІРѕРј sol_Free;
 // *********************************************************
 GREN_API(wchar_t*) sol_GetPhraseText(HGREN hEngine, int PhraseId)
 {
-    if (hEngine == NULL || PhraseId == UNKNOWN)
-        return NULL;
+    if (hEngine == nullptr || PhraseId == UNKNOWN)
+        return nullptr;
 
     try
     {
@@ -6238,19 +6240,19 @@ GREN_API(wchar_t*) sol_GetPhraseText(HGREN hEngine, int PhraseId)
         SynGram &sg = HandleEngine(hEngine)->dict->GetSynGram();
         if (sg.GetStorage().GetPhrase(PhraseId, f))
         {
-            const int len = f.GetText().length();
+            const size_t len = f.GetText().length();
             wchar_t *str = (wchar_t*)malloc(sizeof(wchar_t)*(len + 1));
             lem::lem_strcpy(str, f.GetText().c_str());
             return str;
         }
         else
         {
-            return NULL;
+            return nullptr;
         }
     }
     catch (...)
     {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -6259,8 +6261,8 @@ GREN_API(wchar_t*) sol_GetPhraseText(HGREN hEngine, int PhraseId)
 // http://www.solarix.ru/api/en/sol_GetPhraseText.shtml
 GREN_API(char*) sol_GetPhraseText8(HGREN hEngine, int PhraseId)
 {
-    if (hEngine == NULL || PhraseId == UNKNOWN)
-        return NULL;
+    if (hEngine == nullptr || PhraseId == UNKNOWN)
+        return nullptr;
 
     try
     {
@@ -6269,19 +6271,19 @@ GREN_API(char*) sol_GetPhraseText8(HGREN hEngine, int PhraseId)
         if (sg.GetStorage().GetPhrase(PhraseId, f))
         {
             lem::FString utf8 = to_utf8(f.GetText());
-            const int len = utf8.length();
+            const size_t len = utf8.length();
             char *str = (char*)malloc(len + 1);
             lem::lem_strcpy(str, utf8.c_str());
             return str;
         }
         else
         {
-            return NULL;
+            return nullptr;
         }
     }
     catch (...)
     {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -6289,8 +6291,8 @@ GREN_API(char*) sol_GetPhraseText8(HGREN hEngine, int PhraseId)
 // http://www.solarix.ru/api/en/sol_GetPhraseLanguage.shtml
 GREN_API(int) sol_GetPhraseLanguage(HGREN hEngine, int PhraseId)
 {
-    if (hEngine == NULL || PhraseId == UNKNOWN)
-        return NULL;
+    if (hEngine == nullptr || PhraseId == UNKNOWN)
+        return -1;
 
     try
     {
@@ -6314,8 +6316,8 @@ GREN_API(int) sol_GetPhraseLanguage(HGREN hEngine, int PhraseId)
 // http://www.solarix.ru/api/en/sol_GetPhraseClass.shtml
 GREN_API(int) sol_GetPhraseClass(HGREN hEngine, int PhraseId)
 {
-    if (hEngine == NULL || PhraseId == UNKNOWN)
-        return NULL;
+    if (hEngine == nullptr || PhraseId == UNKNOWN)
+        return -1;
 
     try
     {
@@ -6342,7 +6344,7 @@ GREN_API(int) sol_GetPhraseClass(HGREN hEngine, int PhraseId)
 // http://www.solarix.ru/api/en/sol_AddPhrase.shtml
 GREN_API(int) sol_AddPhrase(HGREN hEngine, const wchar_t *Phrase, int LanguageID, int ClassID, int Flags)
 {
-    if (hEngine == NULL || lem::lem_is_empty(Phrase))
+    if (hEngine == nullptr || lem::lem_is_empty(Phrase))
         return -2;
 
     try
@@ -6375,7 +6377,7 @@ GREN_API(int) sol_AddPhrase8(HGREN hEngine, const char *Phrase, int Language, in
 // http://www.solarix.ru/api/en/sol_DeletePhrase.shtml
 GREN_API(int) sol_DeletePhrase(HGREN hEngine, int PhraseId)
 {
-    if (hEngine == NULL || PhraseId == UNKNOWN)
+    if (hEngine == nullptr || PhraseId == UNKNOWN)
         return -2;
 
     int res = -1;
@@ -6405,7 +6407,7 @@ GREN_API(int) sol_SetPhraseNote(
     const wchar_t *Value
 )
 {
-    if (hEngine == NULL || PhraseId == UNKNOWN || lem::lem_is_empty(Name))
+    if (hEngine == nullptr || PhraseId == UNKNOWN || lem::lem_is_empty(Name))
         return -2;
 
     try
@@ -6461,7 +6463,7 @@ GREN_API(int) sol_ProcessPhraseEntry(
     wchar_t DelimiterChar
 )
 {
-    if (hEngine == NULL || PhraseId == UNKNOWN || lem::lem_is_empty(Scenario))
+    if (hEngine == nullptr || PhraseId == UNKNOWN || lem::lem_is_empty(Scenario))
         return -2;
 
     try
@@ -6482,12 +6484,12 @@ GREN_API(int) sol_ProcessPhraseEntry(
         tx->Commit();
 
         if (res.second == true)
-            return -1; // была ошибка
+            return -1; // Р±С‹Р»Р° РѕС€РёР±РєР°
 
         if (res.first == true)
-            return 1; // обработана
+            return 1; // РѕР±СЂР°Р±РѕС‚Р°РЅР°
 
-        return 0; // скорее всего необходимые записи в TNOTES уже внесены.
+        return 0; // СЃРєРѕСЂРµРµ РІСЃРµРіРѕ РЅРµРѕР±С…РѕРґРёРјС‹Рµ Р·Р°РїРёСЃРё РІ TNOTES СѓР¶Рµ РІРЅРµСЃРµРЅС‹.
     }
     CATCH_API(hEngine);
 
@@ -6496,8 +6498,8 @@ GREN_API(int) sol_ProcessPhraseEntry(
 
 
 
-// Добавление новой словарной статьи по ее текстовому описанию.
-// Возвращается ключ созданной статьи, либо -1 при возникновении ошибки
+// Р”РѕР±Р°РІР»РµРЅРёРµ РЅРѕРІРѕР№ СЃР»РѕРІР°СЂРЅРѕР№ СЃС‚Р°С‚СЊРё РїРѕ РµРµ С‚РµРєСЃС‚РѕРІРѕРјСѓ РѕРїРёСЃР°РЅРёСЋ.
+// Р’РѕР·РІСЂР°С‰Р°РµС‚СЃСЏ РєР»СЋС‡ СЃРѕР·РґР°РЅРЅРѕР№ СЃС‚Р°С‚СЊРё, Р»РёР±Рѕ -1 РїСЂРё РІРѕР·РЅРёРєРЅРѕРІРµРЅРёРё РѕС€РёР±РєРё
 GREN_API(int) sol_AddWord(HGREN hEngine, const wchar_t *Txt)
 {
     try
@@ -6538,17 +6540,17 @@ GREN_API(int) sol_AddWord8(HGREN hEngine, const char *Txt)
 
 
 // ******************************************************************************************
-// Возвращается список ключей словарных (EntryType=0) или фразовых (EntryType=1) статей,
-// которые удовлетворяют заданным параметрам:
-// Flags - это битовая комбинация, задающая способ поиска:
-//         0x00000000 поиск по регулярному выражению с точным соответствием регистра, применимо для фразовых статей
-//         0x00000001 если нужен нечувствительный к регистру поиск по регулярному выражению
-//         0x00010000 если нужен поиск по заданному имени словарной статьи или тексту фразовой
+// Р’РѕР·РІСЂР°С‰Р°РµС‚СЃСЏ СЃРїРёСЃРѕРє РєР»СЋС‡РµР№ СЃР»РѕРІР°СЂРЅС‹С… (EntryType=0) РёР»Рё С„СЂР°Р·РѕРІС‹С… (EntryType=1) СЃС‚Р°С‚РµР№,
+// РєРѕС‚РѕСЂС‹Рµ СѓРґРѕРІР»РµС‚РІРѕСЂСЏСЋС‚ Р·Р°РґР°РЅРЅС‹Рј РїР°СЂР°РјРµС‚СЂР°Рј:
+// Flags - СЌС‚Рѕ Р±РёС‚РѕРІР°СЏ РєРѕРјР±РёРЅР°С†РёСЏ, Р·Р°РґР°СЋС‰Р°СЏ СЃРїРѕСЃРѕР± РїРѕРёСЃРєР°:
+//         0x00000000 РїРѕРёСЃРє РїРѕ СЂРµРіСѓР»СЏСЂРЅРѕРјСѓ РІС‹СЂР°Р¶РµРЅРёСЋ СЃ С‚РѕС‡РЅС‹Рј СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРµРј СЂРµРіРёСЃС‚СЂР°, РїСЂРёРјРµРЅРёРјРѕ РґР»СЏ С„СЂР°Р·РѕРІС‹С… СЃС‚Р°С‚РµР№
+//         0x00000001 РµСЃР»Рё РЅСѓР¶РµРЅ РЅРµС‡СѓРІСЃС‚РІРёС‚РµР»СЊРЅС‹Р№ Рє СЂРµРіРёСЃС‚СЂСѓ РїРѕРёСЃРє РїРѕ СЂРµРіСѓР»СЏСЂРЅРѕРјСѓ РІС‹СЂР°Р¶РµРЅРёСЋ
+//         0x00010000 РµСЃР»Рё РЅСѓР¶РµРЅ РїРѕРёСЃРє РїРѕ Р·Р°РґР°РЅРЅРѕРјСѓ РёРјРµРЅРё СЃР»РѕРІР°СЂРЅРѕР№ СЃС‚Р°С‚СЊРё РёР»Рё С‚РµРєСЃС‚Сѓ С„СЂР°Р·РѕРІРѕР№
 //
-// EntryType - 0 для словарных статей, 1 для фразовых
-// Mask - регулярное выражение для сопоставления с именем статьи, 
-// Language - код языка (-1 означает отсутствие фильтрации)
-// Class - грамматический класс, то есть ID части речи (-1 означает любой)
+// EntryType - 0 РґР»СЏ СЃР»РѕРІР°СЂРЅС‹С… СЃС‚Р°С‚РµР№, 1 РґР»СЏ С„СЂР°Р·РѕРІС‹С…
+// Mask - СЂРµРіСѓР»СЏСЂРЅРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ РґР»СЏ СЃРѕРїРѕСЃС‚Р°РІР»РµРЅРёСЏ СЃ РёРјРµРЅРµРј СЃС‚Р°С‚СЊРё, 
+// Language - РєРѕРґ СЏР·С‹РєР° (-1 РѕР·РЅР°С‡Р°РµС‚ РѕС‚СЃСѓС‚СЃС‚РІРёРµ С„РёР»СЊС‚СЂР°С†РёРё)
+// Class - РіСЂР°РјРјР°С‚РёС‡РµСЃРєРёР№ РєР»Р°СЃСЃ, С‚Рѕ РµСЃС‚СЊ ID С‡Р°СЃС‚Рё СЂРµС‡Рё (-1 РѕР·РЅР°С‡Р°РµС‚ Р»СЋР±РѕР№)
 //
 // Manual page: http://www.solarix.ru/api/en/sol_ListEntries.shtml
 // ******************************************************************************************
@@ -6561,8 +6563,8 @@ GREN_API(HGREN_INTARRAY) sol_ListEntries(
     int Class
 )
 {
-    if (hEngine == NULL)
-        return NULL;
+    if (hEngine == nullptr)
+        return nullptr;
 
 #if !defined SOLARIX_DEMO
     try
@@ -6669,10 +6671,10 @@ GREN_API(HGREN_INTARRAY) sol_ListEntries(
     }
     catch (...)
     {
-        return NULL;
+        return nullptr;
     }
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -6693,7 +6695,7 @@ GREN_API(HGREN_INTARRAY) sol_ListEntries8(
 
 GREN_API(int) sol_SaveDictionary(HGREN hEngine, int Flags, const wchar_t *Folder)
 {
-    if (hEngine == NULL)
+    if (hEngine == nullptr)
         return -1;
 
 #if defined SOL_SAVEBIN && !defined SOLARIX_DEMO
@@ -6708,7 +6710,7 @@ GREN_API(int) sol_SaveDictionary(HGREN hEngine, int Flags, const wchar_t *Folder
 
             lem::Path db_file;
             const lem::Xml::Node * nod = p.Find_By_Path(L"dataroot.morphology");
-            if (nod != NULL && nod->GetBody().empty() == false)
+            if (nod != nullptr && nod->GetBody().empty() == false)
             {
                 db_file = lem::lem_is_empty(Folder) ? HandleEngine(hEngine)->dict->xml_base_path : lem::Path(Folder);
                 db_file.ConcateLeaf(lem::Path(nod->GetBody()));
@@ -6731,7 +6733,7 @@ GREN_API(int) sol_SaveDictionary(HGREN hEngine, int Flags, const wchar_t *Folder
 
 GREN_API(int) sol_ReserveLexiconSpace(HGREN hEngine, int n)
 {
-    if (hEngine == NULL || n < 1)
+    if (hEngine == nullptr || n < 1)
         return -1;
 
     try
@@ -6776,7 +6778,7 @@ GREN_API(HGREN_INTARRAY) sol_ListPartsOfSpeech(HGREN hEngine, int Language)
     }
     CATCH_API(hEngine);
 
-    return NULL;
+    return nullptr;
 }
 
 
@@ -6799,7 +6801,7 @@ GREN_API(int) sol_GetEntryFreq(HGREN hEngine, int EntryID)
 
 GREN_API(int) sol_FindTagW(HGREN hEngine, const wchar_t *TagName)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict || lem::lem_is_empty(TagName))
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict || lem::lem_is_empty(TagName))
         return -2;
 
     try
@@ -6817,7 +6819,7 @@ GREN_API(int) sol_FindTagW(HGREN hEngine, const wchar_t *TagName)
 
 GREN_API(int) sol_FindTagValueW(HGREN hEngine, int TagID, const wchar_t *ValueName)
 {
-    if (hEngine == NULL || !HandleEngine(hEngine)->dict || lem::lem_is_empty(ValueName))
+    if (hEngine == nullptr || !HandleEngine(hEngine)->dict || lem::lem_is_empty(ValueName))
         return -2;
 
     try
@@ -6848,12 +6850,12 @@ GREN_API(HGREN_SPOKEN) sol_PronounceW(HGREN hEngine, const wchar_t * Sentence, i
 
 #endif
 
-        return NULL;
+        return nullptr;
     }
     CATCH_API(hEngine);
 
-    return NULL;
-    }
+    return nullptr;
+}
 
 
 GREN_API(int) sol_DeleteSpoken(HGREN_SPOKEN hData)
@@ -6872,8 +6874,8 @@ GREN_API(int) sol_DeleteSpoken(HGREN_SPOKEN hData)
 
 GREN_API(const char*) sol_RenderSyntaxTree8(HGREN hEngine, HGREN_RESPACK hSyntaxTree, int RenderOptions)
 {
-    if (hSyntaxTree == NULL)
-        return NULL;
+    if (hSyntaxTree == nullptr)
+        return nullptr;
 
     const Res_Pack * pack = (const Solarix::Res_Pack*)hSyntaxTree;
 
@@ -6908,7 +6910,7 @@ GREN_API(int) sol_WriteSyntaxTree(HGREN hEngine, void * file_handle, const wchar
     int guard = 0xdeadbeef;
     file.write(&guard, sizeof(guard));
 
-    int str_len = wcslen(sentence);
+    size_t str_len = wcslen(sentence);
     file.write(&str_len, sizeof(str_len));
     file.write(sentence, sizeof(wchar_t)*(str_len + 1));
 
@@ -6924,7 +6926,7 @@ struct SyntaxTreeStreamData
     Solarix::Res_Pack * pack;
     wchar_t * sentence;
 
-    SyntaxTreeStreamData() : pack(NULL), sentence(NULL) {}
+    SyntaxTreeStreamData() : pack(nullptr), sentence(nullptr) {}
     ~SyntaxTreeStreamData()
     {
         delete pack;
@@ -6943,7 +6945,7 @@ GREN_API(void*) sol_LoadSyntaxTree(HGREN hEngine, void * file_handle)
     file.read(&str_len, sizeof(str_len));
 
     if (file.eof())
-        return NULL;
+        return nullptr;
 
     SyntaxTreeStreamData * data = new SyntaxTreeStreamData();
 
@@ -7067,7 +7069,6 @@ GREN_API(HGREN_TREENODE) sol_CreateTreeNodeW(HGREN hEngine, int id_entry, const 
 
     return node;
 }
-
 
 
 #endif

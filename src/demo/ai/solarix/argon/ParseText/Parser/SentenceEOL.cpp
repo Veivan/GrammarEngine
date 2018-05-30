@@ -39,10 +39,12 @@ bool SentenceEOL::Fetch(lem::UFString & line, int & line_paragraph_id)
         {
             break;
         }
-        else line.Add_Dirty(c);
+        else
+        {
+          line += c;
+        }
     }
 
-    line.calc_hash();
     line.trim();
 
     return true;

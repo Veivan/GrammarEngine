@@ -786,9 +786,9 @@ void AlphabetStorage_SQLITE::FindSymbol(
    for( lem::Container::size_type i=0; i<AlphabetID.size(); ++i )
     {
      if( i>0 )
-      in.Add_Dirty( "," );
+      in += ",";
 
-     in.Add_Dirty( lem::to_str(AlphabetID[i]).c_str() );
+     in += lem::to_str(AlphabetID[i]).c_str();
     }
 
    in += ")";
@@ -1456,7 +1456,7 @@ SyllabRule * AlphabetStorage_SQLITE::LoadSyllabRule( int id_rule )
 {
  lem::MemFormatter mem;
  mem.printf( "SELECT name, id_src, id_language, cursor_shift FROM slb_rule WHERE id=%d", id_rule );
- lem::Ptr<LS_ResultSet> rs( ListByQuery(mem.string()) );
+ std::unique_ptr<LS_ResultSet> rs( ListByQuery(mem.string()) );
  if( rs->Fetch() )
   {
    lem::UCString name = rs->GetUCString(0);

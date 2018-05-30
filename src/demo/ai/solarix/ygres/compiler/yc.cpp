@@ -58,10 +58,11 @@
 //
 // 01.10.2011 - добавлены опции -rebuild_lemmatizer и -rebuild_pes для
 //              генерации только лемматизатора и таблиц префиксного поиска.
+// 28.03.2018 - рефакторинг кода
 // -----------------------------------------------------------------------------
 //
 // CD->05.10.1995
-// LC->10.08.2014
+// LC->28.03.2018
 // --------------
 
 #include <lem/ustreams.h>
@@ -184,47 +185,6 @@ int main( int argc, char *argv[] )
 #endif
 {
  lem::LemInit initer;
-
-/*
- // --- DEBUG
- lem::WideStringUcs4 enum4( L"\xD800\xDC00\xD834\xDD1E\xDBFF\xDFFD" );
-
- lem::uint32_t c;
- while( (c=enum4.Fetch())!=0 )
-  {
-   mout->printf( "%X16d\n", c );
-  } 
- // --- DEBUG
-*/
-/*
-PrefixEntrySearcher pes( lem::Path(L"e:\\tmp\\pes.db"), true, 1000 );
-pes.Add( L"КОШКА", 100 ); 
-pes.Add( L"КОШМАР", 101 ); 
-pes.Add( L"КОРОБКА", 102 );
-pes.Add( L"\xD800\xDC00\xD834\xDD1E\xDBFF\xDFFD", 103 );
-pes.Commit();
-
-lem::MCollect<int> ies;
-pes.Search( L"КО", ies );
-for( int i=0; i<ies.size(); ++i )
- mout->printf( "%d\n", ies[i] );
-*/
-/*
-lem::Char_Stream::UTF8_Reader rdr( lem::Path("e:\\mvoice\\lem\\dictionary.src\\debug.sol"), false );
-rdr.Read_Beginning();
-lem::UFString s16;
-rdr.read_line(s16);
-lem::FString s8( lem::to_utf8(s16) );
-s16 = lem::from_utf8(s8);
-
-for( int i=0; i<s16.length(); ++i)
- {
-  lem::mout->printf( "%X16d\n", s16[i] );
- } 
-*/
-
-
-
  boost::posix_time::ptime tm_start = lem::get_time();
 
  try
@@ -244,7 +204,7 @@ for( int i=0; i<s16.length(); ++i)
    return 1;
   }
 
- std::auto_ptr<Compiler> C( Create_Compiler() );
+ std::unique_ptr<Compiler> C( Create_Compiler() );
 
  #if defined SOL_LOADBIN
  if( recompile_syntax )
@@ -740,7 +700,6 @@ void Compile_Project( Compiler *C )
    if( !ok )
     {
      lem::Shell::Error( lem::format_str( "There was an error while compiling the file %s", in_names[i].c_str()) );
-     lem::Shell::ErrorBeep();
      lem::Process::Exit(1);
     }
   }
@@ -773,7 +732,6 @@ void Compile_Project( Compiler *C )
  if( !ok )
   {
    lem::Shell::Error( L"There was an error while compiling the dictionary" );
-   lem::Shell::ErrorBeep();
    lem::Process::Exit(1);
   }
 
@@ -854,6 +812,7 @@ void Save_Results( Compiler *C )
      p3.ConcateLeaf( lem::Path(L"seeker.bin") );
 
      // Возможно, сохраняем в отдельном файле справочник лексем.
+
      if( save_seeker )
       {
        BinaryWriter bin3(p3);
@@ -1101,7 +1060,7 @@ static void Help( int help_i )
                 "               %vfE0%vn - currently shown page\n"
                 "               %vfE1%vn - all options\n"
                 "               %vfE2%vn - code pages (useful for russian users)\n\n"
-                "For example: %vfFygres -h=1%vn\n\n"
+                "For example: %vfFcompiler -h=1%vn\n\n"
                );
    break;
  }
